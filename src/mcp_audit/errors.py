@@ -32,3 +32,8 @@ class ConfigNotFoundError(McpAuditError):
     def __init__(self, file_path: Path) -> None:
         self.file_path = file_path
         super().__init__(f"Config file not found: {file_path}")
+
+
+class NoConfigDiscoveredError(McpAuditError):
+    def __init__(self) -> None:
+        super().__init__("No supported MCP or agent config files found. Pass --config PATH to scan an explicit file.")

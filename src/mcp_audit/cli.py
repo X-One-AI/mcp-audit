@@ -4,7 +4,7 @@ import argparse
 import sys
 from pathlib import Path
 
-from mcp_audit.app import scan_config
+from mcp_audit.app import scan_config, scan_default_configs
 from mcp_audit.errors import ConfigNotFoundError, McpAuditError, ParseConfigError
 from mcp_audit.renderers.json_report import render_json_report
 from mcp_audit.renderers.markdown_report import render_markdown_report
@@ -18,7 +18,7 @@ def build_parser() -> argparse.ArgumentParser:
     subparsers = parser.add_subparsers(dest="command", required=True)
 
     scan = subparsers.add_parser("scan", help="scan an MCP or agent config")
-    scan.add_argument("--config", required=True, help="config file to scan")
+    scan.add_argument("--config", help="config file to scan; defaults to bounded config discovery")
     scan.add_argument("--format", choices=("markdown", "json"), default="markdown")
     scan.add_argument("--output", help="write report to file instead of stdout")
     scan.add_argument("--fail-on", choices=("high", "medium", "low", "never"), default="never")
@@ -54,7 +54,7 @@ def main(argv: list[str] | None = None) -> int:
 
     try:
         if args.command == "scan":
-            report = scan_config(args.config)
+            report = scan_config(args.config) if args.config else scan_default_configs()
             _write_output(_render(report, args.format), args.output)
             return 1 if _should_fail(report, args.fail_on) else 0
 

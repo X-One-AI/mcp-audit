@@ -65,7 +65,7 @@ Build the first production-usable `mcp-audit` CLI that scans explicit JSON MCP /
 11. Implement JSON renderer and contract tests for required top-level keys and finding keys.
 12. Implement Markdown renderer and contract tests for summary, finding sections, remediation, redacted evidence, and limitations.
 13. Implement scan orchestration in `app.py`.
-14. Implement CLI scan command with explicit `--config`, `--format`, `--output`, and `--fail-on`.
+14. Implement CLI scan command with optional `--config`, bounded default discovery, `--format`, `--output`, and `--fail-on`.
 15. Implement `explain RULE_ID`.
 16. Add CLI integration tests for success, parse error, unknown rule, JSON output, Markdown output, and fail threshold.
 17. Add rule coverage meta-test requiring positive and negative fixtures for every registered rule.

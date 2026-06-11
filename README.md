@@ -58,6 +58,17 @@ mcp-audit scan --format json
 mcp-audit explain XONE001
 ```
 
+Without `--config`, `scan` checks only bounded default locations:
+
+```text
+mcp.json
+.mcp.json
+.cursor/mcp.json
+.vscode/mcp.json
+```
+
+It does not recursively scan the repository.
+
 ## Local Development
 
 From this directory:
@@ -67,6 +78,8 @@ python3 -m pytest tests -q
 PYTHONPATH=src python3 -m mcp_audit.cli scan --config examples/high-risk-mcp.json --format markdown
 PYTHONPATH=src python3 -m mcp_audit.cli scan --config examples/high-risk-mcp.json --format json
 ```
+
+Use `scan` without `--config` only in a repository that contains one of the bounded default config paths.
 
 The CLI is local-first. It does not upload configs, send telemetry, or execute scanned commands.
 

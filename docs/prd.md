@@ -123,7 +123,7 @@ This is not a demo project. The product must be small enough to ship early, but 
 
 | Risk or question | Impact | Owner | Status |
 | --- | --- | --- | --- |
-| Supported MCP config formats may vary across clients and tools. | high | Product / Architect | open |
+| Supported MCP config formats may vary across clients and tools. | high | Product / Architect | partially mitigated by bounded default discovery |
 | Literal secret detection can produce false positives or miss uncommon secret formats. | high | Security / QA | open |
 | Unsafe command rules may be noisy if legitimate MCP servers use shell wrappers. | medium | Security / Product | open |
 | Broad filesystem path rules need platform-aware path handling. | medium | Architect | open |
@@ -145,7 +145,7 @@ This is not a demo project. The product must be small enough to ship early, but 
 - `handoff_reason`: Define architecture for the first production-usable `mcp-audit` CLI and report pipeline.
 - `input_context`: X-One focuses on Safe Agent Operations. `mcp-audit` is the first active project and must scan MCP / agent configs for risk signals while staying local-first and production-usable.
 - `decisions_already_made`: v0.1 is static audit only; no runtime enforcement, hosted service, dashboard, telemetry, or hidden network calls. OPT is referenced, not modified. Project-specific constraints and knowledge live under `mcp-audit/ops/`.
-- `open_questions`: supported config discovery scope; exact v0.1 config formats; CI workflow scanning scope; Windows compatibility; secret detection patterns.
+- `open_questions`: exact v0.1 config formats beyond JSON; CI workflow scanning scope; Windows compatibility; secret detection patterns.
 - `expected_output`: architecture brief covering module boundaries, data flow, CLI/report contracts, rule engine shape, parser strategy, fixture strategy, security boundaries, and implementation handoff.
 - `acceptance_criteria`: architecture enables all PRD acceptance criteria and gives developers enough detail to create an implementation plan without guessing contracts.
 - `risk_notes`: security overclaiming, false positives, secret handling, and hidden network behavior are high-risk review areas.

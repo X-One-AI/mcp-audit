@@ -61,7 +61,7 @@ mcp-audit/tests/
 
 ## Data Flow
 
-1. User runs `mcp-audit scan --config <path> --format <markdown|json>`.
+1. User runs `mcp-audit scan --config <path> --format <markdown|json>` or `mcp-audit scan` for bounded default discovery.
 2. `cli.py` validates arguments and calls `app.scan()`.
 3. `config_discovery.py` resolves explicit files or bounded default search paths.
 4. Parser modules load supported files into normalized `ConfigDocument` objects.
@@ -84,6 +84,17 @@ Interface:
 mcp-audit scan [--config PATH] [--format markdown|json] [--output PATH] [--fail-on high|medium|low|never]
 mcp-audit explain RULE_ID
 ```
+
+Default discovery candidates:
+
+```text
+mcp.json
+.mcp.json
+.cursor/mcp.json
+.vscode/mcp.json
+```
+
+Discovery is bounded to these paths and does not recursively scan repositories.
 
 Initial defaults:
 
@@ -258,7 +269,7 @@ Do not add network, telemetry, analytics, or remote scanning dependencies.
 | --- | --- | --- | --- | --- | --- |
 | Secret detection exposes sensitive values in output. | high | medium | Redaction module is mandatory for Markdown; tests cover common token patterns. | Security / Developer | open |
 | Rules produce noisy false positives. | high | medium | Add negative fixtures and confidence levels; avoid blocking defaults in v0.1. | Product / QA | open |
-| Config discovery scans too broadly. | medium | medium | Use bounded candidate paths and explicit `--config` first. | Architect | open |
+| Config discovery scans too broadly. | medium | low | Use bounded candidate paths and explicit `--config` support. | Architect | mitigated |
 | Users expect runtime enforcement. | medium | medium | Keep README and reports clear that this is audit-only in v0.1. | Product | mitigated |
 | YAML support becomes necessary. | medium | medium | Keep parser boundary ready; add dependency only after validated need. | Architect | open |
 | JSON schema changes break early automation. | medium | low | Version schema and add contract tests. | Architect / QA | open |
@@ -288,7 +299,7 @@ Do not add network, telemetry, analytics, or remote scanning dependencies.
 - `handoff_reason`: Review security boundaries, rule-risk semantics, report contracts, and test strategy before implementation planning.
 - `input_context`: PRD requires a production-usable local CLI for MCP / agent config risk auditing. The project must reference OPT without modifying it and keep project-specific operating context under `mcp-audit/ops/`.
 - `decisions_already_made`: Python CLI, JSON-first parsing, local-first audit-only v0.1, Markdown and JSON report contracts, modular rule engine, no network calls or telemetry.
-- `open_questions`: exact supported config discovery paths; whether YAML is required for v0.1; whether CI workflow scanning stays out of v0.1; packaging and installation strategy.
+- `open_questions`: whether YAML is required for v0.1; whether CI workflow scanning stays out of v0.1; packaging and installation strategy.
 - `expected_output`: expert review findings and QA plan covering security claims, secret redaction, false positives, report contracts, parser errors, and fixture matrix.
 - `acceptance_criteria`: reviewers can confirm the architecture satisfies PRD acceptance criteria and developers can create an implementation plan without guessing module boundaries or contracts.
 - `risk_notes`: secret redaction, false-positive noise, security overclaiming, schema stability, and accidental scope expansion require close review.
