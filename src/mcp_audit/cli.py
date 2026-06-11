@@ -4,6 +4,7 @@ import argparse
 import sys
 from pathlib import Path
 
+from mcp_audit import __version__
 from mcp_audit.app import scan_config, scan_default_configs
 from mcp_audit.errors import ConfigNotFoundError, McpAuditError, ParseConfigError
 from mcp_audit.renderers.json_report import render_json_report
@@ -15,7 +16,8 @@ _SEVERITY_RANK = {"low": 1, "medium": 2, "high": 3}
 
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(prog="mcp-audit")
-    subparsers = parser.add_subparsers(dest="command", required=True)
+    parser.add_argument("--version", action="store_true", help="show version and exit")
+    subparsers = parser.add_subparsers(dest="command")
 
     scan = subparsers.add_parser("scan", help="scan an MCP or agent config")
     scan.add_argument("--config", help="config file to scan; defaults to bounded config discovery")
@@ -51,6 +53,14 @@ def _write_output(text: str, output: str | None) -> None:
 def main(argv: list[str] | None = None) -> int:
     parser = build_parser()
     args = parser.parse_args(argv)
+
+    if args.version:
+        print(f"mcp-audit {__version__}")
+        return 0
+
+    if args.command is None:
+        parser.print_help(sys.stderr)
+        return 2
 
     try:
         if args.command == "scan":

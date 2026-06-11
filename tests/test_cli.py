@@ -16,6 +16,32 @@ def test_cli_scan_outputs_json_report(capsys):
     assert data["summary"]["findings_total"] >= 5
 
 
+def test_cli_version_outputs_package_version(capsys):
+    exit_code = main(["--version"])
+
+    captured = capsys.readouterr()
+    assert exit_code == 0
+    assert captured.out.strip() == "mcp-audit 0.1.0"
+
+
+def test_cli_version_outputs_package_version_from_console_args(monkeypatch, capsys):
+    monkeypatch.setattr("sys.argv", ["mcp-audit", "--version"])
+
+    exit_code = main()
+
+    captured = capsys.readouterr()
+    assert exit_code == 0
+    assert captured.out.strip() == "mcp-audit 0.1.0"
+
+
+def test_cli_without_command_returns_usage(capsys):
+    exit_code = main([])
+
+    captured = capsys.readouterr()
+    assert exit_code == 2
+    assert "usage: mcp-audit" in captured.err
+
+
 def test_cli_scan_discovers_default_mcp_json(tmp_path, monkeypatch, capsys):
     config = tmp_path / "mcp.json"
     config.write_text((FIXTURES / "high-risk-mcp.json").read_text(encoding="utf-8"), encoding="utf-8")

@@ -66,6 +66,7 @@
 - E2E-003: Run scan against safe config and verify no high-risk findings.
 - E2E-004: Run scan against invalid JSON and verify exit code 2 with actionable parse error.
 - E2E-005: Run `explain XONE001` and verify rule explanation and remediation.
+- E2E-006: Run `mcp-audit --version` or `python -m mcp_audit.cli --version` and verify version output.
 
 ## Contract Checks
 
@@ -100,6 +101,7 @@
   - errors when present
 - CLI exit codes:
   - `0` success without fail threshold
+  - `0` version output
   - `1` findings meet `--fail-on`
   - `2` user input or parse error
   - `3` unexpected internal error
@@ -148,11 +150,11 @@ Manual gates:
 
 ## Verification Report
 
-- Command: not run yet; no implementation exists.
-- Result: QA plan only.
+- Command: run the commands listed in `mcp-audit/docs/implementation-plan.md#verification` before release or completion claims.
+- Result: implementation exists; current verification evidence belongs in commit, PR, or release notes because command output changes over time.
 - Evidence:
   - Screenshot or recording: not applicable.
-  - Logs or test output: not available until implementation.
+  - Logs or test output: capture fresh output from the verification commands for each release candidate.
 - Residual risk:
   - static auditing is incomplete by nature
   - secret detection remains heuristic

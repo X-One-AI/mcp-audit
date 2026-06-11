@@ -58,6 +58,17 @@ mcp-audit scan --format json
 mcp-audit explain XONE001
 ```
 
+## Install
+
+From this repository:
+
+```bash
+python3 -m pip install -e .
+mcp-audit --version
+```
+
+If your Python environment cannot fetch build dependencies because of network or certificate restrictions, use the local development commands below until packaging dependencies are available.
+
 Without `--config`, `scan` checks only bounded default locations:
 
 ```text
@@ -75,6 +86,7 @@ From this directory:
 
 ```bash
 python3 -m pytest tests -q
+PYTHONPATH=src python3 -m mcp_audit.cli --version
 PYTHONPATH=src python3 -m mcp_audit.cli scan --config examples/high-risk-mcp.json --format markdown
 PYTHONPATH=src python3 -m mcp_audit.cli scan --config examples/high-risk-mcp.json --format json
 ```

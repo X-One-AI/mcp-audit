@@ -67,7 +67,7 @@ Build the first production-usable `mcp-audit` CLI that scans explicit JSON MCP /
 13. Implement scan orchestration in `app.py`.
 14. Implement CLI scan command with optional `--config`, bounded default discovery, `--format`, `--output`, and `--fail-on`.
 15. Implement `explain RULE_ID`.
-16. Add CLI integration tests for success, parse error, unknown rule, JSON output, Markdown output, and fail threshold.
+16. Add CLI integration tests for success, parse error, unknown rule, version output, JSON output, Markdown output, and fail threshold.
 17. Add rule coverage meta-test requiring positive and negative fixtures for every registered rule.
 18. Update `docs/rules.md` to match implemented rule IDs, severity, and remediation.
 19. Update `README.md` with a minimal install/run section after CLI behavior is verified.
@@ -153,9 +153,10 @@ Commands:
 cd mcp-audit
 python -m pytest tests -q
 python -m json.tool examples/high-risk-mcp.json
-python -m mcp_audit.cli scan --config examples/high-risk-mcp.json --format json
-python -m mcp_audit.cli scan --config examples/high-risk-mcp.json --format markdown
-python -m mcp_audit.cli explain XONE001
+PYTHONPATH=src python -m mcp_audit.cli --version
+PYTHONPATH=src python -m mcp_audit.cli scan --config examples/high-risk-mcp.json --format json
+PYTHONPATH=src python -m mcp_audit.cli scan --config examples/high-risk-mcp.json --format markdown
+PYTHONPATH=src python -m mcp_audit.cli explain XONE001
 ```
 
 Expected result:
