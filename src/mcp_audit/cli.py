@@ -10,6 +10,7 @@ from mcp_audit.app import scan_config, scan_default_configs
 from mcp_audit.baseline import filter_accepted_findings, load_baseline_fingerprints, render_baseline
 from mcp_audit.config_discovery import DEFAULT_CANDIDATES, discover_configs
 from mcp_audit.errors import ConfigNotFoundError, McpAuditError, ParseConfigError
+from mcp_audit.project_config import write_default_config, load_scan_config
 from mcp_audit.renderers.json_report import render_json_report
 from mcp_audit.renderers.markdown_report import render_markdown_report
 from mcp_audit.renderers.sarif_report import render_sarif_report
@@ -27,7 +28,7 @@ def build_parser() -> argparse.ArgumentParser:
     scan.add_argument("--config", help="config file to scan; defaults to bounded config discovery")
     scan.add_argument("--format", choices=("markdown", "json", "sarif"), default="markdown")
     scan.add_argument("--output", help="write report to file instead of stdout")
-    scan.add_argument("--fail-on", choices=("high", "medium", "low", "never"), default="never")
+    scan.add_argument("--fail-on", choices=("high", "medium", "low", "never"))
     scan.add_argument("--baseline", help="suppress findings accepted in a baseline file")
 
     baseline = subparsers.add_parser("baseline", help="write a baseline of currently accepted findings")
@@ -39,6 +40,7 @@ def build_parser() -> argparse.ArgumentParser:
 
     subparsers.add_parser("rules", help="list registered rules")
     subparsers.add_parser("doctor", help="show runtime and config discovery diagnostics")
+    subparsers.add_parser("init", help="write a project mcp-audit configuration file")
     return parser
 
 
@@ -119,11 +121,19 @@ def main(argv: list[str] | None = None) -> int:
         if args.command == "rules":
             return _list_rules()
 
+        if args.command == "init":
+            path = write_default_config()
+            print(f"Wrote {path}")
+            return 0
+
         if args.command == "scan":
+            project_config = load_scan_config()
+            baseline = args.baseline or project_config.baseline
+            fail_on = args.fail_on or project_config.fail_on
             report = scan_config(args.config) if args.config else scan_default_configs()
-            report = filter_accepted_findings(report, load_baseline_fingerprints(args.baseline))
+            report = filter_accepted_findings(report, load_baseline_fingerprints(baseline))
             _write_output(_render(report, args.format), args.output)
-            return 1 if _should_fail(report, args.fail_on) else 0
+            return 1 if _should_fail(report, fail_on) else 0
 
         if args.command == "baseline":
             report = scan_config(args.config)

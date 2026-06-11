@@ -56,6 +56,7 @@ The first version should do four things well:
 
 ```bash
 mcp-audit doctor
+mcp-audit init
 mcp-audit scan
 mcp-audit scan --config ./mcp.json
 mcp-audit scan --format markdown
@@ -90,6 +91,24 @@ mcp.json
 
 It does not recursively scan the repository.
 
+## Project Configuration
+
+Create a project configuration:
+
+```bash
+mcp-audit init
+```
+
+This writes `.mcp-audit.toml`:
+
+```toml
+[scan]
+fail_on = "high"
+baseline = ".mcp-audit-baseline.json"
+```
+
+Explicit CLI flags override project configuration.
+
 ## Local Development
 
 From this directory:
@@ -100,6 +119,7 @@ python3 -m pytest tests -q
 PYTHONPATH=src python3 -m mcp_audit.cli --version
 PYTHONPATH=src python3 -m mcp_audit --version
 PYTHONPATH=src python3 -m mcp_audit.cli doctor
+PYTHONPATH=src python3 -m mcp_audit.cli init
 PYTHONPATH=src python3 -m mcp_audit.cli scan --config examples/high-risk-mcp.json --format markdown
 PYTHONPATH=src python3 -m mcp_audit.cli scan --config examples/high-risk-mcp.json --format json
 PYTHONPATH=src python3 -m mcp_audit.cli scan --config examples/high-risk-mcp.json --format sarif

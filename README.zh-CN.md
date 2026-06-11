@@ -56,6 +56,7 @@ Agentic DevSecOps / Safe Agent Operations
 
 ```bash
 mcp-audit doctor
+mcp-audit init
 mcp-audit scan
 mcp-audit scan --config ./mcp.json
 mcp-audit scan --format markdown
@@ -90,6 +91,24 @@ mcp.json
 
 它不会递归扫描整个仓库。
 
+## 项目配置
+
+创建项目配置：
+
+```bash
+mcp-audit init
+```
+
+该命令会写入 `.mcp-audit.toml`：
+
+```toml
+[scan]
+fail_on = "high"
+baseline = ".mcp-audit-baseline.json"
+```
+
+显式 CLI 参数优先级高于项目配置。
+
 ## 本地开发
 
 在本目录运行：
@@ -100,6 +119,7 @@ python3 -m pytest tests -q
 PYTHONPATH=src python3 -m mcp_audit.cli --version
 PYTHONPATH=src python3 -m mcp_audit --version
 PYTHONPATH=src python3 -m mcp_audit.cli doctor
+PYTHONPATH=src python3 -m mcp_audit.cli init
 PYTHONPATH=src python3 -m mcp_audit.cli scan --config examples/high-risk-mcp.json --format markdown
 PYTHONPATH=src python3 -m mcp_audit.cli scan --config examples/high-risk-mcp.json --format json
 PYTHONPATH=src python3 -m mcp_audit.cli scan --config examples/high-risk-mcp.json --format sarif
