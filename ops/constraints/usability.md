@@ -27,7 +27,28 @@ Every user-facing feature must satisfy these standards:
 - output is readable without color
 - commands behave consistently across explicit and discovered config scans
 - docs show the shortest useful path first
+- public README files support at least English and Chinese when the project has external users
 ```
+
+## Documentation Language Rules
+
+Public user-facing README content must be available in at least:
+
+```text
+- English
+- Simplified Chinese
+```
+
+Required:
+
+```text
+- `README.md` remains the English entry point unless a project explicitly chooses another default.
+- `README.zh-CN.md` provides the Simplified Chinese version.
+- Each language version links to the other near the top.
+- Core usage commands, install commands, limitations, and CI guidance stay semantically aligned across languages.
+```
+
+When behavior changes, update every supported README language in the same write batch.
 
 ## CLI Experience Rules
 
