@@ -14,13 +14,13 @@ Rule IDs use the `XONE` prefix until the project has a stable public naming conv
 
 ## Implemented v0.1 Rules
 
-| Rule | Severity | Category | Finding |
+| Rule | Severity | Category | Title | Finding |
 |---|---|---|---|
-| XONE001 | high | Secret exposure | Config appears to contain a literal API key, token, or credential. |
-| XONE002 | high | Command execution | MCP server starts with shell, exec, eval, or equivalent unrestricted command execution. |
-| XONE003 | high | Supply chain | MCP server launches an unpinned remote package through npx, uvx, curl, or similar tooling. |
-| XONE004 | high | Filesystem | Filesystem access includes home, root, or broad workspace paths. |
-| XONE005 | medium | Network | Tool allows broad outbound network access without host allowlist or explanation. |
+| XONE001 | high | Secret exposure | Literal secret appears in configuration | Config appears to contain a literal API key, token, or credential. |
+| XONE002 | high | Command execution | Unsafe command execution path | MCP server starts with shell, exec, eval, or equivalent unrestricted command execution. |
+| XONE003 | high | Supply chain | Unpinned remote package execution | MCP server launches an unpinned remote package through npx, uvx, curl, or similar tooling. |
+| XONE004 | high | Filesystem | Broad filesystem access | Filesystem access includes home, root, or broad workspace paths. |
+| XONE005 | medium | Network | Broad network access | Tool allows broad outbound network access without host allowlist or explanation. |
 
 ## Reserved Future Rule Areas
 

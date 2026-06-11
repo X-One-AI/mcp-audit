@@ -1,4 +1,7 @@
 import json
+import os
+import subprocess
+import sys
 from pathlib import Path
 
 from mcp_audit.cli import main
@@ -43,6 +46,19 @@ def test_cli_version_outputs_package_version_from_console_args(monkeypatch, caps
     captured = capsys.readouterr()
     assert exit_code == 0
     assert captured.out.strip() == "mcp-audit 0.1.0"
+
+
+def test_package_module_entrypoint_outputs_version():
+    env = os.environ | {"PYTHONPATH": "src"}
+    result = subprocess.run(
+        [sys.executable, "-m", "mcp_audit", "--version"],
+        check=True,
+        env=env,
+        text=True,
+        stdout=subprocess.PIPE,
+    )
+
+    assert result.stdout.strip() == "mcp-audit 0.1.0"
 
 
 def test_cli_without_command_returns_usage(capsys):

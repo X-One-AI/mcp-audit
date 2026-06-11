@@ -91,6 +91,7 @@ From this directory:
 ```bash
 python3 -m pytest tests -q
 PYTHONPATH=src python3 -m mcp_audit.cli --version
+PYTHONPATH=src python3 -m mcp_audit --version
 PYTHONPATH=src python3 -m mcp_audit.cli doctor
 PYTHONPATH=src python3 -m mcp_audit.cli scan --config examples/high-risk-mcp.json --format markdown
 PYTHONPATH=src python3 -m mcp_audit.cli scan --config examples/high-risk-mcp.json --format json
