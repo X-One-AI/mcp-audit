@@ -2,7 +2,7 @@
 
 All notable changes to `mcp-audit` are recorded here.
 
-## 0.1.0 - Unreleased
+## 0.1.0 - 2026-06-12
 
 ### Added
 
