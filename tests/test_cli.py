@@ -16,6 +16,17 @@ def test_cli_scan_outputs_json_report(capsys):
     assert data["summary"]["findings_total"] >= 5
 
 
+def test_cli_scan_outputs_sarif_report(capsys):
+    exit_code = main(["scan", "--config", str(FIXTURES / "high-risk-mcp.json"), "--format", "sarif"])
+
+    captured = capsys.readouterr()
+    data = json.loads(captured.out)
+    assert exit_code == 0
+    assert data["version"] == "2.1.0"
+    assert data["runs"][0]["tool"]["driver"]["name"] == "mcp-audit"
+    assert data["runs"][0]["results"][0]["ruleId"].startswith("XONE")
+
+
 def test_cli_version_outputs_package_version(capsys):
     exit_code = main(["--version"])
 
@@ -40,6 +51,21 @@ def test_cli_without_command_returns_usage(capsys):
     captured = capsys.readouterr()
     assert exit_code == 2
     assert "usage: mcp-audit" in captured.err
+
+
+def test_cli_doctor_reports_runtime_and_discovery(tmp_path, monkeypatch, capsys):
+    config = tmp_path / ".mcp.json"
+    config.write_text((FIXTURES / "safe-mcp.json").read_text(encoding="utf-8"), encoding="utf-8")
+    monkeypatch.chdir(tmp_path)
+
+    exit_code = main(["doctor"])
+
+    captured = capsys.readouterr()
+    assert exit_code == 0
+    assert "mcp-audit 0.1.0" in captured.out
+    assert "Python:" in captured.out
+    assert ".mcp.json: found" in captured.out
+    assert "No network calls are required for scanning." in captured.out
 
 
 def test_cli_scan_discovers_default_mcp_json(tmp_path, monkeypatch, capsys):

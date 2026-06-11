@@ -17,6 +17,8 @@ def test_json_report_contains_stable_contract_keys():
     assert set(data) == {"schema_version", "tool", "summary", "files", "findings", "errors"}
     assert data["schema_version"] == "0.1"
     assert data["summary"]["findings_total"] >= 5
+    assert data["summary"]["highest_severity"] == "high"
+    assert data["summary"]["recommended_action"] == "Review high severity findings before allowing this configuration in production."
     finding = data["findings"][0]
     assert {
         "rule_id",
@@ -40,6 +42,8 @@ def test_markdown_report_contains_review_sections_and_redacts_secrets():
 
     assert "# mcp-audit Report" in markdown
     assert "## Summary" in markdown
+    assert "Highest severity: high" in markdown
+    assert "Recommended action:" in markdown
     assert "## Scanned Files" in markdown
     assert "## Findings" in markdown
     assert "## Limitations" in markdown

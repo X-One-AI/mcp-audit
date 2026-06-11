@@ -51,10 +51,13 @@ The first version should do four things well:
 ## Example CLI
 
 ```bash
+mcp-audit doctor
 mcp-audit scan
 mcp-audit scan --config ./mcp.json
 mcp-audit scan --format markdown
 mcp-audit scan --format json
+mcp-audit scan --format sarif --output mcp-audit.sarif
+mcp-audit scan --fail-on high
 mcp-audit explain XONE001
 ```
 
@@ -87,13 +90,23 @@ From this directory:
 ```bash
 python3 -m pytest tests -q
 PYTHONPATH=src python3 -m mcp_audit.cli --version
+PYTHONPATH=src python3 -m mcp_audit.cli doctor
 PYTHONPATH=src python3 -m mcp_audit.cli scan --config examples/high-risk-mcp.json --format markdown
 PYTHONPATH=src python3 -m mcp_audit.cli scan --config examples/high-risk-mcp.json --format json
+PYTHONPATH=src python3 -m mcp_audit.cli scan --config examples/high-risk-mcp.json --format sarif
 ```
 
 Use `scan` without `--config` only in a repository that contains one of the bounded default config paths.
 
 The CLI is local-first. It does not upload configs, send telemetry, or execute scanned commands.
+
+For CI, start with:
+
+```bash
+mcp-audit scan --config ./mcp.json --format sarif --output mcp-audit.sarif --fail-on high
+```
+
+Markdown is intended for human review. JSON and SARIF are intended for automation.
 
 ## Non-Goals
 

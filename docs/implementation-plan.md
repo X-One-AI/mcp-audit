@@ -62,8 +62,9 @@ Build the first production-usable `mcp-audit` CLI that scans explicit JSON MCP /
 8. Implement command and supply-chain rules for shell launch, `curl | sh`, and unpinned `npx` / `uvx` usage.
 9. Implement filesystem rule for broad home/root/workspace exposure and narrow-path negative cases.
 10. Implement network rule only for explicit broad network evidence in config; keep severity medium by default.
-11. Implement JSON renderer and contract tests for required top-level keys and finding keys.
-12. Implement Markdown renderer and contract tests for summary, finding sections, remediation, redacted evidence, and limitations.
+11. Implement JSON renderer and contract tests for required top-level keys, actionable summary fields, and finding keys.
+12. Implement Markdown renderer and contract tests for summary, recommended action, finding sections, remediation, redacted evidence, and limitations.
+12A. Implement SARIF renderer for CI and code scanning integrations.
 13. Implement scan orchestration in `app.py`.
 14. Implement CLI scan command with optional `--config`, bounded default discovery, `--format`, `--output`, and `--fail-on`.
 15. Implement `explain RULE_ID`.
@@ -154,8 +155,10 @@ cd mcp-audit
 python -m pytest tests -q
 python -m json.tool examples/high-risk-mcp.json
 PYTHONPATH=src python -m mcp_audit.cli --version
+PYTHONPATH=src python -m mcp_audit.cli doctor
 PYTHONPATH=src python -m mcp_audit.cli scan --config examples/high-risk-mcp.json --format json
 PYTHONPATH=src python -m mcp_audit.cli scan --config examples/high-risk-mcp.json --format markdown
+PYTHONPATH=src python -m mcp_audit.cli scan --config examples/high-risk-mcp.json --format sarif
 PYTHONPATH=src python -m mcp_audit.cli explain XONE001
 ```
 
@@ -165,6 +168,7 @@ Expected result:
 - tests pass
 - example JSON validates
 - JSON scan emits valid report with findings
+- SARIF scan emits valid SARIF 2.1.0 with rule results
 - Markdown scan emits readable report with redacted secrets
 - explain command returns rule rationale and remediation
 ```

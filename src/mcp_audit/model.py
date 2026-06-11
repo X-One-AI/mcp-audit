@@ -51,6 +51,8 @@ class ReportSummary:
     files_scanned: int
     findings_total: int
     findings_by_severity: dict[str, int]
+    highest_severity: Severity | None
+    recommended_action: str
 
 
 @dataclass(frozen=True)
@@ -74,8 +76,21 @@ class ScanReport:
         counts = {"high": 0, "medium": 0, "low": 0}
         for finding in self.findings:
             counts[finding.severity] += 1
+        highest_severity = None
+        recommended_action = "No findings detected. Review limitations before treating this as approval."
+        if counts["high"]:
+            highest_severity = "high"
+            recommended_action = "Review high severity findings before allowing this configuration in production."
+        elif counts["medium"]:
+            highest_severity = "medium"
+            recommended_action = "Review medium severity findings and document accepted risk."
+        elif counts["low"]:
+            highest_severity = "low"
+            recommended_action = "Review low severity findings during normal maintenance."
         return ReportSummary(
             files_scanned=len(self.files),
             findings_total=len(self.findings),
             findings_by_severity=counts,
+            highest_severity=highest_severity,
+            recommended_action=recommended_action,
         )

@@ -4,6 +4,8 @@
 
 - `mcp-audit scan --config mcp-audit/examples/high-risk-mcp.json --format markdown` produces a Markdown report with high-risk findings for secret exposure, unpinned remote package execution, broad filesystem access, and unsafe shell execution.
 - `mcp-audit scan --config mcp-audit/examples/high-risk-mcp.json --format json` produces valid JSON with stable keys for scanned files, findings, severities, rule IDs, evidence, and remediation.
+- `mcp-audit scan --config mcp-audit/examples/high-risk-mcp.json --format sarif` produces SARIF 2.1.0 that CI and code scanning tools can consume.
+- `mcp-audit doctor` explains runtime and bounded discovery state without scanning or making network calls.
 - Human-readable reports redact literal secret values while preserving useful evidence.
 - Every v0.1 rule has at least one positive fixture and one negative fixture.
 - JSON report contract tests fail on required key removal or rename.
@@ -31,6 +33,7 @@
 | REQ-009 | Detect broad URL/network-enabled tool when config evidence exists. | unit | Rule emits medium network finding. | `tests/test_rules_network.py` |
 | REQ-011 | Render Markdown report. | contract | Report includes title, summary, scanned files, rule ID, severity, why it matters, file path, evidence, remediation, and limitations. | `tests/test_markdown_report.py` |
 | REQ-012 | Render JSON report. | contract | JSON contains stable top-level keys and finding fields. | `tests/test_json_report.py` |
+| REQ-012A | Render SARIF report. | contract | SARIF contains tool metadata and one result per finding. | `tests/test_cli.py` |
 | REQ-014 | Explain known rule. | integration | `mcp-audit explain XONE001` returns description and remediation. | `tests/test_cli.py` |
 | REQ-015 | Redact secret in Markdown. | unit / contract | Raw literal token is absent from Markdown output. | `tests/test_redaction.py` |
 | REQ-016 | Preserve useful redacted evidence. | unit / contract | Redacted output includes config path and masked token family. | `tests/test_redaction.py` |
@@ -63,6 +66,7 @@
 
 - E2E-001: Run Markdown scan against high-risk config and verify expected high-risk findings and redaction.
 - E2E-002: Run JSON scan against high-risk config and validate JSON contract.
+- E2E-002A: Run SARIF scan against high-risk config and validate SARIF version, tool metadata, and rule IDs.
 - E2E-003: Run scan against safe config and verify no high-risk findings.
 - E2E-004: Run scan against invalid JSON and verify exit code 2 with actionable parse error.
 - E2E-005: Run `explain XONE001` and verify rule explanation and remediation.
@@ -111,6 +115,11 @@
   - findings include remediation
   - output avoids raw secret values
   - output avoids security guarantees
+- SARIF report checks:
+  - `version` is `2.1.0`
+  - tool driver name and version are present
+  - result rule IDs map to registered XONE rules
+  - evidence remains redacted
 
 ## Regression Scope
 

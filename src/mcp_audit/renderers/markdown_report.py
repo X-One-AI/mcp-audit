@@ -14,6 +14,8 @@ def render_markdown_report(report: ScanReport) -> str:
         f"- High: {report.summary.findings_by_severity['high']}",
         f"- Medium: {report.summary.findings_by_severity['medium']}",
         f"- Low: {report.summary.findings_by_severity['low']}",
+        f"- Highest severity: {report.summary.highest_severity or 'none'}",
+        f"- Recommended action: {report.summary.recommended_action}",
         "",
         "## Scanned Files",
         "",
