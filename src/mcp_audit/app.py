@@ -5,7 +5,7 @@ from pathlib import Path
 from mcp_audit.config_discovery import discover_configs, resolve_config
 from mcp_audit.errors import NoConfigDiscoveredError
 from mcp_audit.model import ConfigDocument, ScannedFile, ScanReport
-from mcp_audit.parsers.json_parser import parse_json_config
+from mcp_audit.parsers.loader import parse_config
 from mcp_audit.rules.registry import get_rules
 
 
@@ -19,7 +19,7 @@ def _display_path(path: Path) -> Path:
 def _scan_one(path: str | Path):
     file_path = resolve_config(path)
     display_path = _display_path(file_path)
-    document = parse_json_config(file_path)
+    document = parse_config(file_path)
     document = ConfigDocument(path=display_path, parser=document.parser, data=document.data)
     findings = []
     for rule in get_rules():

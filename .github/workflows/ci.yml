@@ -39,6 +39,8 @@ jobs:
           mcp-audit rules
           mcp-audit scan --config examples/high-risk-mcp.json --format json --output /tmp/mcp-audit.json
           mcp-audit scan --config examples/high-risk-mcp.json --format sarif --output /tmp/mcp-audit.sarif
+          mcp-audit scan --config tests/fixtures/high-risk-agent.yaml --format json --output /tmp/mcp-audit-yaml.json
+          mcp-audit scan --config tests/fixtures/high-risk-agent.toml --format json --output /tmp/mcp-audit-toml.json
           mcp-audit baseline --config examples/high-risk-mcp.json --output /tmp/mcp-audit-baseline.json
           mcp-audit scan --config examples/high-risk-mcp.json --baseline /tmp/mcp-audit-baseline.json --format json --output /tmp/mcp-audit-baselined.json
           tmpdir="$(mktemp -d)"
@@ -46,6 +48,8 @@ jobs:
           (cd "$tmpdir" && mcp-audit init && mcp-audit doctor | grep 'Project config: found' && mcp-audit baseline --config mcp.json --output .mcp-audit-baseline.json && mcp-audit scan --format json --output report.json)
           python -m json.tool /tmp/mcp-audit.json >/dev/null
           python -m json.tool /tmp/mcp-audit.sarif >/dev/null
+          python -m json.tool /tmp/mcp-audit-yaml.json >/dev/null
+          python -m json.tool /tmp/mcp-audit-toml.json >/dev/null
           python -m json.tool /tmp/mcp-audit-baseline.json >/dev/null
           python -m json.tool /tmp/mcp-audit-baselined.json >/dev/null
           python -m json.tool "$tmpdir/report.json" >/dev/null

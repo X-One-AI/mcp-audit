@@ -7,8 +7,16 @@ from mcp_audit.errors import ConfigNotFoundError
 DEFAULT_CANDIDATES = (
     "mcp.json",
     ".mcp.json",
+    "mcp.yaml",
+    "mcp.yml",
+    "agent.yaml",
+    "agent.yml",
+    "agent.toml",
     ".cursor/mcp.json",
     ".vscode/mcp.json",
+    ".claude/mcp.json",
+    ".continue/config.json",
+    ".continue/config.yaml",
 )
 
 

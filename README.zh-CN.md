@@ -59,6 +59,8 @@ mcp-audit doctor
 mcp-audit init
 mcp-audit scan
 mcp-audit scan --config ./mcp.json
+mcp-audit scan --config ./agent.yaml
+mcp-audit scan --config ./agent.toml
 mcp-audit scan --format markdown
 mcp-audit scan --format json
 mcp-audit scan --format sarif --output mcp-audit.sarif
@@ -86,11 +88,19 @@ mcp-audit --version
 ```text
 mcp.json
 .mcp.json
+mcp.yaml
+mcp.yml
+agent.yaml
+agent.yml
+agent.toml
 .cursor/mcp.json
 .vscode/mcp.json
+.claude/mcp.json
+.continue/config.json
+.continue/config.yaml
 ```
 
-它不会递归扫描整个仓库。
+它不会递归扫描整个仓库。显式 `--config` 支持 JSON、YAML 和 TOML object 配置。
 
 ## 项目配置
 

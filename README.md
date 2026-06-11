@@ -59,6 +59,8 @@ mcp-audit doctor
 mcp-audit init
 mcp-audit scan
 mcp-audit scan --config ./mcp.json
+mcp-audit scan --config ./agent.yaml
+mcp-audit scan --config ./agent.toml
 mcp-audit scan --format markdown
 mcp-audit scan --format json
 mcp-audit scan --format sarif --output mcp-audit.sarif
@@ -86,11 +88,19 @@ Without `--config`, `scan` checks only bounded default locations:
 ```text
 mcp.json
 .mcp.json
+mcp.yaml
+mcp.yml
+agent.yaml
+agent.yml
+agent.toml
 .cursor/mcp.json
 .vscode/mcp.json
+.claude/mcp.json
+.continue/config.json
+.continue/config.yaml
 ```
 
-It does not recursively scan the repository.
+It does not recursively scan the repository. Explicit `--config` supports JSON, YAML, and TOML object configs.
 
 ## Project Configuration
 
