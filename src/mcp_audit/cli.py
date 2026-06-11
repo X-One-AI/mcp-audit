@@ -15,7 +15,7 @@ from mcp_audit.baseline import (
 )
 from mcp_audit.config_discovery import DEFAULT_CANDIDATES, discover_configs
 from mcp_audit.errors import ConfigNotFoundError, McpAuditError, ParseConfigError
-from mcp_audit.project_config import write_default_config, load_scan_config
+from mcp_audit.project_config import CONFIG_FILE, load_scan_config, write_default_config
 from mcp_audit.renderers.json_report import render_json_report
 from mcp_audit.renderers.markdown_report import render_markdown_report
 from mcp_audit.renderers.sarif_report import render_sarif_report
@@ -75,10 +75,15 @@ def _write_output(text: str, output: str | None) -> None:
 
 def _run_doctor() -> int:
     found = {str(path) for path in discover_configs()}
+    project_config = load_scan_config()
+    config_status = f"found ({CONFIG_FILE})" if Path(CONFIG_FILE).exists() else "missing"
     lines = [
         f"mcp-audit {__version__}",
         f"Python: {platform.python_version()}",
         f"Platform: {platform.platform()}",
+        f"Project config: {config_status}",
+        f"Effective fail-on: {project_config.fail_on}",
+        f"Effective baseline: {project_config.baseline or 'none'}",
         "",
         "Default config discovery:",
     ]

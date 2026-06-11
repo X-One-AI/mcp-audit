@@ -109,6 +109,7 @@ baseline = ".mcp-audit-baseline.json"
 ```
 
 Explicit CLI flags override project configuration.
+Use `mcp-audit doctor` to inspect whether the config file is detected and which scan defaults are effective.
 
 ## Local Development
 

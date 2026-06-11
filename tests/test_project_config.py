@@ -48,3 +48,19 @@ def test_cli_explicit_fail_on_overrides_project_config(tmp_path, monkeypatch):
     exit_code = main(["scan", "--fail-on", "high"])
 
     assert exit_code == 1
+
+
+def test_cli_doctor_reports_project_config(tmp_path, monkeypatch, capsys):
+    (tmp_path / ".mcp-audit.toml").write_text(
+        '[scan]\nfail_on = "medium"\nbaseline = ".mcp-audit-baseline.json"\n',
+        encoding="utf-8",
+    )
+    monkeypatch.chdir(tmp_path)
+
+    exit_code = main(["doctor"])
+
+    captured = capsys.readouterr()
+    assert exit_code == 0
+    assert "Project config: found (.mcp-audit.toml)" in captured.out
+    assert "Effective fail-on: medium" in captured.out
+    assert "Effective baseline: .mcp-audit-baseline.json" in captured.out

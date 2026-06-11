@@ -30,6 +30,7 @@ python -m json.tool /tmp/mcp-audit-baseline-pruned.json >/dev/null
 - Baseline docs say baseline means risk acceptance, not safety proof.
 - Reports show suppressed finding count when baseline is used.
 - Baseline prune removes stale accepted findings.
+- Doctor shows project configuration status and effective scan defaults.
 - No report or baseline exposes raw secret fixture values.
 
 ## Tagging

@@ -109,6 +109,7 @@ baseline = ".mcp-audit-baseline.json"
 ```
 
 显式 CLI 参数优先级高于项目配置。
+可以用 `mcp-audit doctor` 检查配置文件是否被识别，以及当前生效的 scan 默认值。
 
 ## 本地开发
 
