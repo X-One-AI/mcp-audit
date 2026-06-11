@@ -87,3 +87,40 @@ def test_cli_scan_with_baseline_reports_suppressed_count_in_sarif(tmp_path, caps
     data = json.loads(captured.out)
     assert exit_code == 0
     assert data["runs"][0]["properties"]["suppressedFindingsTotal"] >= 5
+
+
+def test_cli_baseline_prune_removes_stale_fingerprints(tmp_path):
+    baseline = tmp_path / "mcp-audit-baseline.json"
+    pruned = tmp_path / "mcp-audit-baseline-pruned.json"
+    assert main(["baseline", "--config", str(FIXTURES / "high-risk-mcp.json"), "--output", str(baseline)]) == 0
+    data = json.loads(baseline.read_text(encoding="utf-8"))
+    data["accepted_findings"].append(
+        {
+            "fingerprint": "stale-fingerprint",
+            "rule_id": "XONE999",
+            "severity": "low",
+            "file_path": "missing.json",
+            "config_path": "$.missing",
+            "title": "Stale accepted finding",
+        }
+    )
+    baseline.write_text(json.dumps(data), encoding="utf-8")
+
+    exit_code = main(
+        [
+            "baseline",
+            "--config",
+            str(FIXTURES / "high-risk-mcp.json"),
+            "--baseline",
+            str(baseline),
+            "--prune",
+            "--output",
+            str(pruned),
+        ]
+    )
+
+    pruned_data = json.loads(pruned.read_text(encoding="utf-8"))
+    fingerprints = {item["fingerprint"] for item in pruned_data["accepted_findings"]}
+    assert exit_code == 0
+    assert "stale-fingerprint" not in fingerprints
+    assert fingerprints

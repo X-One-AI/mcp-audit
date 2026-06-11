@@ -28,6 +28,18 @@ def render_baseline(report: ScanReport) -> str:
     return json.dumps(payload, indent=2, sort_keys=False) + "\n"
 
 
+def prune_baseline(report: ScanReport, baseline_path: str | Path) -> str:
+    data = json.loads(Path(baseline_path).read_text(encoding="utf-8"))
+    current_fingerprints = {finding.fingerprint for finding in report.findings}
+    accepted = data.get("accepted_findings", [])
+    data["accepted_findings"] = [
+        item
+        for item in accepted
+        if isinstance(item, dict) and item.get("fingerprint") in current_fingerprints
+    ]
+    return json.dumps(data, indent=2, sort_keys=False) + "\n"
+
+
 def load_baseline_fingerprints(path: str | Path | None) -> set[str]:
     if path is None:
         return set()

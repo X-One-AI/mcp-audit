@@ -13,10 +13,12 @@ mcp-audit scan --config examples/high-risk-mcp.json --format json --output /tmp/
 mcp-audit scan --config examples/high-risk-mcp.json --format sarif --output /tmp/mcp-audit.sarif
 mcp-audit baseline --config examples/high-risk-mcp.json --output /tmp/mcp-audit-baseline.json
 mcp-audit scan --config examples/high-risk-mcp.json --baseline /tmp/mcp-audit-baseline.json --format json --output /tmp/mcp-audit-baselined.json
+mcp-audit baseline --config examples/high-risk-mcp.json --baseline /tmp/mcp-audit-baseline.json --prune --output /tmp/mcp-audit-baseline-pruned.json
 python -m json.tool /tmp/mcp-audit.json >/dev/null
 python -m json.tool /tmp/mcp-audit.sarif >/dev/null
 python -m json.tool /tmp/mcp-audit-baseline.json >/dev/null
 python -m json.tool /tmp/mcp-audit-baselined.json >/dev/null
+python -m json.tool /tmp/mcp-audit-baseline-pruned.json >/dev/null
 ```
 
 ## Release Gates
@@ -27,6 +29,7 @@ python -m json.tool /tmp/mcp-audit-baselined.json >/dev/null
 - `docs/rules.md` mentions every registered rule.
 - Baseline docs say baseline means risk acceptance, not safety proof.
 - Reports show suppressed finding count when baseline is used.
+- Baseline prune removes stale accepted findings.
 - No report or baseline exposes raw secret fixture values.
 
 ## Tagging

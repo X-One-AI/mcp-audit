@@ -7,7 +7,12 @@ from pathlib import Path
 
 from mcp_audit import __version__
 from mcp_audit.app import scan_config, scan_default_configs
-from mcp_audit.baseline import filter_accepted_findings, load_baseline_fingerprints, render_baseline
+from mcp_audit.baseline import (
+    filter_accepted_findings,
+    load_baseline_fingerprints,
+    prune_baseline,
+    render_baseline,
+)
 from mcp_audit.config_discovery import DEFAULT_CANDIDATES, discover_configs
 from mcp_audit.errors import ConfigNotFoundError, McpAuditError, ParseConfigError
 from mcp_audit.project_config import write_default_config, load_scan_config
@@ -34,6 +39,8 @@ def build_parser() -> argparse.ArgumentParser:
     baseline = subparsers.add_parser("baseline", help="write a baseline of currently accepted findings")
     baseline.add_argument("--config", required=True, help="config file to scan for baseline creation")
     baseline.add_argument("--output", required=True, help="baseline JSON file to write")
+    baseline.add_argument("--baseline", help="existing baseline file to maintain")
+    baseline.add_argument("--prune", action="store_true", help="remove accepted findings that no longer appear")
 
     explain = subparsers.add_parser("explain", help="explain a rule")
     explain.add_argument("rule_id")
@@ -137,6 +144,12 @@ def main(argv: list[str] | None = None) -> int:
 
         if args.command == "baseline":
             report = scan_config(args.config)
+            if args.prune:
+                if not args.baseline:
+                    print("--baseline is required when using --prune", file=sys.stderr)
+                    return 2
+                _write_output(prune_baseline(report, args.baseline), args.output)
+                return 0
             _write_output(render_baseline(report), args.output)
             return 0
 

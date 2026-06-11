@@ -65,6 +65,7 @@ mcp-audit scan --format sarif --output mcp-audit.sarif
 mcp-audit scan --fail-on high
 mcp-audit baseline --config ./mcp.json --output .mcp-audit-baseline.json
 mcp-audit scan --config ./mcp.json --baseline .mcp-audit-baseline.json --fail-on high
+mcp-audit baseline --config ./mcp.json --baseline .mcp-audit-baseline.json --prune --output .mcp-audit-baseline.json
 mcp-audit rules
 mcp-audit explain XONE001
 ```
@@ -145,6 +146,11 @@ mcp-audit scan --config ./mcp.json --baseline .mcp-audit-baseline.json --fail-on
 
 baseline 更新应当进入代码审查。baseline 是风险接受记录，不代表 finding 本身安全。
 当 baseline 抑制 findings 时，报告 summary 仍会显示被抑制的 finding 数量。
+如果要移除当前扫描中已经不存在的 accepted findings，可以 prune baseline：
+
+```bash
+mcp-audit baseline --config ./mcp.json --baseline .mcp-audit-baseline.json --prune --output .mcp-audit-baseline.json
+```
 
 Markdown 面向人工审查。JSON 和 SARIF 面向自动化。
 
