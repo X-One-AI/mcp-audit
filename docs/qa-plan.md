@@ -1,0 +1,148 @@
+# mcp-audit QA Plan
+
+## Acceptance Criteria Under Test
+
+- `mcp-audit scan --config mcp-audit/examples/high-risk-mcp.json --format markdown` produces a Markdown report with high-risk findings for secret exposure, unpinned remote package execution, broad filesystem access, and unsafe shell execution.
+- `mcp-audit scan --config mcp-audit/examples/high-risk-mcp.json --format json` produces valid JSON with stable keys for scanned files, findings, severities, rule IDs, evidence, and remediation.
+- Human-readable reports redact literal secret values while preserving useful evidence.
+- Every v0.1 rule has at least one positive fixture and one negative fixture.
+- JSON report contract tests fail on required key removal or rename.
+- Markdown report tests fail when rule ID, severity, evidence, remediation, or limitations are missing.
+- CLI exits non-zero on parse errors and reports the file path and parse reason.
+- CLI does not make network calls during scan.
+- `mcp-audit/README.md` remains concise and routes deeper context to `mcp-audit/ops/README.md`.
+- OPT source files outside this repository remain unmodified.
+
+## Test Matrix
+
+| Requirement ID | Scenario | Level | Expected result | Evidence |
+| --- | --- | --- | --- | --- |
+| REQ-001 | Scan explicit JSON config file. | integration | CLI reads provided file and returns report. | `tests/test_cli.py` |
+| REQ-002 | Discover supported config files from bounded paths. | integration | CLI checks only documented candidate paths. | `tests/test_config_discovery.py` |
+| REQ-003 | Parse valid JSON config. | unit | Parser returns normalized config document. | `tests/test_json_parser.py` |
+| REQ-003 | Parse invalid JSON config. | unit | Parser returns structured parse error with file path and reason. | `tests/test_json_parser.py` |
+| REQ-005 | Detect literal GitHub-token-like value. | unit | Rule emits `XONE001` high severity finding. | `tests/test_rules_secrets.py` |
+| REQ-005 | Ignore safe environment variable reference. | unit | Rule does not flag `${GITHUB_TOKEN}` or equivalent reference as literal secret. | `tests/test_rules_secrets.py` |
+| REQ-006 | Detect bash or sh shell launch. | unit | Rule emits high severity command finding. | `tests/test_rules_commands.py` |
+| REQ-007 | Detect unpinned `npx -y package` launch. | unit | Rule emits supply-chain finding. | `tests/test_rules_commands.py` |
+| REQ-008 | Detect broad `/Users/example` filesystem path. | unit | Rule emits filesystem finding. | `tests/test_rules_filesystem.py` |
+| REQ-008 | Allow narrow project-relative path. | unit | Rule does not emit broad filesystem finding. | `tests/test_rules_filesystem.py` |
+| REQ-009 | Detect broad URL/network-enabled tool when config evidence exists. | unit | Rule emits medium network finding. | `tests/test_rules_network.py` |
+| REQ-011 | Render Markdown report. | contract | Report includes title, summary, rule ID, severity, file path, evidence, remediation, and limitations. | `tests/test_markdown_report.py` |
+| REQ-012 | Render JSON report. | contract | JSON contains stable top-level keys and finding fields. | `tests/test_json_report.py` |
+| REQ-014 | Explain known rule. | integration | `mcp-audit explain XONE001` returns description and remediation. | `tests/test_cli.py` |
+| REQ-015 | Redact secret in Markdown. | unit / contract | Raw literal token is absent from Markdown output. | `tests/test_redaction.py` |
+| REQ-016 | Preserve useful redacted evidence. | unit / contract | Redacted output includes config path and masked token family. | `tests/test_redaction.py` |
+| REQ-018 | Every rule has positive and negative fixtures. | meta-test | Test fails if any registered rule lacks fixture coverage. | `tests/test_rule_coverage.py` |
+| REQ-019 | Report contracts are stable. | contract | Tests fail on required key or section removal. | `tests/test_json_report.py`, `tests/test_markdown_report.py` |
+| REQ-020 | README stays concise. | docs | README links to operating model and avoids internal OPT details. | docs review |
+| REQ-022 | OPT source remains unmodified. | manual / command | No changes under external OPT path. | `find` or VCS status outside repo |
+| REQ-024 | No hidden network calls. | unit / code review | Scan path uses no networking libraries or subprocess network calls. | code review, dependency audit |
+| REQ-025 | Security wording avoids overclaims. | docs / report | Docs and report output use risk-review language only. | docs review |
+
+## Test Data And Environment
+
+- Data:
+  - `mcp-audit/examples/high-risk-mcp.json`
+  - positive fixtures for secret, command, supply-chain, filesystem, and network rules
+  - negative fixtures for safe env references, pinned commands, narrow paths, and benign configs
+  - invalid JSON fixture for parse error handling
+- Environment:
+  - Python 3.11+
+  - macOS and Linux for v0.1 validation
+  - no network dependency during tests
+- Fixtures or accounts:
+  - no real credentials
+  - fake token-like strings only
+  - no external accounts required
+
+## E2E Paths
+
+- E2E-001: Run Markdown scan against high-risk config and verify expected high-risk findings and redaction.
+- E2E-002: Run JSON scan against high-risk config and validate JSON contract.
+- E2E-003: Run scan against safe config and verify no high-risk findings.
+- E2E-004: Run scan against invalid JSON and verify exit code 2 with actionable parse error.
+- E2E-005: Run `explain XONE001` and verify rule explanation and remediation.
+
+## Contract Checks
+
+- JSON report schema:
+  - `schema_version`
+  - `tool`
+  - `summary`
+  - `files`
+  - `findings`
+  - `errors`
+- Finding schema:
+  - `rule_id`
+  - `title`
+  - `severity`
+  - `category`
+  - `file_path`
+  - `config_path`
+  - `evidence`
+  - `redacted_evidence`
+  - `remediation`
+  - `confidence`
+- Markdown report sections:
+  - title
+  - summary
+  - findings
+  - redacted evidence
+  - remediation
+  - limitations
+  - errors when present
+- CLI exit codes:
+  - `0` success without fail threshold
+  - `1` findings meet `--fail-on`
+  - `2` user input or parse error
+  - `3` unexpected internal error
+
+## Regression Scope
+
+- Stable rule IDs must not be renamed without migration notes.
+- JSON report required keys must not be removed without schema version change.
+- Markdown output must not expose raw secret-like values.
+- Default scan behavior must remain local-first and non-networked.
+- Default `--fail-on` must remain `never` for v0.1 unless Product and Security approve a change.
+- README must stay focused on user onboarding and avoid internal process sprawl.
+
+## CI And Blocking Checks
+
+Before a release or completion claim:
+
+```bash
+python -m pytest mcp-audit/tests -q
+python -m json.tool mcp-audit/examples/high-risk-mcp.json
+```
+
+Manual gates:
+
+```text
+- Security wording review for README, CLI messages, and reports
+- Fixture coverage review for each registered rule
+- No-network code review for scan path
+- OPT source untouched check
+```
+
+## Not Tested
+
+- Windows path behavior: not tested in v0.1 unless Windows fixture and environment are added.
+- YAML configs: not tested until YAML support is included.
+- Runtime MCP server behavior: out of scope for static audit v0.1.
+- Runtime sandboxing or enforcement: out of scope for v0.1.
+- Hosted service behavior: out of scope.
+- Full CI workflow safety: limited to future scope unless explicitly added after CLI MVP.
+
+## Verification Report
+
+- Command: not run yet; no implementation exists.
+- Result: QA plan only.
+- Evidence:
+  - Screenshot or recording: not applicable.
+  - Logs or test output: not available until implementation.
+- Residual risk:
+  - static auditing is incomplete by nature
+  - secret detection remains heuristic
+  - false positives require fixture-driven tuning
+  - unsupported MCP/client config formats may limit early usefulness
