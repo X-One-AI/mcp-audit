@@ -22,6 +22,13 @@ def test_high_risk_config_emits_expected_rule_ids():
     assert {"XONE001", "XONE002", "XONE003", "XONE004", "XONE005"} <= rule_ids
 
 
+def test_real_world_config_emits_environment_and_container_rule_ids():
+    findings = _findings_for("high-risk-real-world.json")
+    rule_ids = {finding.rule_id for finding in findings}
+
+    assert {"XONE006", "XONE007"} <= rule_ids
+
+
 def test_safe_config_does_not_emit_high_severity_findings():
     findings = _findings_for("safe-mcp.json")
 

@@ -21,6 +21,8 @@ Rule IDs use the `XONE` prefix until the project has a stable public naming conv
 | XONE003 | high | Supply chain | Unpinned remote package execution | MCP server launches an unpinned remote package through npx, uvx, curl, or similar tooling. |
 | XONE004 | high | Filesystem | Broad filesystem access | Filesystem access includes home, root, or broad workspace paths. |
 | XONE005 | medium | Network | Broad network access | Tool allows broad outbound network access without host allowlist or explanation. |
+| XONE006 | high | Secret exposure | Broad environment exposure | Tool receives the full process environment instead of explicit variables. |
+| XONE007 | high | Command execution | Dangerous container option | Container launch uses privileged, host namespace, or host-root mount options. |
 
 ## Reserved Future Rule Areas
 

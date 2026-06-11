@@ -13,6 +13,8 @@ All notable changes to `mcp-audit` are recorded here.
 - Stable finding fingerprints.
 - Baseline creation and suppression for reviewed accepted findings.
 - Project configuration with `.mcp-audit.toml` and `mcp-audit init`.
+- YAML and TOML config scanning.
+- Additional high-signal rules for broad environment exposure and dangerous container options.
 - English and Simplified Chinese README files.
 - GitHub Actions CI for install, tests, and CLI smoke checks.
 

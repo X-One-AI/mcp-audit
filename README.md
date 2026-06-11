@@ -49,6 +49,8 @@ The first version should do four things well:
 - Unpinned remote package execution
 - Excessive filesystem access
 - Unrestricted network access
+- Broad environment exposure
+- Dangerous container options
 - CI and PR safety gaps
 ```
 

@@ -49,6 +49,8 @@ Agentic DevSecOps / Safe Agent Operations
 - 未固定版本的远程包执行
 - 过宽的文件系统访问
 - 不受限制的网络访问
+- 过宽的环境变量暴露
+- 危险容器启动参数
 - CI 和 PR 安全缺口
 ```
 

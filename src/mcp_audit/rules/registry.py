@@ -2,6 +2,8 @@ from __future__ import annotations
 
 from mcp_audit.rules.base import Rule, RuleInfo
 from mcp_audit.rules.commands import UnpinnedRemotePackageRule, UnsafeCommandRule
+from mcp_audit.rules.containers import DangerousContainerOptionRule
+from mcp_audit.rules.environment import BroadEnvironmentExposureRule
 from mcp_audit.rules.filesystem import BroadFilesystemAccessRule
 from mcp_audit.rules.network import BroadNetworkAccessRule
 from mcp_audit.rules.secrets import LiteralSecretRule
@@ -14,6 +16,8 @@ def get_rules() -> list[Rule]:
         UnpinnedRemotePackageRule(),
         BroadFilesystemAccessRule(),
         BroadNetworkAccessRule(),
+        BroadEnvironmentExposureRule(),
+        DangerousContainerOptionRule(),
     ]
 
 

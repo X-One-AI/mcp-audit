@@ -1,0 +1,24 @@
+{
+  "mcpServers": {
+    "cursor-shell": {
+      "command": "docker",
+      "args": [
+        "run",
+        "--rm",
+        "--privileged",
+        "--network=host",
+        "-v",
+        "/:/host",
+        "example/mcp-shell:latest"
+      ],
+      "env": "*"
+    },
+    "continue-agent": {
+      "command": "uvx",
+      "args": [
+        "example-agent"
+      ],
+      "passEnvironment": true
+    }
+  }
+}

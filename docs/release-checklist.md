@@ -13,6 +13,7 @@ mcp-audit scan --config examples/high-risk-mcp.json --format json --output /tmp/
 mcp-audit scan --config examples/high-risk-mcp.json --format sarif --output /tmp/mcp-audit.sarif
 mcp-audit scan --config tests/fixtures/high-risk-agent.yaml --format json --output /tmp/mcp-audit-yaml.json
 mcp-audit scan --config tests/fixtures/high-risk-agent.toml --format json --output /tmp/mcp-audit-toml.json
+mcp-audit scan --config tests/fixtures/high-risk-real-world.json --format json --output /tmp/mcp-audit-real-world.json
 mcp-audit baseline --config examples/high-risk-mcp.json --output /tmp/mcp-audit-baseline.json
 mcp-audit scan --config examples/high-risk-mcp.json --baseline /tmp/mcp-audit-baseline.json --format json --output /tmp/mcp-audit-baselined.json
 mcp-audit baseline --config examples/high-risk-mcp.json --baseline /tmp/mcp-audit-baseline.json --prune --output /tmp/mcp-audit-baseline-pruned.json
@@ -23,6 +24,7 @@ python -m json.tool /tmp/mcp-audit-baselined.json >/dev/null
 python -m json.tool /tmp/mcp-audit-baseline-pruned.json >/dev/null
 python -m json.tool /tmp/mcp-audit-yaml.json >/dev/null
 python -m json.tool /tmp/mcp-audit-toml.json >/dev/null
+python -m json.tool /tmp/mcp-audit-real-world.json >/dev/null
 ```
 
 ## Release Gates
@@ -36,6 +38,7 @@ python -m json.tool /tmp/mcp-audit-toml.json >/dev/null
 - Baseline prune removes stale accepted findings.
 - Doctor shows project configuration status and effective scan defaults.
 - JSON, YAML, and TOML config smoke checks pass.
+- Real-world shaped fixture smoke check passes.
 - No report or baseline exposes raw secret fixture values.
 
 ## Tagging
