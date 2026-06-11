@@ -67,6 +67,7 @@ Build the first production-usable `mcp-audit` CLI that scans explicit JSON MCP /
 12A. Implement SARIF renderer for CI and code scanning integrations.
 13. Implement scan orchestration in `app.py`.
 14. Implement CLI scan command with optional `--config`, bounded default discovery, `--format`, `--output`, and `--fail-on`.
+14A. Implement stable finding fingerprints and baseline suppression for accepted findings.
 15. Implement `explain RULE_ID`.
 16. Add CLI integration tests for success, parse error, unknown rule, version output, JSON output, Markdown output, and fail threshold.
 17. Add rule coverage meta-test requiring positive and negative fixtures for every registered rule.
@@ -159,6 +160,8 @@ PYTHONPATH=src python -m mcp_audit.cli doctor
 PYTHONPATH=src python -m mcp_audit.cli scan --config examples/high-risk-mcp.json --format json
 PYTHONPATH=src python -m mcp_audit.cli scan --config examples/high-risk-mcp.json --format markdown
 PYTHONPATH=src python -m mcp_audit.cli scan --config examples/high-risk-mcp.json --format sarif
+PYTHONPATH=src python -m mcp_audit.cli baseline --config examples/high-risk-mcp.json --output /tmp/mcp-audit-baseline.json
+PYTHONPATH=src python -m mcp_audit.cli scan --config examples/high-risk-mcp.json --baseline /tmp/mcp-audit-baseline.json --format json
 PYTHONPATH=src python -m mcp_audit.cli explain XONE001
 ```
 

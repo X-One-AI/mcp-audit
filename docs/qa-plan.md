@@ -6,6 +6,8 @@
 - `mcp-audit scan --config mcp-audit/examples/high-risk-mcp.json --format json` produces valid JSON with stable keys for scanned files, findings, severities, rule IDs, evidence, and remediation.
 - `mcp-audit scan --config mcp-audit/examples/high-risk-mcp.json --format sarif` produces SARIF 2.1.0 that CI and code scanning tools can consume.
 - `mcp-audit doctor` explains runtime and bounded discovery state without scanning or making network calls.
+- `mcp-audit baseline --config ... --output ...` writes stable finding fingerprints for reviewed accepted findings.
+- `mcp-audit scan --baseline ...` suppresses only matching accepted fingerprints and still fails on new high findings when `--fail-on high` is used.
 - Human-readable reports redact literal secret values while preserving useful evidence.
 - Every v0.1 rule has at least one positive fixture and one negative fixture.
 - JSON report contract tests fail on required key removal or rename.
@@ -35,6 +37,7 @@
 | REQ-012 | Render JSON report. | contract | JSON contains stable top-level keys and finding fields. | `tests/test_json_report.py` |
 | REQ-012A | Render SARIF report. | contract | SARIF contains tool metadata and one result per finding. | `tests/test_cli.py` |
 | REQ-014 | Explain known rule. | integration | `mcp-audit explain XONE001` returns description and remediation. | `tests/test_cli.py` |
+| REQ-014A | Baseline accepted findings. | integration | Baseline writes fingerprints and scan suppresses matching accepted findings. | `tests/test_baseline.py` |
 | REQ-015 | Redact secret in Markdown. | unit / contract | Raw literal token is absent from Markdown output. | `tests/test_redaction.py` |
 | REQ-016 | Preserve useful redacted evidence. | unit / contract | Redacted output includes config path and masked token family. | `tests/test_redaction.py` |
 | REQ-018 | Every rule has positive and negative fixtures. | meta-test | Test fails if any registered rule lacks fixture coverage. | `tests/test_rule_coverage.py` |
@@ -71,6 +74,7 @@
 - E2E-004: Run scan against invalid JSON and verify exit code 2 with actionable parse error.
 - E2E-005: Run `explain XONE001` and verify rule explanation and remediation.
 - E2E-006: Run `mcp-audit --version` or `python -m mcp_audit.cli --version` and verify version output.
+- E2E-007: Create a baseline from high-risk config, rescan with `--baseline`, and verify accepted findings are suppressed.
 
 ## Contract Checks
 

@@ -7,6 +7,7 @@ from pathlib import Path
 
 from mcp_audit import __version__
 from mcp_audit.app import scan_config, scan_default_configs
+from mcp_audit.baseline import filter_accepted_findings, load_baseline_fingerprints, render_baseline
 from mcp_audit.config_discovery import DEFAULT_CANDIDATES, discover_configs
 from mcp_audit.errors import ConfigNotFoundError, McpAuditError, ParseConfigError
 from mcp_audit.renderers.json_report import render_json_report
@@ -27,6 +28,11 @@ def build_parser() -> argparse.ArgumentParser:
     scan.add_argument("--format", choices=("markdown", "json", "sarif"), default="markdown")
     scan.add_argument("--output", help="write report to file instead of stdout")
     scan.add_argument("--fail-on", choices=("high", "medium", "low", "never"), default="never")
+    scan.add_argument("--baseline", help="suppress findings accepted in a baseline file")
+
+    baseline = subparsers.add_parser("baseline", help="write a baseline of currently accepted findings")
+    baseline.add_argument("--config", required=True, help="config file to scan for baseline creation")
+    baseline.add_argument("--output", required=True, help="baseline JSON file to write")
 
     explain = subparsers.add_parser("explain", help="explain a rule")
     explain.add_argument("rule_id")
@@ -115,8 +121,14 @@ def main(argv: list[str] | None = None) -> int:
 
         if args.command == "scan":
             report = scan_config(args.config) if args.config else scan_default_configs()
+            report = filter_accepted_findings(report, load_baseline_fingerprints(args.baseline))
             _write_output(_render(report, args.format), args.output)
             return 1 if _should_fail(report, args.fail_on) else 0
+
+        if args.command == "baseline":
+            report = scan_config(args.config)
+            _write_output(render_baseline(report), args.output)
+            return 0
 
         if args.command == "explain":
             info = get_rule_info(args.rule_id)

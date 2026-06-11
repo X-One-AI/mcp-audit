@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
+from hashlib import sha256
 from pathlib import Path
 from typing import Any, Literal
 
@@ -44,6 +45,16 @@ class Finding:
     redacted_evidence: str
     remediation: str
     confidence: Confidence = "medium"
+
+    @property
+    def fingerprint(self) -> str:
+        stable_parts = [
+            self.rule_id,
+            self.file_path,
+            self.config_path,
+            self.redacted_evidence,
+        ]
+        return sha256("\x1f".join(stable_parts).encode("utf-8")).hexdigest()[:16]
 
 
 @dataclass(frozen=True)

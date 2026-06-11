@@ -62,6 +62,8 @@ mcp-audit scan --format markdown
 mcp-audit scan --format json
 mcp-audit scan --format sarif --output mcp-audit.sarif
 mcp-audit scan --fail-on high
+mcp-audit baseline --config ./mcp.json --output .mcp-audit-baseline.json
+mcp-audit scan --config ./mcp.json --baseline .mcp-audit-baseline.json --fail-on high
 mcp-audit rules
 mcp-audit explain XONE001
 ```
@@ -113,6 +115,15 @@ For CI, start with:
 ```bash
 mcp-audit scan --config ./mcp.json --format sarif --output mcp-audit.sarif --fail-on high
 ```
+
+For existing repositories with accepted findings, create a reviewed baseline:
+
+```bash
+mcp-audit baseline --config ./mcp.json --output .mcp-audit-baseline.json
+mcp-audit scan --config ./mcp.json --baseline .mcp-audit-baseline.json --fail-on high
+```
+
+Treat baseline updates as code-review events. A baseline is an acceptance record, not proof that the finding is safe.
 
 Markdown is intended for human review. JSON and SARIF are intended for automation.
 

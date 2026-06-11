@@ -26,6 +26,7 @@ def _result_for_finding(finding: Finding) -> dict:
             "category": finding.category,
             "confidence": finding.confidence,
             "evidence": finding.redacted_evidence,
+            "fingerprint": finding.fingerprint,
         },
     }
 

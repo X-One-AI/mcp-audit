@@ -30,6 +30,7 @@ def test_json_report_contains_stable_contract_keys():
         "config_path",
         "evidence",
         "redacted_evidence",
+        "fingerprint",
         "remediation",
         "confidence",
     } <= set(finding)

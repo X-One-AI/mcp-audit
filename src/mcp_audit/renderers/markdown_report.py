@@ -45,6 +45,7 @@ def render_markdown_report(report: ScanReport) -> str:
                     f"- Why it matters: {finding.description}",
                     f"- File: `{finding.file_path}`",
                     f"- Config path: `{finding.config_path}`",
+                    f"- Fingerprint: `{finding.fingerprint}`",
                     f"- Evidence: {finding.redacted_evidence}",
                     f"- Confidence: {finding.confidence}",
                     f"- Remediation: {finding.remediation}",

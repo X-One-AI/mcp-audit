@@ -62,6 +62,8 @@ mcp-audit scan --format markdown
 mcp-audit scan --format json
 mcp-audit scan --format sarif --output mcp-audit.sarif
 mcp-audit scan --fail-on high
+mcp-audit baseline --config ./mcp.json --output .mcp-audit-baseline.json
+mcp-audit scan --config ./mcp.json --baseline .mcp-audit-baseline.json --fail-on high
 mcp-audit rules
 mcp-audit explain XONE001
 ```
@@ -113,6 +115,15 @@ CI 可以先从这个命令开始：
 ```bash
 mcp-audit scan --config ./mcp.json --format sarif --output mcp-audit.sarif --fail-on high
 ```
+
+对于已有仓库中已经审查并接受的 findings，可以创建 baseline：
+
+```bash
+mcp-audit baseline --config ./mcp.json --output .mcp-audit-baseline.json
+mcp-audit scan --config ./mcp.json --baseline .mcp-audit-baseline.json --fail-on high
+```
+
+baseline 更新应当进入代码审查。baseline 是风险接受记录，不代表 finding 本身安全。
 
 Markdown 面向人工审查。JSON 和 SARIF 面向自动化。
 
