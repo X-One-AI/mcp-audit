@@ -91,6 +91,7 @@ It does not recursively scan the repository.
 From this directory:
 
 ```bash
+python3 -m pip install -e ".[dev]"
 python3 -m pytest tests -q
 PYTHONPATH=src python3 -m mcp_audit.cli --version
 PYTHONPATH=src python3 -m mcp_audit --version

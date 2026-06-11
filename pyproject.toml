@@ -9,6 +9,9 @@ description = "Scan MCP and AI agent configs for risky permissions, secrets, uns
 requires-python = ">=3.11"
 dependencies = []
 
+[project.optional-dependencies]
+dev = ["pytest>=8"]
+
 [project.scripts]
 mcp-audit = "mcp_audit.cli:entrypoint"
 
