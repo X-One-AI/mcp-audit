@@ -189,4 +189,5 @@ v0.1：扫描示例 MCP / agent 配置并生成有用的本地风险报告。
 - [运行模型](./ops/README.md)
 - [规则草案](./docs/rules.md)
 - [发布检查清单](./docs/release-checklist.md)
+- [规则调优和误报处理流程](./docs/rule-tuning.md)
 - [高风险配置示例](./examples/high-risk-mcp.json)

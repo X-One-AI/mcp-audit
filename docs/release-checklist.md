@@ -6,6 +6,7 @@ Use this checklist before tagging or announcing a release.
 
 ```bash
 python -m pytest tests -q
+python -m build
 mcp-audit --version
 mcp-audit doctor
 mcp-audit rules
@@ -39,6 +40,9 @@ python -m json.tool /tmp/mcp-audit-real-world.json >/dev/null
 - Doctor shows project configuration status and effective scan defaults.
 - JSON, YAML, and TOML config smoke checks pass.
 - Real-world shaped fixture smoke check passes.
+- Package artifacts are built under `dist/`.
+- CI uploads package artifacts for the release commit.
+- False-positive workflow exists under `.github/ISSUE_TEMPLATE/`.
 - No report or baseline exposes raw secret fixture values.
 
 ## Tagging
@@ -46,6 +50,6 @@ python -m json.tool /tmp/mcp-audit-real-world.json >/dev/null
 Only tag after all required verification passes:
 
 ```bash
-git tag v0.1.0
+git tag -a v0.1.0 -m "mcp-audit v0.1.0"
 git push origin v0.1.0
 ```

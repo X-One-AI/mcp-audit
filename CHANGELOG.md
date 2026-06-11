@@ -15,6 +15,9 @@ All notable changes to `mcp-audit` are recorded here.
 - Project configuration with `.mcp-audit.toml` and `mcp-audit init`.
 - YAML and TOML config scanning.
 - Additional high-signal rules for broad environment exposure and dangerous container options.
+- Package build verification in CI.
+- Package artifact upload from CI.
+- False-positive feedback template and rule tuning workflow.
 - English and Simplified Chinese README files.
 - GitHub Actions CI for install, tests, and CLI smoke checks.
 

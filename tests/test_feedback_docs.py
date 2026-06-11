@@ -1,0 +1,16 @@
+from pathlib import Path
+
+
+def test_false_positive_feedback_workflow_exists():
+    template = Path(".github/ISSUE_TEMPLATE/false_positive.yml").read_text(encoding="utf-8")
+    tuning = Path("docs/rule-tuning.md").read_text(encoding="utf-8")
+    ci = Path(".github/workflows/ci.yml").read_text(encoding="utf-8")
+
+    assert "False positive report" in template
+    assert "Minimal config snippet" in template
+    assert "Rule ID" in template
+    assert "Do not include real secrets" in template
+    assert "False-positive reports are product feedback" in tuning
+    assert "Add a negative fixture" in tuning
+    assert "actions/upload-artifact@v7.0.1" in ci
+    assert "mcp-audit-dist-python" in ci
