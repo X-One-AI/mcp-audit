@@ -144,6 +144,7 @@ mcp-audit scan --config ./mcp.json --baseline .mcp-audit-baseline.json --fail-on
 ```
 
 Treat baseline updates as code-review events. A baseline is an acceptance record, not proof that the finding is safe.
+When a baseline suppresses findings, reports still show the suppressed finding count in the summary.
 
 Markdown is intended for human review. JSON and SARIF are intended for automation.
 

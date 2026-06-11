@@ -8,6 +8,7 @@
 - `mcp-audit doctor` explains runtime and bounded discovery state without scanning or making network calls.
 - `mcp-audit baseline --config ... --output ...` writes stable finding fingerprints for reviewed accepted findings.
 - `mcp-audit scan --baseline ...` suppresses only matching accepted fingerprints and still fails on new high findings when `--fail-on high` is used.
+- Reports show the count of findings suppressed by baseline.
 - `mcp-audit init` writes `.mcp-audit.toml` with safe default scan policy.
 - `mcp-audit scan` uses `.mcp-audit.toml` defaults when explicit CLI flags are absent.
 - Human-readable reports redact literal secret values while preserving useful evidence.
@@ -78,6 +79,7 @@
 - E2E-005: Run `explain XONE001` and verify rule explanation and remediation.
 - E2E-006: Run `mcp-audit --version` or `python -m mcp_audit.cli --version` and verify version output.
 - E2E-007: Create a baseline from high-risk config, rescan with `--baseline`, and verify accepted findings are suppressed.
+- E2E-007A: Verify JSON, Markdown, and SARIF report the suppressed finding count when a baseline suppresses findings.
 - E2E-008: Run `init`, inspect `.mcp-audit.toml`, then scan using project config defaults.
 
 ## Contract Checks

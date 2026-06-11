@@ -11,6 +11,7 @@ def render_markdown_report(report: ScanReport) -> str:
         "",
         f"- Files scanned: {report.summary.files_scanned}",
         f"- Findings total: {report.summary.findings_total}",
+        f"- Suppressed findings: {report.summary.suppressed_findings_total}",
         f"- High: {report.summary.findings_by_severity['high']}",
         f"- Medium: {report.summary.findings_by_severity['medium']}",
         f"- Low: {report.summary.findings_by_severity['low']}",

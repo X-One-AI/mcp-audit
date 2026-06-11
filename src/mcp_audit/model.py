@@ -61,6 +61,7 @@ class Finding:
 class ReportSummary:
     files_scanned: int
     findings_total: int
+    suppressed_findings_total: int
     findings_by_severity: dict[str, int]
     highest_severity: Severity | None
     recommended_action: str
@@ -80,6 +81,7 @@ class ScanReport:
     files: list[ScannedFile]
     findings: list[Finding]
     errors: list[ScanError] = field(default_factory=list)
+    suppressed_findings: list[Finding] = field(default_factory=list)
     schema_version: str = "0.1"
 
     @property
@@ -101,6 +103,7 @@ class ScanReport:
         return ReportSummary(
             files_scanned=len(self.files),
             findings_total=len(self.findings),
+            suppressed_findings_total=len(self.suppressed_findings),
             findings_by_severity=counts,
             highest_severity=highest_severity,
             recommended_action=recommended_action,

@@ -48,6 +48,9 @@ def filter_accepted_findings(report: ScanReport, accepted_fingerprints: set[str]
     return ScanReport(
         files=report.files,
         findings=[finding for finding in report.findings if finding.fingerprint not in accepted_fingerprints],
+        suppressed_findings=[
+            finding for finding in report.findings if finding.fingerprint in accepted_fingerprints
+        ],
         errors=report.errors,
         schema_version=report.schema_version,
     )

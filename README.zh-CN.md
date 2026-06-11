@@ -144,6 +144,7 @@ mcp-audit scan --config ./mcp.json --baseline .mcp-audit-baseline.json --fail-on
 ```
 
 baseline 更新应当进入代码审查。baseline 是风险接受记录，不代表 finding 本身安全。
+当 baseline 抑制 findings 时，报告 summary 仍会显示被抑制的 finding 数量。
 
 Markdown 面向人工审查。JSON 和 SARIF 面向自动化。
 

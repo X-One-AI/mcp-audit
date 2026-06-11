@@ -57,6 +57,9 @@ def render_sarif_report(report: ScanReport) -> str:
                     }
                 },
                 "results": [_result_for_finding(finding) for finding in report.findings],
+                "properties": {
+                    "suppressedFindingsTotal": report.summary.suppressed_findings_total,
+                },
             }
         ],
     }

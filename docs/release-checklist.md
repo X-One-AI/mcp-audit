@@ -26,6 +26,7 @@ python -m json.tool /tmp/mcp-audit-baselined.json >/dev/null
 - `CHANGELOG.md` has an entry for the release.
 - `docs/rules.md` mentions every registered rule.
 - Baseline docs say baseline means risk acceptance, not safety proof.
+- Reports show suppressed finding count when baseline is used.
 - No report or baseline exposes raw secret fixture values.
 
 ## Tagging
