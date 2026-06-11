@@ -168,4 +168,5 @@ Success means at least three real users are willing to scan their own MCP or age
 
 - [Operating Model](./ops/README.md)
 - [Rules Draft](./docs/rules.md)
+- [Release Checklist](./docs/release-checklist.md)
 - [Example High-Risk Config](./examples/high-risk-mcp.json)

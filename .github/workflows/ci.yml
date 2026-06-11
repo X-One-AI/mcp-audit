@@ -39,5 +39,13 @@ jobs:
           mcp-audit rules
           mcp-audit scan --config examples/high-risk-mcp.json --format json --output /tmp/mcp-audit.json
           mcp-audit scan --config examples/high-risk-mcp.json --format sarif --output /tmp/mcp-audit.sarif
+          mcp-audit baseline --config examples/high-risk-mcp.json --output /tmp/mcp-audit-baseline.json
+          mcp-audit scan --config examples/high-risk-mcp.json --baseline /tmp/mcp-audit-baseline.json --format json --output /tmp/mcp-audit-baselined.json
+          tmpdir="$(mktemp -d)"
+          cp examples/high-risk-mcp.json "$tmpdir/mcp.json"
+          (cd "$tmpdir" && mcp-audit init && mcp-audit baseline --config mcp.json --output .mcp-audit-baseline.json && mcp-audit scan --format json --output report.json)
           python -m json.tool /tmp/mcp-audit.json >/dev/null
           python -m json.tool /tmp/mcp-audit.sarif >/dev/null
+          python -m json.tool /tmp/mcp-audit-baseline.json >/dev/null
+          python -m json.tool /tmp/mcp-audit-baselined.json >/dev/null
+          python -m json.tool "$tmpdir/report.json" >/dev/null

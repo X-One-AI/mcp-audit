@@ -116,6 +116,7 @@ project config -> scan defaults -> baseline filtering -> fail-on decision
 - Add release checklist or release notes policy.
 - Strengthen CI smoke for baseline/config path.
 - Run full verification and wait for remote CI.
+- Keep CHANGELOG and release checklist updated before tagging.
 
 ## 5. Completion Gate
 
