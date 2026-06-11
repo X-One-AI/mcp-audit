@@ -18,14 +18,21 @@ def get_rules() -> list[Rule]:
 
 
 def get_rule_info(rule_id: str) -> RuleInfo | None:
-    for rule in get_rules():
-        if rule.id == rule_id:
-            return RuleInfo(
-                id=rule.id,
-                title=rule.title,
-                category=rule.category,
-                severity=rule.default_severity,
-                description=rule.description,
-                remediation=rule.remediation,
-            )
+    for info in get_rule_infos():
+        if info.id == rule_id:
+            return info
     return None
+
+
+def get_rule_infos() -> list[RuleInfo]:
+    return [
+        RuleInfo(
+            id=rule.id,
+            title=rule.title,
+            category=rule.category,
+            severity=rule.default_severity,
+            description=rule.description,
+            remediation=rule.remediation,
+        )
+        for rule in get_rules()
+    ]

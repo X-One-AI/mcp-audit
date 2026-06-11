@@ -58,6 +58,7 @@ mcp-audit scan --format markdown
 mcp-audit scan --format json
 mcp-audit scan --format sarif --output mcp-audit.sarif
 mcp-audit scan --fail-on high
+mcp-audit rules
 mcp-audit explain XONE001
 ```
 
@@ -94,6 +95,7 @@ PYTHONPATH=src python3 -m mcp_audit.cli doctor
 PYTHONPATH=src python3 -m mcp_audit.cli scan --config examples/high-risk-mcp.json --format markdown
 PYTHONPATH=src python3 -m mcp_audit.cli scan --config examples/high-risk-mcp.json --format json
 PYTHONPATH=src python3 -m mcp_audit.cli scan --config examples/high-risk-mcp.json --format sarif
+PYTHONPATH=src python3 -m mcp_audit.cli rules
 ```
 
 Use `scan` without `--config` only in a repository that contains one of the bounded default config paths.

@@ -12,7 +12,7 @@ from mcp_audit.errors import ConfigNotFoundError, McpAuditError, ParseConfigErro
 from mcp_audit.renderers.json_report import render_json_report
 from mcp_audit.renderers.markdown_report import render_markdown_report
 from mcp_audit.renderers.sarif_report import render_sarif_report
-from mcp_audit.rules.registry import get_rule_info
+from mcp_audit.rules.registry import get_rule_info, get_rule_infos
 
 _SEVERITY_RANK = {"low": 1, "medium": 2, "high": 3}
 
@@ -31,6 +31,7 @@ def build_parser() -> argparse.ArgumentParser:
     explain = subparsers.add_parser("explain", help="explain a rule")
     explain.add_argument("rule_id")
 
+    subparsers.add_parser("rules", help="list registered rules")
     subparsers.add_parser("doctor", help="show runtime and config discovery diagnostics")
     return parser
 
@@ -81,9 +82,21 @@ def _run_doctor() -> int:
     return 0
 
 
+def _list_rules() -> int:
+    lines = ["Rule     Severity  Category      Title", "-------  --------  ------------  -----"]
+    for rule in get_rule_infos():
+        lines.append(f"{rule.id:<7}  {rule.severity:<8}  {rule.category:<12}  {rule.title}")
+    lines.append("")
+    sys.stdout.write("\n".join(lines))
+    return 0
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = build_parser()
-    args = parser.parse_args(argv)
+    try:
+        args = parser.parse_args(argv)
+    except SystemExit as exc:
+        return int(exc.code or 0)
 
     if args.version:
         print(f"mcp-audit {__version__}")
@@ -96,6 +109,9 @@ def main(argv: list[str] | None = None) -> int:
     try:
         if args.command == "doctor":
             return _run_doctor()
+
+        if args.command == "rules":
+            return _list_rules()
 
         if args.command == "scan":
             report = scan_config(args.config) if args.config else scan_default_configs()

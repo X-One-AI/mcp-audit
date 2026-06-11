@@ -53,6 +53,14 @@ def test_cli_without_command_returns_usage(capsys):
     assert "usage: mcp-audit" in captured.err
 
 
+def test_cli_invalid_arguments_return_two(capsys):
+    exit_code = main(["scan", "--format", "xml"])
+
+    captured = capsys.readouterr()
+    assert exit_code == 2
+    assert "invalid choice" in captured.err
+
+
 def test_cli_doctor_reports_runtime_and_discovery(tmp_path, monkeypatch, capsys):
     config = tmp_path / ".mcp.json"
     config.write_text((FIXTURES / "safe-mcp.json").read_text(encoding="utf-8"), encoding="utf-8")
@@ -107,6 +115,16 @@ def test_cli_explain_outputs_rule_rationale(capsys):
     assert exit_code == 0
     assert "XONE001" in captured.out
     assert "Remediation" in captured.out
+
+
+def test_cli_rules_lists_registered_rules(capsys):
+    exit_code = main(["rules"])
+
+    captured = capsys.readouterr()
+    assert exit_code == 0
+    assert "XONE001" in captured.out
+    assert "Literal secret appears in configuration" in captured.out
+    assert "XONE005" in captured.out
 
 
 def test_cli_fail_on_high_returns_one_when_high_findings_exist():
