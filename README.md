@@ -1,5 +1,7 @@
 # mcp-audit
 
+[![CI](https://github.com/X-One-AI/mcp-audit/actions/workflows/ci.yml/badge.svg)](https://github.com/X-One-AI/mcp-audit/actions/workflows/ci.yml)
+
 Scan MCP and AI agent configurations for risky permissions, secrets, unsafe commands, and CI safety gaps.
 
 ## Purpose
