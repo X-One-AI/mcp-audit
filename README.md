@@ -14,7 +14,7 @@ It helps teams review the safety of MCP tools and AI agent workflows before thos
 Agentic DevSecOps / Safe Agent Operations
 ```
 
-`mcp-audit` is not a runtime sandbox and does not claim to block every attack. The first version is a local-first auditor that produces actionable risk reports.
+`mcp-audit` is not a runtime sandbox and does not claim to block every attack. The first version is a local-first auditor that produces actionable, easy-to-review risk reports.
 
 ## Target Users
 

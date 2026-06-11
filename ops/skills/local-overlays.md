@@ -15,6 +15,7 @@ Every accepted feature must answer:
 - What risk does it reduce or make visible?
 - What report, rule, or workflow becomes better?
 - How will we know it is useful?
+- Why is this better than making the user interpret raw output themselves?
 ```
 
 ## Architecture Overlay
@@ -59,6 +60,15 @@ Every rule needs:
 ```
 
 Every report format needs a contract test.
+
+Every user-facing path needs an experience check:
+
+```text
+- success output identifies what happened
+- error output says how to recover
+- findings explain why they matter
+- remediation is specific enough for the next step
+```
 
 ## Developer Overlay
 

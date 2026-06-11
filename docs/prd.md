@@ -21,6 +21,7 @@ This is not a demo project. The product must be small enough to ship early, but 
 - Provide a local-first CLI that scans MCP / agent configuration files for high-signal risks.
 - Generate human-readable Markdown reports and machine-readable JSON reports.
 - Use stable rule IDs, clear severity, and concrete remediation guidance.
+- Prioritize usability over bare functionality: users should understand what was scanned, why a finding matters, and what to do next.
 - Support production-ready behavior from the first release: deterministic scans, no hidden network calls, no telemetry, clear failure modes, and testable rule fixtures.
 - Use the One Person Team workflow as a reference, while keeping project-specific knowledge, constraints, and role overlays inside `mcp-audit/ops/`.
 - Keep public entrypoints concise and route deep operating context to `ops/` and `docs/`.
@@ -76,6 +77,7 @@ This is not a demo project. The product must be small enough to ship early, but 
 | REQ-023 | Record changes to project constraints or local overlays through explicit review and decision notes when they affect future work. | should | User constraint |
 | REQ-024 | Avoid hidden network calls, telemetry, uploads, or external service access during scan. | must | Security |
 | REQ-025 | Avoid security overclaims in CLI output, reports, README, and docs. | must | Security |
+| REQ-026 | Ensure user-facing output explains the next useful action for successes, findings, and recoverable errors. | must | User constraint |
 
 ## Non-Functional Requirements
 

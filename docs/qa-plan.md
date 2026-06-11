@@ -9,6 +9,7 @@
 - JSON report contract tests fail on required key removal or rename.
 - Markdown report tests fail when rule ID, severity, evidence, remediation, or limitations are missing.
 - CLI exits non-zero on parse errors and reports the file path and parse reason.
+- CLI and report output make the next action clear enough for a reviewer to act without reading source code.
 - CLI does not make network calls during scan.
 - `mcp-audit/README.md` remains concise and routes deeper context to `mcp-audit/ops/README.md`.
 - OPT source files outside this repository remain unmodified.
@@ -39,6 +40,8 @@
 | REQ-022 | OPT source remains unmodified. | manual / command | No changes under external OPT path. | `find` or VCS status outside repo |
 | REQ-024 | No hidden network calls. | unit / code review | Scan path uses no networking libraries or subprocess network calls. | code review, dependency audit |
 | REQ-025 | Security wording avoids overclaims. | docs / report | Docs and report output use risk-review language only. | docs review |
+| UX-001 | Findings explain why they matter and what to do next. | contract / docs | Markdown and rule explanations include specific remediation. | `tests/test_markdown_report.py`, docs review |
+| UX-002 | Errors are recoverable. | integration | Missing config and parse errors describe the action needed. | `tests/test_cli.py` |
 
 ## Test Data And Environment
 
@@ -97,6 +100,12 @@
   - `1` findings meet `--fail-on`
   - `2` user input or parse error
   - `3` unexpected internal error
+- User experience checks:
+  - first useful command is visible in README
+  - missing config error tells user to pass `--config`
+  - findings include remediation
+  - output avoids raw secret values
+  - output avoids security guarantees
 
 ## Regression Scope
 

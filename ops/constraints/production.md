@@ -17,6 +17,7 @@ Every feature must be useful in a real repository, even if the first release is 
 - documented severities
 - fixture-based tests for rules
 - explicit non-goals and limitations
+- user-facing output that explains the next action
 ```
 
 ## Security Posture
@@ -50,7 +51,8 @@ A feature cannot be called done unless:
 2. It has at least one fixture.
 3. It has a documented rule or contract.
 4. It has a clear failure mode.
-5. It does not add noisy public README content unless required for first-run usage.
+5. It has a usable user path, not just a working code path.
+6. It does not add noisy public README content unless required for first-run usage.
 ```
 
 ## Repository Discipline

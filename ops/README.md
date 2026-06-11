@@ -14,11 +14,12 @@ Project-specific knowledge, role overlays, constraints, and skill evolution live
 
 ```text
 1. Production-usable, not demo-only.
-2. Build on OPT, but do not modify OPT source files.
-3. Keep project-specific knowledge inside this repo.
-4. Keep role adjustments as local overlays, not global skill edits.
-5. Let constraints and local skills evolve through explicit review.
-6. Keep the public README small and route deeper context here.
+2. Useful and pleasant enough to keep using, not merely able to run.
+3. Build on OPT, but do not modify OPT source files.
+4. Keep project-specific knowledge inside this repo.
+5. Keep role adjustments as local overlays, not global skill edits.
+6. Let constraints and local skills evolve through explicit review.
+7. Keep the public README small and route deeper context here.
 ```
 
 ## Structure
@@ -32,6 +33,7 @@ Project-specific knowledge, role overlays, constraints, and skill evolution live
 | [../docs/implementation-plan.md](../docs/implementation-plan.md) | Developer implementation plan for the v0.1 CLI. |
 | [opt-overlay.md](./opt-overlay.md) | How this project uses OPT roles without modifying OPT. |
 | [constraints/production.md](./constraints/production.md) | Production-readiness constraints for every feature. |
+| [constraints/usability.md](./constraints/usability.md) | Rules for making features good to use, not merely functional. |
 | [constraints/main-entry.md](./constraints/main-entry.md) | Rules for keeping the main entry concise. |
 | [knowledge/README.md](./knowledge/README.md) | Project knowledge base entry. |
 | [knowledge/domain.md](./knowledge/domain.md) | MCP / agent safety domain assumptions. |
