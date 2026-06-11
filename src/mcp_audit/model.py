@@ -35,6 +35,7 @@ class ScannedFile:
 class Finding:
     rule_id: str
     title: str
+    description: str
     severity: Severity
     category: Category
     file_path: str

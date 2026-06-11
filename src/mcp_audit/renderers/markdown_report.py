@@ -15,9 +15,20 @@ def render_markdown_report(report: ScanReport) -> str:
         f"- Medium: {report.summary.findings_by_severity['medium']}",
         f"- Low: {report.summary.findings_by_severity['low']}",
         "",
-        "## Findings",
+        "## Scanned Files",
         "",
     ]
+
+    for scanned_file in report.files:
+        lines.append(f"- `{scanned_file.path}` ({scanned_file.parser}, {scanned_file.status})")
+
+    lines.extend(
+        [
+            "",
+            "## Findings",
+            "",
+        ]
+    )
 
     if not report.findings:
         lines.extend(["No findings.", ""])
@@ -29,6 +40,7 @@ def render_markdown_report(report: ScanReport) -> str:
                     "",
                     f"- Severity: {finding.severity}",
                     f"- Category: {finding.category}",
+                    f"- Why it matters: {finding.description}",
                     f"- File: `{finding.file_path}`",
                     f"- Config path: `{finding.config_path}`",
                     f"- Evidence: {finding.redacted_evidence}",

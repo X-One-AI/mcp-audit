@@ -127,8 +127,8 @@ Build the first production-usable `mcp-audit` CLI that scans explicit JSON MCP /
   - CLI scan command
   - CLI explain command
 - Contract:
-  - JSON report required keys and finding fields
-  - Markdown report required sections
+  - JSON report required keys and finding fields, including finding descriptions
+  - Markdown report required sections, including scanned files and why-it-matters text
   - CLI exit codes
 - E2E:
   - high-risk config to Markdown report

@@ -21,6 +21,7 @@ def test_json_report_contains_stable_contract_keys():
     assert {
         "rule_id",
         "title",
+        "description",
         "severity",
         "category",
         "file_path",
@@ -39,8 +40,10 @@ def test_markdown_report_contains_review_sections_and_redacts_secrets():
 
     assert "# mcp-audit Report" in markdown
     assert "## Summary" in markdown
+    assert "## Scanned Files" in markdown
     assert "## Findings" in markdown
     assert "## Limitations" in markdown
     assert "XONE001" in markdown
+    assert "Why it matters:" in markdown
     assert "Remediation:" in markdown
     assert "ghp_example_literal_token" not in markdown

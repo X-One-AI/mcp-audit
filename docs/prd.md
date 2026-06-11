@@ -62,7 +62,7 @@ This is not a demo project. The product must be small enough to ship early, but 
 | REQ-008 | Detect broad filesystem access such as home, root, or overly broad workspace paths. | must | Security |
 | REQ-009 | Detect broad network or external service access when the config gives enough evidence to identify it. | should | Security |
 | REQ-010 | Detect basic CI / PR safety gaps only when scanning supported workflow files is explicitly enabled. | could | Product |
-| REQ-011 | Generate Markdown reports with summary, findings, evidence, severity, and remediation. | must | Product |
+| REQ-011 | Generate Markdown reports with summary, scanned files, findings, why-it-matters text, evidence, severity, and remediation. | must | Product |
 | REQ-012 | Generate JSON reports with stable keys suitable for automated processing. | must | Product |
 | REQ-013 | Use stable rule IDs for all findings. | must | Architecture |
 | REQ-014 | Provide an `explain` command or equivalent documentation path for each rule. | must | Product |
@@ -97,7 +97,7 @@ This is not a demo project. The product must be small enough to ship early, but 
 - Human-readable reports redact literal secret values while preserving enough context to identify the affected config path or key.
 - Every v0.1 rule has at least one positive fixture and one negative fixture.
 - JSON report contract tests fail if required report keys are removed or renamed.
-- Markdown report tests fail if rule ID, severity, evidence, or remediation sections are missing.
+- Markdown report tests fail if scanned files, rule ID, severity, why-it-matters text, evidence, or remediation sections are missing.
 - The CLI exits non-zero on parse errors and reports the file path and parse reason.
 - The CLI does not make network calls during scan.
 - `mcp-audit/README.md` remains concise and links deeper operating context to `mcp-audit/ops/README.md`.

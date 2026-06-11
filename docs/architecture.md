@@ -120,6 +120,7 @@ Interface:
 Finding
 - rule_id: string
 - title: string
+- description: string
 - severity: high | medium | low
 - category: secret | command | supply-chain | filesystem | network | ci | documentation
 - file_path: string
@@ -163,6 +164,7 @@ Response:
     {
       "rule_id": "XONE001",
       "title": "Literal secret appears in configuration",
+      "description": "Configuration appears to contain a literal token, API key, or credential.",
       "severity": "high",
       "category": "secret",
       "file_path": "mcp-audit/examples/high-risk-mcp.json",
@@ -186,8 +188,10 @@ Markdown reports must include:
 ```text
 - title
 - scan summary
+- scanned files
 - findings grouped or listed with severity
 - rule ID
+- why it matters
 - affected file
 - config path
 - redacted evidence

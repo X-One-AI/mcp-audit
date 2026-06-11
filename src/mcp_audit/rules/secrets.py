@@ -22,6 +22,7 @@ class LiteralSecretRule:
                         document=document,
                         rule_id=self.id,
                         title=self.title,
+                        description=self.description,
                         severity=self.default_severity,
                         category=self.category,
                         config_path=path,

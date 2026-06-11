@@ -7,7 +7,7 @@
 - Human-readable reports redact literal secret values while preserving useful evidence.
 - Every v0.1 rule has at least one positive fixture and one negative fixture.
 - JSON report contract tests fail on required key removal or rename.
-- Markdown report tests fail when rule ID, severity, evidence, remediation, or limitations are missing.
+- Markdown report tests fail when scanned files, rule ID, severity, why-it-matters text, evidence, remediation, or limitations are missing.
 - CLI exits non-zero on parse errors and reports the file path and parse reason.
 - CLI and report output make the next action clear enough for a reviewer to act without reading source code.
 - CLI does not make network calls during scan.
@@ -29,7 +29,7 @@
 | REQ-008 | Detect broad `/Users/example` filesystem path. | unit | Rule emits filesystem finding. | `tests/test_rules_filesystem.py` |
 | REQ-008 | Allow narrow project-relative path. | unit | Rule does not emit broad filesystem finding. | `tests/test_rules_filesystem.py` |
 | REQ-009 | Detect broad URL/network-enabled tool when config evidence exists. | unit | Rule emits medium network finding. | `tests/test_rules_network.py` |
-| REQ-011 | Render Markdown report. | contract | Report includes title, summary, rule ID, severity, file path, evidence, remediation, and limitations. | `tests/test_markdown_report.py` |
+| REQ-011 | Render Markdown report. | contract | Report includes title, summary, scanned files, rule ID, severity, why it matters, file path, evidence, remediation, and limitations. | `tests/test_markdown_report.py` |
 | REQ-012 | Render JSON report. | contract | JSON contains stable top-level keys and finding fields. | `tests/test_json_report.py` |
 | REQ-014 | Explain known rule. | integration | `mcp-audit explain XONE001` returns description and remediation. | `tests/test_cli.py` |
 | REQ-015 | Redact secret in Markdown. | unit / contract | Raw literal token is absent from Markdown output. | `tests/test_redaction.py` |
@@ -79,6 +79,7 @@
 - Finding schema:
   - `rule_id`
   - `title`
+  - `description`
   - `severity`
   - `category`
   - `file_path`
@@ -90,7 +91,9 @@
 - Markdown report sections:
   - title
   - summary
+  - scanned files
   - findings
+  - why it matters
   - redacted evidence
   - remediation
   - limitations

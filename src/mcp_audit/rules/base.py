@@ -46,6 +46,7 @@ def make_finding(
     document: ConfigDocument,
     rule_id: str,
     title: str,
+    description: str,
     severity: Severity,
     category: Category,
     config_path: str,
@@ -57,6 +58,7 @@ def make_finding(
     return Finding(
         rule_id=rule_id,
         title=title,
+        description=description,
         severity=severity,
         category=category,
         file_path=str(document.path),
