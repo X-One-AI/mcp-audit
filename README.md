@@ -51,6 +51,9 @@ The first version should do four things well:
 - Unrestricted network access
 - Broad environment exposure
 - Dangerous container options
+- Broad tool enablement
+- Unpinned container images
+- Sensitive container environment passthrough
 - CI and PR safety gaps
 ```
 
@@ -137,9 +140,17 @@ Use `mcp-audit doctor` to inspect whether the config file is detected and which 
 ## Rule Profiles
 
 ```text
-starter  - high-signal rules only; excludes the medium network heuristic
+starter  - high-signal rules only; excludes medium network/tool/env passthrough heuristics
 balanced - default profile for individual repositories
 team     - same rule set as balanced, with stricter generated config defaults
+```
+
+## Client Notes
+
+Global client settings are not scanned by default. Scan them explicitly when you want to audit a user-level client config:
+
+```bash
+mcp-audit scan --config ~/.cline/data/settings/cline_mcp_settings.json
 ```
 
 ## Local Development

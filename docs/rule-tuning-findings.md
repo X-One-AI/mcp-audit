@@ -15,7 +15,7 @@ These findings come from the twelve-sample real-world corpus v2. They should dri
 
 ## Rule Gaps
 
-### XONE008 candidate: Broad tool enablement
+### XONE008 implemented: Broad tool enablement
 
 Evidence:
 
@@ -25,11 +25,11 @@ Why it matters:
 
 - Some clients and servers expose many tools behind one MCP endpoint. Enabling every tool can be a higher-risk decision than connecting to a narrow server.
 
-Proposed behavior:
+Implemented behavior:
 
-- Add a medium or high confidence finding when keys such as `enableAllTools`, `allowAllTools`, or `tools: "*"` are present.
+- Emit `XONE008` when keys such as `enableAllTools`, `allowAllTools`, or `tools: "*"` are present.
 
-### Docker image pinning
+### XONE009 implemented: Docker image pinning
 
 Evidence:
 
@@ -40,13 +40,13 @@ Why it matters:
 
 - Docker images without tag or digest are floating supply-chain inputs.
 
-Proposed behavior:
+Implemented behavior:
 
-- Extend supply-chain checks to Docker image references in `docker run` args.
+- Extend supply-chain checks to Docker image references in Docker MCP command args.
 - Treat `image:latest` and untagged images as unpinned.
 - Treat digest-pinned images as acceptable.
 
-### Docker env passthrough
+### XONE010 implemented: Docker env passthrough
 
 Evidence:
 
@@ -57,9 +57,9 @@ Why it matters:
 
 - `-e NAME` passes host environment values into containers without showing the actual secret in config.
 
-Proposed behavior:
+Implemented behavior:
 
-- Consider a medium finding when a container receives sensitive-looking env variable names through `-e`.
+- Emit `XONE010` when a container receives sensitive-looking env variable names through `-e`.
 - Do not report raw secret values.
 
 ### Cline path coverage
@@ -80,5 +80,4 @@ Proposed behavior:
 ## Deferred Decisions
 
 - Whether broad network access should flag every HTTP MCP endpoint or only wildcard/broad hosts.
-- Whether Docker MCP commands should belong to `supply-chain`, `command`, or a new `container` category.
-- Whether team profile should enable future Docker and broad-tool rules by default.
+- Whether Docker MCP commands should eventually move into a dedicated `container` category.

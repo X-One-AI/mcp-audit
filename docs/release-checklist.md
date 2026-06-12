@@ -17,6 +17,8 @@ mcp-audit scan --config examples/high-risk-mcp.json --format sarif --output /tmp
 mcp-audit scan --config tests/fixtures/high-risk-agent.yaml --format json --output /tmp/mcp-audit-yaml.json
 mcp-audit scan --config tests/fixtures/high-risk-agent.toml --format json --output /tmp/mcp-audit-toml.json
 mcp-audit scan --config tests/fixtures/high-risk-real-world.json --format json --output /tmp/mcp-audit-real-world.json
+mcp-audit scan --config tests/fixtures/real-world-corpus-v2/github-mcp-docker-env.json --format json --output /tmp/mcp-audit-docker.json
+mcp-audit scan --config tests/fixtures/real-world-corpus-v2/kubernetes-http-enable-all-tools.yaml --format json --output /tmp/mcp-audit-tools.json
 mcp-audit baseline --config examples/high-risk-mcp.json --output /tmp/mcp-audit-baseline.json
 mcp-audit scan --config examples/high-risk-mcp.json --baseline /tmp/mcp-audit-baseline.json --format json --output /tmp/mcp-audit-baselined.json
 mcp-audit baseline --config examples/high-risk-mcp.json --baseline /tmp/mcp-audit-baseline.json --prune --output /tmp/mcp-audit-baseline-pruned.json
@@ -28,6 +30,8 @@ python -m json.tool /tmp/mcp-audit-baseline-pruned.json >/dev/null
 python -m json.tool /tmp/mcp-audit-yaml.json >/dev/null
 python -m json.tool /tmp/mcp-audit-toml.json >/dev/null
 python -m json.tool /tmp/mcp-audit-real-world.json >/dev/null
+python -m json.tool /tmp/mcp-audit-docker.json >/dev/null
+python -m json.tool /tmp/mcp-audit-tools.json >/dev/null
 ```
 
 ## Release Gates
@@ -45,6 +49,7 @@ python -m json.tool /tmp/mcp-audit-real-world.json >/dev/null
 - Real-world shaped fixture smoke check passes.
 - Sanitized real-world corpus and client-format fixtures pass.
 - Twelve-sample real-world corpus v2 passes and rule gaps are documented.
+- v0.2 broad-tool, Docker image, and Docker env passthrough rules are covered by positive and negative fixtures.
 - Package artifacts are built under `dist/`.
 - CI uploads package artifacts for the release commit.
 - False-positive workflow exists under `.github/ISSUE_TEMPLATE/`.

@@ -3,15 +3,39 @@ from __future__ import annotations
 from mcp_audit.rules.base import Rule, RuleInfo
 from mcp_audit.rules.commands import UnpinnedRemotePackageRule, UnsafeCommandRule
 from mcp_audit.rules.containers import DangerousContainerOptionRule
+from mcp_audit.rules.docker import SensitiveContainerEnvPassthroughRule, UnpinnedContainerImageRule
 from mcp_audit.rules.environment import BroadEnvironmentExposureRule
 from mcp_audit.rules.filesystem import BroadFilesystemAccessRule
 from mcp_audit.rules.network import BroadNetworkAccessRule
 from mcp_audit.rules.secrets import LiteralSecretRule
+from mcp_audit.rules.tool_enablement import BroadToolEnablementRule
 
 PROFILE_RULE_IDS = {
-    "starter": {"XONE001", "XONE002", "XONE003", "XONE004", "XONE006", "XONE007"},
-    "balanced": {"XONE001", "XONE002", "XONE003", "XONE004", "XONE005", "XONE006", "XONE007"},
-    "team": {"XONE001", "XONE002", "XONE003", "XONE004", "XONE005", "XONE006", "XONE007"},
+    "starter": {"XONE001", "XONE002", "XONE003", "XONE004", "XONE006", "XONE007", "XONE009"},
+    "balanced": {
+        "XONE001",
+        "XONE002",
+        "XONE003",
+        "XONE004",
+        "XONE005",
+        "XONE006",
+        "XONE007",
+        "XONE008",
+        "XONE009",
+        "XONE010",
+    },
+    "team": {
+        "XONE001",
+        "XONE002",
+        "XONE003",
+        "XONE004",
+        "XONE005",
+        "XONE006",
+        "XONE007",
+        "XONE008",
+        "XONE009",
+        "XONE010",
+    },
 }
 
 
@@ -33,6 +57,9 @@ def _all_rules() -> list[Rule]:
         BroadNetworkAccessRule(),
         BroadEnvironmentExposureRule(),
         DangerousContainerOptionRule(),
+        BroadToolEnablementRule(),
+        UnpinnedContainerImageRule(),
+        SensitiveContainerEnvPassthroughRule(),
     ]
 
 

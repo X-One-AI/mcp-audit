@@ -12,7 +12,7 @@ Rule IDs use the `XONE` prefix until the project has a stable public naming conv
 | medium | The config may be acceptable, but needs an explicit reason or tighter policy. |
 | low | Informational risk or missing documentation. |
 
-## Implemented v0.1 Rules
+## Implemented Rules
 
 | Rule | Severity | Category | Title | Finding |
 |---|---|---|---|
@@ -23,6 +23,9 @@ Rule IDs use the `XONE` prefix until the project has a stable public naming conv
 | XONE005 | medium | Network | Broad network access | Tool allows broad outbound network access without host allowlist or explanation. |
 | XONE006 | high | Secret exposure | Broad environment exposure | Tool receives the full process environment instead of explicit variables. |
 | XONE007 | high | Command execution | Dangerous container option | Container launch uses privileged, host namespace, or host-root mount options. |
+| XONE008 | medium | Command execution | Broad tool enablement | Tool or server enables every available tool instead of a narrow allowlist. |
+| XONE009 | high | Supply chain | Unpinned container image | Docker MCP server uses an untagged, `latest`, or otherwise floating container image. |
+| XONE010 | medium | Secret exposure | Sensitive container environment passthrough | Docker MCP server passes sensitive-looking host environment variables into a container. |
 
 ## Rule Profiles
 
@@ -30,9 +33,9 @@ Profiles let teams tune noise without changing rule IDs.
 
 | Profile | Intent | Enabled rules |
 |---|---|---|
-| starter | First scan with the least noisy high-signal rules. | XONE001, XONE002, XONE003, XONE004, XONE006, XONE007 |
-| balanced | Default local review profile. | XONE001, XONE002, XONE003, XONE004, XONE005, XONE006, XONE007 |
-| team | Team/CI profile. Uses the balanced rule set with stricter generated config defaults. | XONE001, XONE002, XONE003, XONE004, XONE005, XONE006, XONE007 |
+| starter | First scan with the least noisy high-signal rules. | XONE001, XONE002, XONE003, XONE004, XONE006, XONE007, XONE009 |
+| balanced | Default local review profile. | XONE001, XONE002, XONE003, XONE004, XONE005, XONE006, XONE007, XONE008, XONE009, XONE010 |
+| team | Team/CI profile. Uses the balanced rule set with stricter generated config defaults. | XONE001, XONE002, XONE003, XONE004, XONE005, XONE006, XONE007, XONE008, XONE009, XONE010 |
 
 Use `starter` when onboarding a noisy repository. Use `team` only after the team agrees that medium findings should block CI.
 
@@ -43,6 +46,8 @@ Use `starter` when onboarding a noisy repository. Use `team` only after the team
 - `@latest`, `@next`, and similar floating versions are treated as unpinned packages.
 - Nested `mcpServers` and Zed-style `context_servers` are scanned for remote package execution.
 - Local node entrypoints such as `./tools/server.js` are not treated as remote package execution.
+- Docker images without a stable tag or digest are treated as unpinned.
+- Docker `-e NAME` passthrough findings report variable names only, not values.
 
 ## Reserved Future Rule Areas
 
@@ -50,7 +55,6 @@ These are intentionally not implemented in the first CLI path:
 
 | Area | Reason |
 |---|---|
-| CI safety | Requires supported workflow scanning and PR context. |
 | GitHub token scopes | Requires more precise workflow and permission model parsing. |
 | Documentation completeness | Lower signal than direct config risk in v0.1. |
 

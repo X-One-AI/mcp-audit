@@ -51,6 +51,9 @@ Agentic DevSecOps / Safe Agent Operations
 - 不受限制的网络访问
 - 过宽的环境变量暴露
 - 危险容器启动参数
+- 过宽的工具启用
+- 未固定版本的容器镜像
+- 敏感环境变量传入容器
 - CI 和 PR 安全缺口
 ```
 
@@ -137,9 +140,17 @@ baseline = ".mcp-audit-baseline.json"
 ## 规则 Profile
 
 ```text
-starter  - 只启用高信号规则；排除 medium 级网络启发式规则
+starter  - 只启用高信号规则；排除 medium 级网络、工具启用和容器 env passthrough 启发式规则
 balanced - 单仓库默认 profile
 team     - 规则集合与 balanced 相同，但生成更严格的团队配置默认值
+```
+
+## 客户端说明
+
+全局客户端配置不会被默认扫描。如果要审计用户级 client 配置，请显式传入路径：
+
+```bash
+mcp-audit scan --config ~/.cline/data/settings/cline_mcp_settings.json
 ```
 
 ## 本地开发

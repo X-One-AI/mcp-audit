@@ -18,6 +18,7 @@
 - Sanitized real-world corpus fixtures scan successfully and cover known false-positive boundaries.
 - Sanitized real-world corpus v2 tracks twelve public samples with source traceability and rule-gap notes.
 - Client-format fixtures cover Claude, Cursor-style MCP, Windsurf, Gemini/Qwen-style settings, and Zed `context_servers`.
+- Broad tool enablement, unpinned container images, and sensitive container env passthrough are covered by positive and negative tests.
 - Human-readable reports redact literal secret values while preserving useful evidence.
 - Every v0.1 rule has at least one positive fixture and one negative fixture.
 - JSON report contract tests fail on required key removal or rename.
@@ -55,6 +56,9 @@
 | REQ-014D | Real-world corpus. | integration | Sanitized public-sample-derived fixtures scan and preserve expected rule boundaries. | `tests/test_real_world_corpus.py` |
 | REQ-014D2 | Twelve-sample corpus v2. | integration / docs | Public sample matrix, corpus v2 fixtures, and rule-tuning findings remain in sync. | `tests/test_real_world_corpus_v2.py` |
 | REQ-014E | Client format fixtures. | integration | Client-shaped configs for Claude, Windsurf, Zed, Gemini/Qwen-style settings scan successfully. | `tests/test_client_fixtures.py` |
+| REQ-014F | Broad tool enablement. | unit / integration | `enableAllTools`, `allowAllTools`, and wildcard tools emit `XONE008`. | `tests/test_rule_tool_enablement.py`, `tests/test_real_world_corpus_v2.py` |
+| REQ-014G | Docker supply-chain. | unit / integration | Untagged and `latest` Docker images emit `XONE009`; tagged and digest-pinned images do not. | `tests/test_rule_docker.py`, `tests/test_real_world_corpus_v2.py` |
+| REQ-014H | Docker env passthrough. | unit / integration | Sensitive env names passed through Docker emit `XONE010` without leaking values. | `tests/test_rule_docker.py`, `tests/test_real_world_corpus_v2.py` |
 | REQ-015 | Redact secret in Markdown. | unit / contract | Raw literal token is absent from Markdown output. | `tests/test_redaction.py` |
 | REQ-016 | Preserve useful redacted evidence. | unit / contract | Redacted output includes config path and masked token family. | `tests/test_redaction.py` |
 | REQ-018 | Every rule has positive and negative fixtures. | meta-test | Test fails if any registered rule lacks fixture coverage. | `tests/test_rule_coverage.py` |
@@ -102,6 +106,7 @@
 - E2E-009: Run `init --profile team`, inspect stricter generated defaults, and run `scan --profile starter` against a high-risk fixture.
 - E2E-010: Run scans across sanitized real-world corpus fixtures and client-format fixtures.
 - E2E-011: Run scans across the twelve-sample corpus v2 and review `docs/rule-tuning-findings.md` for expected gaps.
+- E2E-012: Run scans against Docker and broad-tool corpus v2 fixtures and verify `XONE008`, `XONE009`, and `XONE010`.
 
 ## Contract Checks
 

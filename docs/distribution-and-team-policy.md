@@ -65,6 +65,8 @@ Recommended team rollout:
 
 Future team policy fields should remain in `.mcp-audit.toml` and avoid remote service dependencies in the CLI path.
 
+Global client settings, including Cline user-level settings, should be audited with explicit `--config` paths. They should not become default discovery targets because that would surprise users by reading home-directory configuration.
+
 ## PyPI Roadmap
 
 Use PyPI Trusted Publishers for release publishing instead of a long-lived API token. PyPI documents Trusted Publishers as an OIDC-based relationship between a package project and CI workflow.

@@ -13,16 +13,16 @@ FIXTURES = {
     "confluent-local-node-config.json": {"source": "confluentinc/mcp-confluent", "expected": set()},
     "danlee-mcp-setup-aggregate.json": {"source": "danlee-dev/mcp-setup", "expected": {"XONE003", "XONE004"}},
     "task-master-cursor-roo-npx.json": {"source": "eyaltoledano/claude-task-master", "expected": {"XONE003"}},
-    "github-mcp-docker-env.json": {"source": "github/github-mcp-server", "expected": set()},
+    "github-mcp-docker-env.json": {"source": "github/github-mcp-server", "expected": {"XONE009", "XONE010"}},
     "grab-cursor-figma-bunx-latest.json": {
         "source": "grab/cursor-talk-to-figma-mcp",
         "expected": {"XONE003"},
     },
-    "hassanaftab-pentest-docker.json": {"source": "hassanaftab93/pentesting-mcp-setup", "expected": set()},
+    "hassanaftab-pentest-docker.json": {"source": "hassanaftab93/pentesting-mcp-setup", "expected": {"XONE009", "XONE010"}},
     "ingenimax-devops-agent.yaml": {"source": "Ingenimax/agent-sdk-go", "expected": {"XONE003"}},
     "kubernetes-http-enable-all-tools.yaml": {
         "source": "containers/kubernetes-mcp-server",
-        "expected": set(),
+        "expected": {"XONE008"},
     },
     "nyldn-zed-context-servers.json": {"source": "nyldn/claude-octopus", "expected": {"XONE003"}},
     "run-llama-claude-llamacloud.json": {"source": "run-llama/llamacloud-mcp", "expected": {"XONE003"}},
@@ -90,7 +90,7 @@ def test_corpus_v2_no_real_secret_literals_are_checked_in():
 def test_rule_tuning_findings_tracks_current_gaps():
     findings = Path("docs/rule-tuning-findings.md").read_text(encoding="utf-8")
 
-    assert "XONE008 candidate" in findings
+    assert "XONE008 implemented" in findings
     assert "Docker image pinning" in findings
     assert "enableAllTools" in findings
     assert "cline_mcp_settings.json" in findings

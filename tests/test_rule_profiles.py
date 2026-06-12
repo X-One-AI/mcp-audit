@@ -12,7 +12,9 @@ def test_starter_profile_excludes_noisy_medium_network_rule():
     rule_ids = {rule.id for rule in get_rules(profile="starter")}
 
     assert "XONE005" not in rule_ids
-    assert {"XONE001", "XONE002", "XONE003", "XONE004", "XONE006", "XONE007"} <= rule_ids
+    assert "XONE008" not in rule_ids
+    assert "XONE010" not in rule_ids
+    assert {"XONE001", "XONE002", "XONE003", "XONE004", "XONE006", "XONE007", "XONE009"} <= rule_ids
 
 
 def test_balanced_profile_keeps_all_current_rules():
@@ -21,6 +23,13 @@ def test_balanced_profile_keeps_all_current_rules():
 
     assert rule_ids == info_ids
     assert "XONE005" in rule_ids
+    assert {"XONE008", "XONE009", "XONE010"} <= rule_ids
+
+
+def test_team_profile_keeps_all_current_rules():
+    rule_ids = {rule.id for rule in get_rules(profile="team")}
+
+    assert {"XONE008", "XONE009", "XONE010"} <= rule_ids
 
 
 def test_cli_scan_profile_filters_findings(capsys):

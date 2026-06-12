@@ -31,7 +31,8 @@
       "args": [
         "example-agent"
       ],
-      "passEnvironment": true
+      "passEnvironment": true,
+      "enableAllTools": true
     },
     "container": {
       "command": "docker",
@@ -39,6 +40,8 @@
         "run",
         "--privileged",
         "--network=host",
+        "-e",
+        "GITHUB_TOKEN",
         "-v",
         "/:/host",
         "example/mcp-shell:latest"

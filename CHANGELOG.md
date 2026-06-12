@@ -9,6 +9,7 @@ All notable changes to `mcp-audit` are recorded here.
 - Sanitized real-world corpus fixtures with source manifest.
 - Twelve-sample real-world corpus v2 with source matrix and rule-tuning findings.
 - Client-format fixtures for Claude-style config, Windsurf, Zed, Gemini/Qwen-style settings, and project-local MCP configs.
+- Rules for broad tool enablement, unpinned container images, and sensitive container environment passthrough.
 - Rule profiles: `starter`, `balanced`, and `team`.
 - `mcp-audit init --profile ...` and `mcp-audit scan --profile ...`.
 - Distribution and team policy roadmap for PyPI, Homebrew, configuration guidance, profiles, and team adoption.
@@ -21,6 +22,7 @@ All notable changes to `mcp-audit` are recorded here.
 - Broad filesystem detection now treats `${HOME}` as broad access.
 - Secret detection ignores CLI option names such as `--api-key`.
 - Documentation placeholders such as `<your-api-key>` remain outside literal-secret findings.
+- Cline global settings are documented as explicit `--config` scans rather than default discovery targets.
 
 ## 0.1.0 - 2026-06-12
 

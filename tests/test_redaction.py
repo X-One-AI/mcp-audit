@@ -23,3 +23,8 @@ def test_redact_text_masks_bearer_tokens():
 def test_secret_detection_ignores_cli_flag_names():
     assert not looks_like_literal_secret("--figma-api-key")
     assert not looks_like_literal_secret("--api-key")
+
+
+def test_secret_detection_ignores_env_variable_names():
+    assert not looks_like_literal_secret("GITHUB_PERSONAL_ACCESS_TOKEN")
+    assert not looks_like_literal_secret("BRAVE_API_KEY")
