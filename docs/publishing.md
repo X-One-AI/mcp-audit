@@ -2,7 +2,19 @@
 
 `mcp-audit` uses GitHub Actions and PyPI Trusted Publishing for package publication. Trusted Publishing uses OpenID Connect instead of a long-lived package token.
 
-As of `2026-06-12`, `mcp-audit` is not present on PyPI or TestPyPI. Both package indexes returned `404` for `/pypi/mcp-audit/json`. The publish workflow is ready, but actual publication requires creating the package projects and configuring Trusted Publishers in the package indexes.
+As of `2026-06-12`, `mcp-audit` is not present on PyPI or TestPyPI. Both package indexes returned `404` for `/pypi/mcp-audit/json`. The publish workflow builds artifacts successfully, but actual publication requires creating the package projects and configuring Trusted Publishers in the package indexes.
+
+The first TestPyPI publish attempt for `v0.3.0` failed at the trusted publishing exchange with `invalid-publisher`, meaning TestPyPI did not have a publisher matching these claims:
+
+```text
+repository: X-One-AI/mcp-audit
+workflow: .github/workflows/publish.yml
+ref: refs/tags/v0.3.0
+environment: testpypi
+subject: repo:X-One-AI/mcp-audit:environment:testpypi
+```
+
+GitHub run: https://github.com/X-One-AI/mcp-audit/actions/runs/27424380172
 
 References:
 
@@ -28,6 +40,8 @@ Repository: mcp-audit
 Workflow: publish.yml
 Environment: testpypi or pypi
 ```
+
+For TestPyPI, create the publisher for environment `testpypi` before re-running the workflow on tag `v0.3.0`.
 
 ## Publish Order
 

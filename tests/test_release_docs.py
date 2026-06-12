@@ -53,5 +53,7 @@ def test_publishing_docs_state_current_package_index_blocker():
     publishing = Path("docs/publishing.md").read_text(encoding="utf-8")
 
     assert "not present on PyPI or TestPyPI" in publishing
+    assert "invalid-publisher" in publishing
+    assert "27424380172" in publishing
     assert "Trusted Publisher" in publishing
     assert "GitHub release artifacts are the verified install path" in publishing
