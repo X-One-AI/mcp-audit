@@ -59,4 +59,6 @@ def test_publishing_docs_state_current_package_index_blocker():
     assert "xone-mcp-audit" in publishing
     assert "mcp-audit` was rejected by TestPyPI" in publishing
     assert "Trusted Publisher" in publishing
-    assert "GitHub release artifacts are the verified install path" in publishing
+    assert "TestPyPI is published and install-verified" in publishing
+    assert "https://github.com/X-One-AI/mcp-audit/actions/runs/27429045294" in publishing
+    assert "PyPI production publishing is still pending" in publishing

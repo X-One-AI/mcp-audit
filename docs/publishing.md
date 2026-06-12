@@ -45,7 +45,9 @@ Workflow: publish.yml
 Environment: testpypi or pypi
 ```
 
-For TestPyPI, create the pending publisher for project `xone-mcp-audit` and environment `testpypi` before re-running the workflow on tag `v0.3.1`.
+For TestPyPI, the pending publisher for project `xone-mcp-audit` and environment `testpypi` has been verified with tag `v0.3.1`.
+
+For PyPI, create the pending publisher for project `xone-mcp-audit` and environment `pypi` before running the workflow against the production index.
 
 ## Publish Order
 
@@ -61,17 +63,31 @@ For TestPyPI, create the pending publisher for project `xone-mcp-audit` and envi
 
 ```bash
 python -m venv /tmp/mcp-audit-testpypi
-/tmp/mcp-audit-testpypi/bin/python -m pip install --index-url https://test.pypi.org/simple/ --extra-index-url https://pypi.org/simple/ xone-mcp-audit
+/tmp/mcp-audit-testpypi/bin/python -m pip install \
+  --index-url https://test.pypi.org/simple/ \
+  --extra-index-url https://pypi.org/simple/ \
+  xone-mcp-audit
 /tmp/mcp-audit-testpypi/bin/mcp-audit --version
 ```
 
-## Current Verified Install Path
+If the local Python certificate store is broken, verify the environment before changing project publishing configuration. The local macOS verification run required adding `--trusted-host test-files.pythonhosted.org` because TestPyPI serves package files from that host.
 
-Until PyPI/TestPyPI are configured, install from GitHub release assets:
+## Current Package Index Status
+
+TestPyPI is published and install-verified:
+
+- Package: `xone-mcp-audit==0.3.1`
+- CLI: `mcp-audit 0.3.1`
+- Workflow run: https://github.com/X-One-AI/mcp-audit/actions/runs/27429045294
+- Index metadata: https://test.pypi.org/pypi/xone-mcp-audit/json
+
+PyPI production publishing is still pending the production Trusted Publisher setup for project `xone-mcp-audit` with environment `pypi`.
+
+## GitHub Release Install Path
+
+Install from GitHub release assets when package-index publication is not desired:
 
 ```bash
 python3 -m pip install https://github.com/X-One-AI/mcp-audit/releases/download/v0.3.1/xone_mcp_audit-0.3.1-py3-none-any.whl
 mcp-audit --version
 ```
-
-GitHub release artifacts are the verified install path until package-index publication succeeds.
