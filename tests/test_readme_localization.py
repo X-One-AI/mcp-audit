@@ -13,3 +13,7 @@ def test_readme_has_english_and_chinese_versions():
     assert "mcp-audit scan --config ./mcp.json" in chinese
     assert "mcp-audit init --profile team" in english
     assert "mcp-audit init --profile team" in chinese
+    assert "mcp-audit init --wizard --profile team" in english
+    assert "mcp-audit init --wizard --profile team" in chinese
+    assert "mcp-audit policy check --policy .mcp-audit-policy.toml --profile team" in english
+    assert "mcp-audit policy check --policy .mcp-audit-policy.toml --profile team" in chinese

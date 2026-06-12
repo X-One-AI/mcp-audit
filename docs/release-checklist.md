@@ -12,6 +12,8 @@ mcp-audit doctor
 mcp-audit rules
 mcp-audit rules --profile starter
 mcp-audit init --profile team
+mcp-audit init --wizard --profile team
+mcp-audit policy check --policy .mcp-audit-policy.toml --profile team
 mcp-audit scan --config examples/high-risk-mcp.json --format json --output /tmp/mcp-audit.json
 mcp-audit scan --config examples/high-risk-mcp.json --format sarif --output /tmp/mcp-audit.sarif
 mcp-audit scan --config tests/fixtures/high-risk-agent.yaml --format json --output /tmp/mcp-audit-yaml.json
@@ -20,13 +22,16 @@ mcp-audit scan --config tests/fixtures/high-risk-real-world.json --format json -
 mcp-audit scan --config tests/fixtures/real-world-corpus-v2/github-mcp-docker-env.json --format json --output /tmp/mcp-audit-docker.json
 mcp-audit scan --config tests/fixtures/real-world-corpus-v2/kubernetes-http-enable-all-tools.yaml --format json --output /tmp/mcp-audit-tools.json
 mcp-audit baseline --config examples/high-risk-mcp.json --output /tmp/mcp-audit-baseline.json
+mcp-audit baseline --config examples/high-risk-mcp.json --output /tmp/mcp-audit-baseline-reviewed.json --review-output /tmp/mcp-audit-baseline.review.toml --approved-by security-team --reason "release verification"
 mcp-audit scan --config examples/high-risk-mcp.json --baseline /tmp/mcp-audit-baseline.json --format json --output /tmp/mcp-audit-baselined.json
+mcp-audit scan --config examples/high-risk-mcp.json --profile team --policy .mcp-audit-policy.toml --baseline /tmp/mcp-audit-baseline-reviewed.json --baseline-review /tmp/mcp-audit-baseline.review.toml --format json --output /tmp/mcp-audit-policy-reviewed.json
 mcp-audit baseline --config examples/high-risk-mcp.json --baseline /tmp/mcp-audit-baseline.json --prune --output /tmp/mcp-audit-baseline-pruned.json
 PYTHONPATH=src python scripts/sanitize_github_config.py https://github.com/X-One-AI/mcp-audit/blob/main/examples/high-risk-mcp.json --output /tmp/mcp-audit-sanitized-fixture.json --metadata-output /tmp/mcp-audit-sanitized-fixture.source.txt
 python -m json.tool /tmp/mcp-audit.json >/dev/null
 python -m json.tool /tmp/mcp-audit.sarif >/dev/null
 python -m json.tool /tmp/mcp-audit-baseline.json >/dev/null
 python -m json.tool /tmp/mcp-audit-baselined.json >/dev/null
+python -m json.tool /tmp/mcp-audit-policy-reviewed.json >/dev/null
 python -m json.tool /tmp/mcp-audit-baseline-pruned.json >/dev/null
 python -m json.tool /tmp/mcp-audit-yaml.json >/dev/null
 python -m json.tool /tmp/mcp-audit-toml.json >/dev/null
@@ -55,6 +60,9 @@ python -m json.tool /tmp/mcp-audit-sanitized-fixture.json >/dev/null
 - GitHub URL to sanitized fixture workflow is smoke-tested.
 - Public sample review substitute exists for 3-5 unavailable real-user reviews.
 - Team policy schema is documented with a parseable example.
+- Team policy enforcement is covered by CLI tests.
+- Baseline review hash gate is covered by CLI tests.
+- False-positive and false-negative intake templates exist.
 - PyPI/TestPyPI Trusted Publishing workflow exists and uses OIDC.
 - Package artifacts are built under `dist/`.
 - CI uploads package artifacts for the release commit.
@@ -67,6 +75,6 @@ python -m json.tool /tmp/mcp-audit-sanitized-fixture.json >/dev/null
 Only tag after all required verification passes:
 
 ```bash
-git tag -a v0.2.0 -m "mcp-audit v0.2.0"
-git push origin v0.2.0
+git tag -a v0.3.0 -m "mcp-audit v0.3.0"
+git push origin v0.3.0
 ```

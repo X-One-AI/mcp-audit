@@ -16,10 +16,18 @@ from mcp_audit.baseline import (
 from mcp_audit.config_discovery import DEFAULT_CANDIDATES, discover_configs
 from mcp_audit.errors import ConfigNotFoundError, McpAuditError, ParseConfigError
 from mcp_audit.project_config import CONFIG_FILE, load_scan_config, write_default_config
+from mcp_audit.project_config import write_wizard_config
 from mcp_audit.renderers.json_report import render_json_report
 from mcp_audit.renderers.markdown_report import render_markdown_report
 from mcp_audit.renderers.sarif_report import render_sarif_report
 from mcp_audit.rules.registry import get_rule_info, get_rule_infos
+from mcp_audit.team_policy import (
+    check_team_policy,
+    filter_policy_exceptions,
+    load_policy_exceptions,
+    load_team_policy,
+    render_baseline_review,
+)
 
 _SEVERITY_RANK = {"low": 1, "medium": 2, "high": 3}
 _PROFILES = ("starter", "balanced", "team")
@@ -37,12 +45,18 @@ def build_parser() -> argparse.ArgumentParser:
     scan.add_argument("--fail-on", choices=("high", "medium", "low", "never"))
     scan.add_argument("--profile", choices=_PROFILES, help="rule profile to use for this scan")
     scan.add_argument("--baseline", help="suppress findings accepted in a baseline file")
+    scan.add_argument("--policy", help="team policy file to enforce for this scan")
+    scan.add_argument("--baseline-review", help="baseline review TOML file required by enforced team policy")
+    scan.add_argument("--exceptions", help="policy exception TOML file with approved finding fingerprints")
 
     baseline = subparsers.add_parser("baseline", help="write a baseline of currently accepted findings")
     baseline.add_argument("--config", required=True, help="config file to scan for baseline creation")
     baseline.add_argument("--output", required=True, help="baseline JSON file to write")
     baseline.add_argument("--baseline", help="existing baseline file to maintain")
     baseline.add_argument("--prune", action="store_true", help="remove accepted findings that no longer appear")
+    baseline.add_argument("--review-output", help="write a baseline review file for the generated baseline")
+    baseline.add_argument("--approved-by", help="reviewer name for --review-output")
+    baseline.add_argument("--reason", help="review reason for --review-output")
 
     explain = subparsers.add_parser("explain", help="explain a rule")
     explain.add_argument("rule_id")
@@ -52,6 +66,18 @@ def build_parser() -> argparse.ArgumentParser:
     subparsers.add_parser("doctor", help="show runtime and config discovery diagnostics")
     init = subparsers.add_parser("init", help="write a project mcp-audit configuration file")
     init.add_argument("--profile", choices=_PROFILES, default="balanced", help="configuration profile to write")
+    init.add_argument("--wizard", action="store_true", help="write guided team-ready defaults")
+    init.add_argument("--no-policy", action="store_true", help="with --wizard, skip writing the team policy file")
+
+    policy = subparsers.add_parser("policy", help="team policy operations")
+    policy_subparsers = policy.add_subparsers(dest="policy_command")
+    policy_check = policy_subparsers.add_parser("check", help="check team policy without writing a report")
+    policy_check.add_argument("--policy", required=True, help="team policy TOML file")
+    policy_check.add_argument("--profile", choices=_PROFILES, help="profile to check")
+    policy_check.add_argument("--config", action="append", default=[], help="config path to check; repeatable")
+    policy_check.add_argument("--baseline", help="baseline file to validate")
+    policy_check.add_argument("--baseline-review", help="baseline review TOML file")
+    policy_check.add_argument("--exceptions", help="policy exception TOML file")
     return parser
 
 
@@ -75,6 +101,27 @@ def _write_output(text: str, output: str | None) -> None:
         Path(output).write_text(text, encoding="utf-8")
     else:
         sys.stdout.write(text)
+
+
+def _load_scan_baseline(path: str | None, *, explicit: bool) -> set[str]:
+    if path is None:
+        return set()
+    if Path(path).exists():
+        return load_baseline_fingerprints(path)
+    if explicit:
+        raise McpAuditError(f"Baseline file not found: {path}")
+    return set()
+
+
+def _emit_policy_violations(violations) -> None:
+    for violation in violations:
+        print(f"{violation.code}: {violation.message}", file=sys.stderr)
+
+
+def _policy_exit_code(policy, violations) -> int:
+    if not violations:
+        return 0
+    return 1 if policy.mode == "enforced" else 0
 
 
 def _run_doctor() -> int:
@@ -139,18 +186,70 @@ def main(argv: list[str] | None = None) -> int:
             return _list_rules(profile=args.profile)
 
         if args.command == "init":
+            if args.wizard:
+                paths = write_wizard_config(profile=args.profile, write_policy=not args.no_policy)
+                for path in paths:
+                    print(f"Wrote {path}")
+                print("Next: run `mcp-audit policy check --policy .mcp-audit-policy.toml --profile team`")
+                return 0
             path = write_default_config(profile=args.profile)
             print(f"Wrote {path}")
+            return 0
+
+        if args.command == "policy":
+            if args.policy_command != "check":
+                print("Unknown policy command", file=sys.stderr)
+                return 2
+            project_config = load_scan_config()
+            profile = args.profile or project_config.profile
+            policy = load_team_policy(args.policy)
+            violations = check_team_policy(
+                policy,
+                profile=profile,
+                config_paths=args.config,
+                baseline_path=args.baseline,
+                baseline_review_path=args.baseline_review,
+                exceptions_path=args.exceptions,
+            )
+            if violations:
+                _emit_policy_violations(violations)
+                return _policy_exit_code(policy, violations)
+            print("Policy check passed")
             return 0
 
         if args.command == "scan":
             project_config = load_scan_config()
             profile = args.profile or project_config.profile
             baseline = args.baseline or project_config.baseline
+            baseline_for_policy = baseline if baseline and Path(baseline).exists() else None
             fail_on = args.fail_on or project_config.fail_on
             report = scan_config(args.config, profile=profile) if args.config else scan_default_configs(profile=profile)
-            report = filter_accepted_findings(report, load_baseline_fingerprints(baseline))
+            report = filter_accepted_findings(report, _load_scan_baseline(baseline, explicit=args.baseline is not None))
+            if args.exceptions:
+                exceptions, exception_violations = load_policy_exceptions(args.exceptions)
+                if exception_violations:
+                    _emit_policy_violations(exception_violations)
+                    return 1
+                report = filter_policy_exceptions(report, exceptions)
+            policy_failed = False
+            if args.policy:
+                policy = load_team_policy(args.policy)
+                violations = check_team_policy(
+                    policy,
+                    profile=profile,
+                    config_paths=[args.config] if args.config else [],
+                    baseline_path=baseline_for_policy,
+                    baseline_review_path=args.baseline_review,
+                    exceptions_path=args.exceptions,
+                    report=report,
+                )
+                if violations:
+                    _emit_policy_violations(violations)
+                    if policy.mode == "enforced":
+                        policy_failed = True
             _write_output(_render(report, args.format), args.output)
+            if policy_failed:
+                return 1
             return 1 if _should_fail(report, fail_on) else 0
 
         if args.command == "baseline":
@@ -162,6 +261,14 @@ def main(argv: list[str] | None = None) -> int:
                 _write_output(prune_baseline(report, args.baseline), args.output)
                 return 0
             _write_output(render_baseline(report), args.output)
+            if args.review_output:
+                if not args.approved_by or not args.reason:
+                    print("--approved-by and --reason are required with --review-output", file=sys.stderr)
+                    return 2
+                Path(args.review_output).write_text(
+                    render_baseline_review(args.output, approved_by=args.approved_by, reason=args.reason),
+                    encoding="utf-8",
+                )
             return 0
 
         if args.command == "explain":

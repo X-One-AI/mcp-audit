@@ -7,4 +7,5 @@ required_rules = ["XONE001", "XONE002", "XONE003", "XONE004", "XONE005", "XONE00
 blocked_rules = []
 allow_global_config_scan = false
 require_baseline_review = true
+baseline_review_file = ".mcp-audit-baseline.review.toml"
 max_allowed_severity = "medium"

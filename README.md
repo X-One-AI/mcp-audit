@@ -63,6 +63,7 @@ The first version should do four things well:
 mcp-audit doctor
 mcp-audit init
 mcp-audit init --profile team
+mcp-audit init --wizard --profile team
 mcp-audit scan
 mcp-audit scan --config ./mcp.json
 mcp-audit scan --config ./agent.yaml
@@ -75,6 +76,8 @@ mcp-audit scan --fail-on high
 mcp-audit baseline --config ./mcp.json --output .mcp-audit-baseline.json
 mcp-audit scan --config ./mcp.json --baseline .mcp-audit-baseline.json --fail-on high
 mcp-audit baseline --config ./mcp.json --baseline .mcp-audit-baseline.json --prune --output .mcp-audit-baseline.json
+mcp-audit policy check --policy .mcp-audit-policy.toml --profile team
+mcp-audit scan --config ./mcp.json --profile team --policy .mcp-audit-policy.toml
 mcp-audit rules
 mcp-audit explain XONE001
 ```
@@ -87,6 +90,15 @@ From this repository:
 python3 -m pip install -e .
 mcp-audit --version
 ```
+
+From a GitHub release artifact:
+
+```bash
+python3 -m pip install https://github.com/X-One-AI/mcp-audit/releases/download/v0.3.0/mcp_audit-0.3.0-py3-none-any.whl
+mcp-audit --version
+```
+
+PyPI/TestPyPI publishing is prepared through Trusted Publishing. Until the package index project is configured, GitHub release artifacts are the verified install path.
 
 If your Python environment cannot fetch build dependencies because of network or certificate restrictions, use the local development commands below until packaging dependencies are available.
 
@@ -137,6 +149,15 @@ Use `mcp-audit init --profile starter` for a quieter first run, or `mcp-audit in
 Explicit CLI flags override project configuration.
 Use `mcp-audit doctor` to inspect whether the config file is detected and which scan defaults are effective.
 
+For a guided team setup:
+
+```bash
+mcp-audit init --wizard --profile team
+mcp-audit policy check --policy .mcp-audit-policy.toml --profile team
+```
+
+The wizard writes `.mcp-audit.toml` and `.mcp-audit-policy.toml` with enforced team defaults.
+
 ## Rule Profiles
 
 ```text
@@ -183,8 +204,14 @@ mcp-audit scan --config ./mcp.json --format sarif --output mcp-audit.sarif --fai
 For existing repositories with accepted findings, create a reviewed baseline:
 
 ```bash
-mcp-audit baseline --config ./mcp.json --output .mcp-audit-baseline.json
-mcp-audit scan --config ./mcp.json --baseline .mcp-audit-baseline.json --fail-on high
+mcp-audit baseline --config ./mcp.json --output .mcp-audit-baseline.json \
+  --review-output .mcp-audit-baseline.review.toml \
+  --approved-by security-team \
+  --reason "accepted known MCP risks"
+mcp-audit scan --config ./mcp.json --profile team \
+  --baseline .mcp-audit-baseline.json \
+  --baseline-review .mcp-audit-baseline.review.toml \
+  --policy .mcp-audit-policy.toml
 ```
 
 Treat baseline updates as code-review events. A baseline is an acceptance record, not proof that the finding is safe.
@@ -200,9 +227,9 @@ Markdown is intended for human review. JSON and SARIF are intended for automatio
 ## Non-Goals
 
 ```text
-- No runtime policy enforcement in v0.1
-- No dashboard in v0.1
-- No hosted service in v0.1
+- No runtime sandboxing
+- No dashboard
+- No hosted service
 - No claim that the tool prevents all MCP or agent security issues
 ```
 
@@ -223,4 +250,6 @@ Success means at least three real users are willing to scan their own MCP or age
 - [Rule Tuning And False Positive Workflow](./docs/rule-tuning.md)
 - [Rule Tuning Findings](./docs/rule-tuning-findings.md)
 - [Distribution And Team Policy Roadmap](./docs/distribution-and-team-policy.md)
+- [Team Policy Schema](./docs/team-policy-schema.md)
+- [Publishing](./docs/publishing.md)
 - [Example High-Risk Config](./examples/high-risk-mcp.json)

@@ -8,6 +8,23 @@ All notable changes to `mcp-audit` are recorded here.
 
 - Nothing yet.
 
+## 0.3.0 - 2026-06-12
+
+### Added
+
+- Enforced team policy checks for profiles, required rules, blocked rules, global config paths, baseline review files, policy exceptions, and maximum unsuppressed severity.
+- `mcp-audit policy check` for CI-friendly team policy validation.
+- `mcp-audit scan --policy ...` enforcement mode.
+- Reviewed baseline hash generation with `mcp-audit baseline --review-output ...`.
+- Time-bounded policy exception files for approved finding fingerprints.
+- Guided team setup with `mcp-audit init --wizard`.
+- False-negative issue template and stable feedback triage workflow.
+
+### Changed
+
+- Version advanced to `0.3.0` for the stable production hardening release.
+- Team policy documentation now describes active enforcement instead of a draft-only schema.
+
 ## 0.2.0 - 2026-06-12
 
 ### Added

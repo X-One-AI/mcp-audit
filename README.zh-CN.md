@@ -63,6 +63,7 @@ Agentic DevSecOps / Safe Agent Operations
 mcp-audit doctor
 mcp-audit init
 mcp-audit init --profile team
+mcp-audit init --wizard --profile team
 mcp-audit scan
 mcp-audit scan --config ./mcp.json
 mcp-audit scan --config ./agent.yaml
@@ -75,6 +76,8 @@ mcp-audit scan --fail-on high
 mcp-audit baseline --config ./mcp.json --output .mcp-audit-baseline.json
 mcp-audit scan --config ./mcp.json --baseline .mcp-audit-baseline.json --fail-on high
 mcp-audit baseline --config ./mcp.json --baseline .mcp-audit-baseline.json --prune --output .mcp-audit-baseline.json
+mcp-audit policy check --policy .mcp-audit-policy.toml --profile team
+mcp-audit scan --config ./mcp.json --profile team --policy .mcp-audit-policy.toml
 mcp-audit rules
 mcp-audit explain XONE001
 ```
@@ -87,6 +90,15 @@ mcp-audit explain XONE001
 python3 -m pip install -e .
 mcp-audit --version
 ```
+
+从 GitHub Release artifact 安装：
+
+```bash
+python3 -m pip install https://github.com/X-One-AI/mcp-audit/releases/download/v0.3.0/mcp_audit-0.3.0-py3-none-any.whl
+mcp-audit --version
+```
+
+PyPI/TestPyPI 发布链路已经通过 Trusted Publishing 准备好。在 package index 项目配置完成前，GitHub release artifacts 是当前已验证的安装路径。
 
 如果你的 Python 环境因为网络或证书限制无法拉取构建依赖，请先使用下面的本地开发命令，直到 packaging 依赖可用。
 
@@ -137,6 +149,15 @@ baseline = ".mcp-audit-baseline.json"
 显式 CLI 参数优先级高于项目配置。
 可以用 `mcp-audit doctor` 检查配置文件是否被识别，以及当前生效的 scan 默认值。
 
+团队引导式配置：
+
+```bash
+mcp-audit init --wizard --profile team
+mcp-audit policy check --policy .mcp-audit-policy.toml --profile team
+```
+
+wizard 会写入 `.mcp-audit.toml` 和 `.mcp-audit-policy.toml`，并启用 enforced 团队默认策略。
+
 ## 规则 Profile
 
 ```text
@@ -183,8 +204,14 @@ mcp-audit scan --config ./mcp.json --format sarif --output mcp-audit.sarif --fai
 对于已有仓库中已经审查并接受的 findings，可以创建 baseline：
 
 ```bash
-mcp-audit baseline --config ./mcp.json --output .mcp-audit-baseline.json
-mcp-audit scan --config ./mcp.json --baseline .mcp-audit-baseline.json --fail-on high
+mcp-audit baseline --config ./mcp.json --output .mcp-audit-baseline.json \
+  --review-output .mcp-audit-baseline.review.toml \
+  --approved-by security-team \
+  --reason "accepted known MCP risks"
+mcp-audit scan --config ./mcp.json --profile team \
+  --baseline .mcp-audit-baseline.json \
+  --baseline-review .mcp-audit-baseline.review.toml \
+  --policy .mcp-audit-policy.toml
 ```
 
 baseline 更新应当进入代码审查。baseline 是风险接受记录，不代表 finding 本身安全。
@@ -200,9 +227,9 @@ Markdown 面向人工审查。JSON 和 SARIF 面向自动化。
 ## 非目标
 
 ```text
-- v0.1 不做运行时策略执行
-- v0.1 不做 dashboard
-- v0.1 不做 hosted service
+- 不做运行时沙箱
+- 不做 dashboard
+- 不做 hosted service
 - 不声称该工具能阻止所有 MCP 或 agent 安全问题
 ```
 
@@ -223,4 +250,6 @@ v0.1：扫描示例 MCP / agent 配置并生成有用的本地风险报告。
 - [规则调优和误报处理流程](./docs/rule-tuning.md)
 - [规则调优发现](./docs/rule-tuning-findings.md)
 - [分发和团队策略路线图](./docs/distribution-and-team-policy.md)
+- [团队策略 Schema](./docs/team-policy-schema.md)
+- [发布说明](./docs/publishing.md)
 - [高风险配置示例](./examples/high-risk-mcp.json)

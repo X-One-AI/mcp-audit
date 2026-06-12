@@ -1,6 +1,6 @@
 # Public Sample Feedback Loop
 
-The original goal was to have 3-5 real users scan their private MCP or AI coding configs and report false positive / false negative feedback. That is not available yet, so `v0.2.0` uses public sample review as the substitute.
+The original goal was to have 3-5 real users scan their private MCP or AI coding configs and report false positive / false negative feedback. That is not available yet, so public sample review remains the substitute until real-user feedback is available.
 
 ## Substitute Method
 
@@ -12,6 +12,13 @@ Run 3-5 public sample review passes from the existing corpus before each rule-tu
 4. For a false positive, add a negative fixture before weakening the rule.
 5. For a false negative, add a positive fixture before broadening the rule.
 6. Document the decision in `docs/rule-tuning-findings.md`.
+
+## Intake Channels
+
+- False-positive reports use `.github/ISSUE_TEMPLATE/false_positive.yml`.
+- False-negative reports use `.github/ISSUE_TEMPLATE/false_negative.yml`.
+- Public sample reviews use the record format below.
+- Private user reports must be sanitized before becoming fixtures.
 
 ## Review Record
 

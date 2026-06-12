@@ -1,0 +1,48 @@
+name: False negative report
+description: Report a risky MCP or agent configuration that mcp-audit did not flag.
+title: "[False negative]: "
+labels:
+  - false-negative
+  - rules
+body:
+  - type: textarea
+    id: config
+    attributes:
+      label: Minimal sanitized config snippet
+      description: Include the smallest config snippet that should have produced a finding. Do not include real secrets.
+      render: json
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected finding
+      description: Explain the risk, expected severity, and expected rule area.
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual scan result
+      description: Paste the relevant redacted scan output or say that no finding appeared.
+    validations:
+      required: true
+  - type: dropdown
+    id: source
+    attributes:
+      label: Source category
+      options:
+        - MCP server example
+        - AI coding client config
+        - Open public repository
+        - High-risk security sample
+        - Private team config
+    validations:
+      required: true
+  - type: textarea
+    id: constraints
+    attributes:
+      label: Operational context
+      description: Describe why this should be considered risky in real use.
+    validations:
+      required: true

@@ -25,6 +25,19 @@ fail_on = "{fail_on}"
 baseline = ".mcp-audit-baseline.json"
 """
 
+WIZARD_TEAM_POLICY_TEMPLATE = """[policy]
+schema_version = 1
+mode = "enforced"
+required_profile = "{profile}"
+allowed_profiles = ["balanced", "team"]
+required_rules = ["XONE001", "XONE002", "XONE003", "XONE004", "XONE005", "XONE006", "XONE007", "XONE008", "XONE009", "XONE010"]
+blocked_rules = []
+allow_global_config_scan = false
+require_baseline_review = true
+baseline_review_file = ".mcp-audit-baseline.review.toml"
+max_allowed_severity = "{max_allowed_severity}"
+"""
+
 
 @dataclass(frozen=True)
 class ScanConfig:
@@ -64,3 +77,23 @@ def write_default_config(path: str | Path = CONFIG_FILE, profile: str = "balance
         return output
     output.write_text(render_default_config(profile=profile), encoding="utf-8")
     return output
+
+
+def write_wizard_config(
+    *,
+    profile: str = "team",
+    write_policy: bool = True,
+    policy_path: str | Path = ".mcp-audit-policy.toml",
+) -> list[Path]:
+    config_path = write_default_config(profile=profile)
+    written = [config_path]
+    if write_policy:
+        output = Path(policy_path)
+        if not output.exists():
+            max_allowed = "medium" if profile == "team" else "high"
+            output.write_text(
+                WIZARD_TEAM_POLICY_TEMPLATE.format(profile=profile, max_allowed_severity=max_allowed),
+                encoding="utf-8",
+            )
+        written.append(output)
+    return written

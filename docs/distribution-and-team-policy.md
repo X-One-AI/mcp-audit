@@ -4,7 +4,7 @@ This document records the next product phase after `v0.1.0`: make `mcp-audit` ea
 
 ## Product Decision
 
-Prepare package publishing now, but keep PyPI production publish behind Trusted Publishing setup, TestPyPI verification, and release approval. Real-user scanning data is still preferred, but `v0.2.0` uses public sample review as a substitute until 3-5 external users can scan private configs.
+Prepare package publishing now, but keep PyPI production publish behind Trusted Publishing setup, TestPyPI verification, and release approval. Real-user scanning data is still preferred, but public sample review remains the substitute until 3-5 external users can scan private configs.
 
 ## Real Repository Sampling
 
