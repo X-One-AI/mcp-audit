@@ -8,6 +8,13 @@ All notable changes to `mcp-audit` are recorded here.
 
 - Nothing yet.
 
+## 0.3.1 - 2026-06-13
+
+### Changed
+
+- Renamed the Python distribution package to `xone-mcp-audit` because TestPyPI rejects `mcp-audit` as too similar to an existing project.
+- Kept the CLI command as `mcp-audit` and the Python import package as `mcp_audit`.
+
 ## 0.3.0 - 2026-06-12
 
 ### Added

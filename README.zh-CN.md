@@ -94,10 +94,11 @@ mcp-audit --version
 从 GitHub Release artifact 安装：
 
 ```bash
-python3 -m pip install https://github.com/X-One-AI/mcp-audit/releases/download/v0.3.0/mcp_audit-0.3.0-py3-none-any.whl
+python3 -m pip install https://github.com/X-One-AI/mcp-audit/releases/download/v0.3.1/xone_mcp_audit-0.3.1-py3-none-any.whl
 mcp-audit --version
 ```
 
+Python distribution package 是 `xone-mcp-audit`；安装后的 CLI 仍然是 `mcp-audit`。
 PyPI/TestPyPI 发布链路已经通过 Trusted Publishing 准备好。在 package index 项目配置完成前，GitHub release artifacts 是当前已验证的安装路径。
 
 如果你的 Python 环境因为网络或证书限制无法拉取构建依赖，请先使用下面的本地开发命令，直到 packaging 依赖可用。

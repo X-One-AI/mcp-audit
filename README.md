@@ -94,10 +94,11 @@ mcp-audit --version
 From a GitHub release artifact:
 
 ```bash
-python3 -m pip install https://github.com/X-One-AI/mcp-audit/releases/download/v0.3.0/mcp_audit-0.3.0-py3-none-any.whl
+python3 -m pip install https://github.com/X-One-AI/mcp-audit/releases/download/v0.3.1/xone_mcp_audit-0.3.1-py3-none-any.whl
 mcp-audit --version
 ```
 
+The Python distribution package is `xone-mcp-audit`; the installed CLI remains `mcp-audit`.
 PyPI/TestPyPI publishing is prepared through Trusted Publishing. Until the package index project is configured, GitHub release artifacts are the verified install path.
 
 If your Python environment cannot fetch build dependencies because of network or certificate restrictions, use the local development commands below until packaging dependencies are available.

@@ -6,7 +6,9 @@ def test_release_docs_cover_maturity_gates():
     checklist = Path("docs/release-checklist.md").read_text(encoding="utf-8")
     release_notes = Path("docs/releases/v0.2.0.md").read_text(encoding="utf-8")
     stable_notes = Path("docs/releases/v0.3.0.md").read_text(encoding="utf-8")
+    package_notes = Path("docs/releases/v0.3.1.md").read_text(encoding="utf-8")
 
+    assert "0.3.1" in changelog
     assert "0.3.0" in changelog
     assert "0.2.0" in changelog
     assert "0.1.0" in changelog
@@ -26,6 +28,8 @@ def test_release_docs_cover_maturity_gates():
     assert "False-positive and false-negative" in checklist
     assert "mcp-audit v0.2.0" in release_notes
     assert "mcp-audit v0.3.0" in stable_notes
+    assert "mcp-audit v0.3.1" in package_notes
+    assert "xone-mcp-audit" in package_notes
     assert "Release artifacts" in release_notes
     assert "Release artifacts" in stable_notes
 
@@ -52,8 +56,7 @@ def test_publish_workflow_uses_trusted_publishing():
 def test_publishing_docs_state_current_package_index_blocker():
     publishing = Path("docs/publishing.md").read_text(encoding="utf-8")
 
-    assert "not present on PyPI or TestPyPI" in publishing
-    assert "invalid-publisher" in publishing
-    assert "27424380172" in publishing
+    assert "xone-mcp-audit" in publishing
+    assert "mcp-audit` was rejected by TestPyPI" in publishing
     assert "Trusted Publisher" in publishing
     assert "GitHub release artifacts are the verified install path" in publishing

@@ -2,11 +2,14 @@
 
 `mcp-audit` uses GitHub Actions and PyPI Trusted Publishing for package publication. Trusted Publishing uses OpenID Connect instead of a long-lived package token.
 
-As of `2026-06-12`, `mcp-audit` is not present on PyPI or TestPyPI. Both package indexes returned `404` for `/pypi/mcp-audit/json`. The publish workflow builds artifacts successfully, but actual publication requires creating the package projects and configuring Trusted Publishers in the package indexes.
+As of `2026-06-13`, the Python distribution package is `xone-mcp-audit`. The installed CLI command remains `mcp-audit`.
+
+The original package name `mcp-audit` was rejected by TestPyPI as too similar to an existing project. Use `xone-mcp-audit` for PyPI and TestPyPI project configuration.
 
 The first TestPyPI publish attempt for `v0.3.0` failed at the trusted publishing exchange with `invalid-publisher`, meaning TestPyPI did not have a publisher matching these claims:
 
 ```text
+project: xone-mcp-audit
 repository: X-One-AI/mcp-audit
 workflow: .github/workflows/publish.yml
 ref: refs/tags/v0.3.0
@@ -35,18 +38,19 @@ The `pypi` environment should require manual approval before publishing.
 Configure Trusted Publishers in TestPyPI and PyPI with:
 
 ```text
+Project: xone-mcp-audit
 Owner: X-One-AI
 Repository: mcp-audit
 Workflow: publish.yml
 Environment: testpypi or pypi
 ```
 
-For TestPyPI, create the publisher for environment `testpypi` before re-running the workflow on tag `v0.3.0`.
+For TestPyPI, create the pending publisher for project `xone-mcp-audit` and environment `testpypi` before re-running the workflow on tag `v0.3.1`.
 
 ## Publish Order
 
 1. Merge and verify a green CI run on `main`.
-2. Tag the release, for example `v0.3.0`.
+2. Tag the release, for example `v0.3.1`.
 3. Create the GitHub release and attach CI-built artifacts.
 4. Run `Publish Python Package` with `repository = testpypi`.
 5. Verify a clean TestPyPI install.
@@ -57,7 +61,7 @@ For TestPyPI, create the publisher for environment `testpypi` before re-running 
 
 ```bash
 python -m venv /tmp/mcp-audit-testpypi
-/tmp/mcp-audit-testpypi/bin/python -m pip install --index-url https://test.pypi.org/simple/ --extra-index-url https://pypi.org/simple/ mcp-audit
+/tmp/mcp-audit-testpypi/bin/python -m pip install --index-url https://test.pypi.org/simple/ --extra-index-url https://pypi.org/simple/ xone-mcp-audit
 /tmp/mcp-audit-testpypi/bin/mcp-audit --version
 ```
 
@@ -66,7 +70,7 @@ python -m venv /tmp/mcp-audit-testpypi
 Until PyPI/TestPyPI are configured, install from GitHub release assets:
 
 ```bash
-python3 -m pip install https://github.com/X-One-AI/mcp-audit/releases/download/v0.3.0/mcp_audit-0.3.0-py3-none-any.whl
+python3 -m pip install https://github.com/X-One-AI/mcp-audit/releases/download/v0.3.1/xone_mcp_audit-0.3.1-py3-none-any.whl
 mcp-audit --version
 ```
 
