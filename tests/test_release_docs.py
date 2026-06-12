@@ -55,6 +55,7 @@ def test_distribution_roadmap_covers_package_and_team_strategy():
     assert "Team adoption" in roadmap
     assert "baseline review gate" in team_playbook
     assert "brew install x-one-ai/tap/mcp-audit" in homebrew
+    assert "https://github.com/X-One-AI/homebrew-tap/actions/runs/27431973399" in homebrew
 
 
 def test_publish_workflow_uses_trusted_publishing():

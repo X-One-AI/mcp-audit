@@ -1,12 +1,20 @@
 # Homebrew Packaging
 
-`mcp-audit` should publish to the official X-One tap before attempting `homebrew-core`.
+`mcp-audit` publishes through the official X-One tap before attempting `homebrew-core`.
 
 ## User Install
 
 ```bash
 brew install x-one-ai/tap/mcp-audit
 mcp-audit --version
+```
+
+Homebrew 5 may require trusting third-party taps before installation:
+
+```bash
+brew tap x-one-ai/tap
+brew trust --formula x-one-ai/tap/mcp-audit
+brew install x-one-ai/tap/mcp-audit
 ```
 
 ## Tap Repository
@@ -22,6 +30,11 @@ The formula should live at:
 ```text
 Formula/mcp-audit.rb
 ```
+
+CI status:
+
+- Tap repository: https://github.com/X-One-AI/homebrew-tap
+- Verified run: https://github.com/X-One-AI/homebrew-tap/actions/runs/27431973399
 
 ## Formula Requirements
 

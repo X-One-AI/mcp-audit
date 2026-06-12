@@ -101,6 +101,12 @@ Current tap target:
 brew install x-one-ai/tap/mcp-audit
 ```
 
+Current status:
+
+- Tap repository: https://github.com/X-One-AI/homebrew-tap
+- Tap CI verifies audit, source install, and formula test.
+- Verified run: https://github.com/X-One-AI/homebrew-tap/actions/runs/27431973399
+
 Readiness gates:
 
 - PyPI or GitHub release source archive is stable.
@@ -116,7 +122,6 @@ References:
 
 ## Non-Goals For This Phase
 
-- No Homebrew tap creation yet.
 - No hosted policy service.
 - No organization dashboard.
 - No recursive repository scan by default.
