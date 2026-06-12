@@ -75,7 +75,7 @@ Use PyPI Trusted Publishers for release publishing instead of a long-lived API t
 
 Current status:
 
-- Production package: `xone-mcp-audit==0.4.0`
+- Production package: `xone-mcp-audit==0.4.1`
 - CLI command: `mcp-audit`
 - PyPI metadata: https://pypi.org/pypi/xone-mcp-audit/json
 - TestPyPI metadata: https://test.pypi.org/pypi/xone-mcp-audit/json

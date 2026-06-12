@@ -43,5 +43,5 @@ Formula/mcp-audit.rb
 ## Current Target
 
 ```text
-xone-mcp-audit==0.4.0
+xone-mcp-audit==0.4.1
 ```
