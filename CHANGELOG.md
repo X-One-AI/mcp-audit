@@ -8,6 +8,20 @@ All notable changes to `mcp-audit` are recorded here.
 
 - Nothing yet.
 
+## 0.4.0 - 2026-06-13
+
+### Added
+
+- `mcp-audit discover` previews supported config paths without scanning files.
+- `mcp-audit doctor` now recommends the next onboarding command.
+- Rule explanations now include acceptance and policy exception guidance.
+- Team adoption playbook for CI gates, baseline review, exceptions, and rollout stages.
+- Homebrew tap packaging guidance for the official X-One tap.
+
+### Changed
+
+- README install guidance now treats PyPI as the default user install path.
+
 ## 0.3.1 - 2026-06-13
 
 ### Changed

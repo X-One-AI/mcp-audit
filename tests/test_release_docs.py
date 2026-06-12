@@ -7,7 +7,9 @@ def test_release_docs_cover_maturity_gates():
     release_notes = Path("docs/releases/v0.2.0.md").read_text(encoding="utf-8")
     stable_notes = Path("docs/releases/v0.3.0.md").read_text(encoding="utf-8")
     package_notes = Path("docs/releases/v0.3.1.md").read_text(encoding="utf-8")
+    adoption_notes = Path("docs/releases/v0.4.0.md").read_text(encoding="utf-8")
 
+    assert "0.4.0" in changelog
     assert "0.3.1" in changelog
     assert "0.3.0" in changelog
     assert "0.2.0" in changelog
@@ -26,22 +28,28 @@ def test_release_docs_cover_maturity_gates():
     assert "Team policy schema" in checklist
     assert "Team policy enforcement" in checklist
     assert "False-positive and false-negative" in checklist
+    assert "mcp-audit v0.4.0" in adoption_notes
     assert "mcp-audit v0.2.0" in release_notes
     assert "mcp-audit v0.3.0" in stable_notes
     assert "mcp-audit v0.3.1" in package_notes
     assert "xone-mcp-audit" in package_notes
+    assert "mcp-audit discover" in adoption_notes
     assert "Release artifacts" in release_notes
     assert "Release artifacts" in stable_notes
 
 
 def test_distribution_roadmap_covers_package_and_team_strategy():
     roadmap = Path("docs/distribution-and-team-policy.md").read_text(encoding="utf-8")
+    team_playbook = Path("docs/team-adoption-playbook.md").read_text(encoding="utf-8")
+    homebrew = Path("docs/homebrew.md").read_text(encoding="utf-8")
 
     assert "PyPI Trusted Publishers" in roadmap
-    assert "xone-mcp-audit==0.3.1" in roadmap
+    assert "xone-mcp-audit==0.4.0" in roadmap
     assert "Homebrew" in roadmap
     assert "init --profile team" in roadmap
     assert "Team adoption" in roadmap
+    assert "baseline review gate" in team_playbook
+    assert "brew install x-one-ai/tap/mcp-audit" in homebrew
 
 
 def test_publish_workflow_uses_trusted_publishing():

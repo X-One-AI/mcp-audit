@@ -61,6 +61,7 @@ Agentic DevSecOps / Safe Agent Operations
 
 ```bash
 mcp-audit doctor
+mcp-audit discover
 mcp-audit init
 mcp-audit init --profile team
 mcp-audit init --wizard --profile team
@@ -260,5 +261,7 @@ v0.1：扫描示例 MCP / agent 配置并生成有用的本地风险报告。
 - [规则调优发现](./docs/rule-tuning-findings.md)
 - [分发和团队策略路线图](./docs/distribution-and-team-policy.md)
 - [团队策略 Schema](./docs/team-policy-schema.md)
+- [团队落地 Playbook](./docs/team-adoption-playbook.md)
+- [Homebrew 打包](./docs/homebrew.md)
 - [发布说明](./docs/publishing.md)
 - [高风险配置示例](./examples/high-risk-mcp.json)

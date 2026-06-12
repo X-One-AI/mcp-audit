@@ -75,7 +75,7 @@ Use PyPI Trusted Publishers for release publishing instead of a long-lived API t
 
 Current status:
 
-- Production package: `xone-mcp-audit==0.3.1`
+- Production package: `xone-mcp-audit==0.4.0`
 - CLI command: `mcp-audit`
 - PyPI metadata: https://pypi.org/pypi/xone-mcp-audit/json
 - TestPyPI metadata: https://test.pypi.org/pypi/xone-mcp-audit/json
@@ -95,11 +95,18 @@ Reference: https://docs.pypi.org/trusted-publishers/
 
 Start with an X-One tap before attempting `homebrew-core`. Homebrew's Python formula guidance treats CLI applications differently from importable libraries, which fits `mcp-audit`.
 
+Current tap target:
+
+```bash
+brew install x-one-ai/tap/mcp-audit
+```
+
 Readiness gates:
 
 - PyPI or GitHub release source archive is stable.
 - Formula installs a runnable `mcp-audit` executable.
 - Formula test runs `mcp-audit --version`.
+- Tap README links back to the English and Chinese project README files.
 - Document whether the tap is the official installation path or an early adopter channel.
 
 References:

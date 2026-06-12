@@ -35,7 +35,7 @@ def test_cli_version_outputs_package_version(capsys):
 
     captured = capsys.readouterr()
     assert exit_code == 0
-    assert captured.out.strip() == "mcp-audit 0.3.1"
+    assert captured.out.strip() == "mcp-audit 0.4.0"
 
 
 def test_cli_version_outputs_package_version_from_console_args(monkeypatch, capsys):
@@ -45,7 +45,7 @@ def test_cli_version_outputs_package_version_from_console_args(monkeypatch, caps
 
     captured = capsys.readouterr()
     assert exit_code == 0
-    assert captured.out.strip() == "mcp-audit 0.3.1"
+    assert captured.out.strip() == "mcp-audit 0.4.0"
 
 
 def test_package_module_entrypoint_outputs_version():
@@ -58,7 +58,7 @@ def test_package_module_entrypoint_outputs_version():
         stdout=subprocess.PIPE,
     )
 
-    assert result.stdout.strip() == "mcp-audit 0.3.1"
+    assert result.stdout.strip() == "mcp-audit 0.4.0"
 
 
 def test_cli_without_command_returns_usage(capsys):
@@ -86,10 +86,30 @@ def test_cli_doctor_reports_runtime_and_discovery(tmp_path, monkeypatch, capsys)
 
     captured = capsys.readouterr()
     assert exit_code == 0
-    assert "mcp-audit 0.3.1" in captured.out
+    assert "mcp-audit 0.4.0" in captured.out
     assert "Python:" in captured.out
     assert ".mcp.json: found" in captured.out
     assert "No network calls are required for scanning." in captured.out
+    assert "Next recommended command:" in captured.out
+
+
+def test_cli_discover_reports_default_and_ignored_candidates(tmp_path, monkeypatch, capsys):
+    cursor = tmp_path / ".cursor" / "mcp.json"
+    cursor.parent.mkdir()
+    cursor.write_text((FIXTURES / "safe-mcp.json").read_text(encoding="utf-8"), encoding="utf-8")
+    ignored = tmp_path / "nested" / "mcp.json"
+    ignored.parent.mkdir()
+    ignored.write_text("{}", encoding="utf-8")
+    monkeypatch.chdir(tmp_path)
+
+    exit_code = main(["discover"])
+
+    captured = capsys.readouterr()
+    assert exit_code == 0
+    assert ".cursor/mcp.json" in captured.out
+    assert "nested/mcp.json" in captured.out
+    assert "Ignored supported filenames outside bounded defaults" in captured.out
+    assert "No files were scanned." in captured.out
 
 
 def test_cli_scan_discovers_default_mcp_json(tmp_path, monkeypatch, capsys):
@@ -131,6 +151,8 @@ def test_cli_explain_outputs_rule_rationale(capsys):
     assert exit_code == 0
     assert "XONE001" in captured.out
     assert "Remediation" in captured.out
+    assert "When this is acceptable" in captured.out
+    assert "Policy exception guidance" in captured.out
 
 
 def test_cli_rules_lists_registered_rules(capsys):

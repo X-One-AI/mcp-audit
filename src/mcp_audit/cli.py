@@ -13,7 +13,7 @@ from mcp_audit.baseline import (
     prune_baseline,
     render_baseline,
 )
-from mcp_audit.config_discovery import DEFAULT_CANDIDATES, discover_configs
+from mcp_audit.config_discovery import DEFAULT_CANDIDATES, discover_config_candidates, discover_configs
 from mcp_audit.errors import ConfigNotFoundError, McpAuditError, ParseConfigError
 from mcp_audit.project_config import CONFIG_FILE, load_scan_config, write_default_config
 from mcp_audit.project_config import write_wizard_config
@@ -64,6 +64,7 @@ def build_parser() -> argparse.ArgumentParser:
     rules = subparsers.add_parser("rules", help="list registered rules")
     rules.add_argument("--profile", choices=_PROFILES, default="balanced", help="show rules enabled by a profile")
     subparsers.add_parser("doctor", help="show runtime and config discovery diagnostics")
+    subparsers.add_parser("discover", help="preview supported config paths without scanning")
     init = subparsers.add_parser("init", help="write a project mcp-audit configuration file")
     init.add_argument("--profile", choices=_PROFILES, default="balanced", help="configuration profile to write")
     init.add_argument("--wizard", action="store_true", help="write guided team-ready defaults")
@@ -128,6 +129,7 @@ def _run_doctor() -> int:
     found = {str(path) for path in discover_configs()}
     project_config = load_scan_config()
     config_status = f"found ({CONFIG_FILE})" if Path(CONFIG_FILE).exists() else "missing"
+    next_command = "mcp-audit scan" if found else "mcp-audit discover"
     lines = [
         f"mcp-audit {__version__}",
         f"Python: {platform.python_version()}",
@@ -146,7 +148,48 @@ def _run_doctor() -> int:
         [
             "",
             "No network calls are required for scanning.",
+            f"Next recommended command: `{next_command}`",
             "Use `mcp-audit scan --config PATH` to scan a specific file.",
+            "",
+        ]
+    )
+    sys.stdout.write("\n".join(lines))
+    return 0
+
+
+def _relative_path(path: Path) -> str:
+    try:
+        return str(path.resolve().relative_to(Path.cwd().resolve()))
+    except ValueError:
+        return str(path)
+
+
+def _run_discover() -> int:
+    candidates = discover_config_candidates()
+    lines = [
+        "Config discovery preview",
+        "",
+        "Supported default paths:",
+    ]
+    if candidates.supported:
+        for path in candidates.supported:
+            lines.append(f"- {_relative_path(path)}")
+    else:
+        lines.append("- none")
+
+    lines.extend(["", "Ignored supported filenames outside bounded defaults:"])
+    if candidates.ignored_supported_names:
+        for path in candidates.ignored_supported_names:
+            lines.append(f"- {_relative_path(path)}")
+    else:
+        lines.append("- none")
+
+    lines.extend(
+        [
+            "",
+            "No files were scanned.",
+            "Run `mcp-audit scan` to scan supported default paths.",
+            "Run `mcp-audit scan --config PATH` to scan a specific file.",
             "",
         ]
     )
@@ -181,6 +224,9 @@ def main(argv: list[str] | None = None) -> int:
     try:
         if args.command == "doctor":
             return _run_doctor()
+
+        if args.command == "discover":
+            return _run_discover()
 
         if args.command == "rules":
             return _list_rules(profile=args.profile)
@@ -286,7 +332,11 @@ def main(argv: list[str] | None = None) -> int:
                         "",
                         info.description,
                         "",
+                        "When this is acceptable: only after a reviewer documents why the access is required and why a narrower configuration is not practical.",
+                        "",
                         f"Remediation: {info.remediation}",
+                        "",
+                        "Policy exception guidance: prefer a reviewed baseline for known findings; use a time-bounded policy exception only when the risk owner accepts this exact finding fingerprint.",
                         "",
                     ]
                 )

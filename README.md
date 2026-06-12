@@ -61,6 +61,7 @@ The first version should do four things well:
 
 ```bash
 mcp-audit doctor
+mcp-audit discover
 mcp-audit init
 mcp-audit init --profile team
 mcp-audit init --wizard --profile team
@@ -260,5 +261,7 @@ Success means at least three real users are willing to scan their own MCP or age
 - [Rule Tuning Findings](./docs/rule-tuning-findings.md)
 - [Distribution And Team Policy Roadmap](./docs/distribution-and-team-policy.md)
 - [Team Policy Schema](./docs/team-policy-schema.md)
+- [Team Adoption Playbook](./docs/team-adoption-playbook.md)
+- [Homebrew Packaging](./docs/homebrew.md)
 - [Publishing](./docs/publishing.md)
 - [Example High-Risk Config](./examples/high-risk-mcp.json)

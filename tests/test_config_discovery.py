@@ -2,7 +2,7 @@ from pathlib import Path
 
 import pytest
 
-from mcp_audit.config_discovery import discover_configs, resolve_config
+from mcp_audit.config_discovery import discover_config_candidates, discover_configs, resolve_config
 from mcp_audit.errors import ConfigNotFoundError
 
 
@@ -28,6 +28,20 @@ def test_discover_configs_uses_bounded_candidate_paths(tmp_path):
     discovered = discover_configs(tmp_path)
 
     assert discovered == [expected, claude, continue_config, windsurf, zed]
+
+
+def test_discover_config_candidates_reports_supported_and_ignored_paths(tmp_path):
+    supported = tmp_path / ".cursor" / "mcp.json"
+    supported.parent.mkdir()
+    supported.write_text("{}", encoding="utf-8")
+    ignored = tmp_path / "nested" / "mcp.json"
+    ignored.parent.mkdir()
+    ignored.write_text("{}", encoding="utf-8")
+
+    candidates = discover_config_candidates(tmp_path)
+
+    assert candidates.supported == [supported]
+    assert candidates.ignored_supported_names == [ignored]
 
 
 def test_resolve_config_reports_missing_file():
