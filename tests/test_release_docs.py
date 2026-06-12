@@ -38,6 +38,7 @@ def test_distribution_roadmap_covers_package_and_team_strategy():
     roadmap = Path("docs/distribution-and-team-policy.md").read_text(encoding="utf-8")
 
     assert "PyPI Trusted Publishers" in roadmap
+    assert "xone-mcp-audit==0.3.1" in roadmap
     assert "Homebrew" in roadmap
     assert "init --profile team" in roadmap
     assert "Team adoption" in roadmap
@@ -60,5 +61,6 @@ def test_publishing_docs_state_current_package_index_blocker():
     assert "mcp-audit` was rejected by TestPyPI" in publishing
     assert "Trusted Publisher" in publishing
     assert "TestPyPI is published and install-verified" in publishing
+    assert "PyPI is published and install-verified" in publishing
     assert "https://github.com/X-One-AI/mcp-audit/actions/runs/27429045294" in publishing
-    assert "PyPI production publishing is still pending" in publishing
+    assert "https://github.com/X-One-AI/mcp-audit/actions/runs/27429382062" in publishing

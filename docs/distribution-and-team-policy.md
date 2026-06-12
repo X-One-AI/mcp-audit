@@ -4,7 +4,7 @@ This document records the next product phase after `v0.1.0`: make `mcp-audit` ea
 
 ## Product Decision
 
-Prepare package publishing now, but keep PyPI production publish behind Trusted Publishing setup, TestPyPI verification, and release approval. Real-user scanning data is still preferred, but public sample review remains the substitute until 3-5 external users can scan private configs.
+Package publishing now uses PyPI Trusted Publishing with TestPyPI verification and release-tag-gated production publishing. Real-user scanning data is still preferred, but public sample review remains the substitute until 3-5 external users can scan private configs.
 
 ## Real Repository Sampling
 
@@ -73,9 +73,16 @@ Global client settings, including Cline user-level settings, should be audited w
 
 Use PyPI Trusted Publishers for release publishing instead of a long-lived API token. PyPI documents Trusted Publishers as an OIDC-based relationship between a package project and CI workflow.
 
+Current status:
+
+- Production package: `xone-mcp-audit==0.3.1`
+- CLI command: `mcp-audit`
+- PyPI metadata: https://pypi.org/pypi/xone-mcp-audit/json
+- TestPyPI metadata: https://test.pypi.org/pypi/xone-mcp-audit/json
+
 Readiness gates:
 
-- Reserve and verify the `mcp-audit` project name.
+- Reserve and verify the `xone-mcp-audit` project name.
 - Add a release workflow using manual dispatch, GitHub environments, and tag-gated production publishing.
 - Use PyPI Trusted Publishing with a GitHub Actions environment.
 - Publish first to TestPyPI.
@@ -102,7 +109,6 @@ References:
 
 ## Non-Goals For This Phase
 
-- No PyPI production publish yet.
 - No Homebrew tap creation yet.
 - No hosted policy service.
 - No organization dashboard.

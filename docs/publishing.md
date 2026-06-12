@@ -47,7 +47,7 @@ Environment: testpypi or pypi
 
 For TestPyPI, the pending publisher for project `xone-mcp-audit` and environment `testpypi` has been verified with tag `v0.3.1`.
 
-For PyPI, create the pending publisher for project `xone-mcp-audit` and environment `pypi` before running the workflow against the production index.
+For PyPI, the pending publisher for project `xone-mcp-audit` and environment `pypi` has been verified with tag `v0.3.1`.
 
 ## Publish Order
 
@@ -74,14 +74,19 @@ If the local Python certificate store is broken, verify the environment before c
 
 ## Current Package Index Status
 
+PyPI is published and install-verified:
+
+- Package: `xone-mcp-audit==0.3.1`
+- CLI: `mcp-audit 0.3.1`
+- Workflow run: https://github.com/X-One-AI/mcp-audit/actions/runs/27429382062
+- Index metadata: https://pypi.org/pypi/xone-mcp-audit/json
+
 TestPyPI is published and install-verified:
 
 - Package: `xone-mcp-audit==0.3.1`
 - CLI: `mcp-audit 0.3.1`
 - Workflow run: https://github.com/X-One-AI/mcp-audit/actions/runs/27429045294
 - Index metadata: https://test.pypi.org/pypi/xone-mcp-audit/json
-
-PyPI production publishing is still pending the production Trusted Publisher setup for project `xone-mcp-audit` with environment `pypi`.
 
 ## GitHub Release Install Path
 

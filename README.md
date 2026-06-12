@@ -84,7 +84,16 @@ mcp-audit explain XONE001
 
 ## Install
 
-From this repository:
+From PyPI:
+
+```bash
+python3 -m pip install xone-mcp-audit
+mcp-audit --version
+```
+
+The Python distribution package is `xone-mcp-audit`; the installed CLI remains `mcp-audit`.
+
+From this repository for local development:
 
 ```bash
 python3 -m pip install -e .
@@ -98,8 +107,7 @@ python3 -m pip install https://github.com/X-One-AI/mcp-audit/releases/download/v
 mcp-audit --version
 ```
 
-The Python distribution package is `xone-mcp-audit`; the installed CLI remains `mcp-audit`.
-PyPI/TestPyPI publishing is prepared through Trusted Publishing. Until the package index project is configured, GitHub release artifacts are the verified install path.
+PyPI and TestPyPI publishing use Trusted Publishing through GitHub Actions.
 
 If your Python environment cannot fetch build dependencies because of network or certificate restrictions, use the local development commands below until packaging dependencies are available.
 
