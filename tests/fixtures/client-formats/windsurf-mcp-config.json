@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "docs": {
+      "command": "uvx",
+      "args": [
+        "context7-mcp@latest"
+      ]
+    }
+  }
+}

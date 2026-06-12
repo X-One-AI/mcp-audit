@@ -1,0 +1,14 @@
+{
+  "context_servers": {
+    "docs": {
+      "command": {
+        "path": "npx",
+        "args": [
+          "-y",
+          "@modelcontextprotocol/server-filesystem",
+          "."
+        ]
+      }
+    }
+  }
+}

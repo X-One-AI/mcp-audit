@@ -11,3 +11,5 @@ def test_readme_has_english_and_chinese_versions():
     assert "mcp-audit doctor" in chinese
     assert "mcp-audit scan --config ./mcp.json" in english
     assert "mcp-audit scan --config ./mcp.json" in chinese
+    assert "mcp-audit init --profile team" in english
+    assert "mcp-audit init --profile team" in chinese

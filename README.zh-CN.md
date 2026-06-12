@@ -59,10 +59,12 @@ Agentic DevSecOps / Safe Agent Operations
 ```bash
 mcp-audit doctor
 mcp-audit init
+mcp-audit init --profile team
 mcp-audit scan
 mcp-audit scan --config ./mcp.json
 mcp-audit scan --config ./agent.yaml
 mcp-audit scan --config ./agent.toml
+mcp-audit scan --profile starter
 mcp-audit scan --format markdown
 mcp-audit scan --format json
 mcp-audit scan --format sarif --output mcp-audit.sarif
@@ -98,8 +100,15 @@ agent.toml
 .cursor/mcp.json
 .vscode/mcp.json
 .claude/mcp.json
+.claude/claude_desktop_config.json
 .continue/config.json
 .continue/config.yaml
+.windsurf/mcp_config.json
+.gemini/settings.json
+.qwen/settings.json
+.factory/mcp.json
+.factory/settings.json
+.zed/settings.json
 ```
 
 它不会递归扫描整个仓库。显式 `--config` 支持 JSON、YAML 和 TOML object 配置。
@@ -116,12 +125,22 @@ mcp-audit init
 
 ```toml
 [scan]
+profile = "balanced"
 fail_on = "high"
 baseline = ".mcp-audit-baseline.json"
 ```
 
+如果希望首次运行更安静，可以用 `mcp-audit init --profile starter`。如果团队希望 CI 对 medium 及以上风险失败，可以用 `mcp-audit init --profile team`。
 显式 CLI 参数优先级高于项目配置。
 可以用 `mcp-audit doctor` 检查配置文件是否被识别，以及当前生效的 scan 默认值。
+
+## 规则 Profile
+
+```text
+starter  - 只启用高信号规则；排除 medium 级网络启发式规则
+balanced - 单仓库默认 profile
+team     - 规则集合与 balanced 相同，但生成更严格的团队配置默认值
+```
 
 ## 本地开发
 
@@ -190,4 +209,5 @@ v0.1：扫描示例 MCP / agent 配置并生成有用的本地风险报告。
 - [规则草案](./docs/rules.md)
 - [发布检查清单](./docs/release-checklist.md)
 - [规则调优和误报处理流程](./docs/rule-tuning.md)
+- [分发和团队策略路线图](./docs/distribution-and-team-policy.md)
 - [高风险配置示例](./examples/high-risk-mcp.json)

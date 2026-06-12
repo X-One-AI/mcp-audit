@@ -11,3 +11,14 @@ def test_release_docs_cover_maturity_gates():
     assert "README.md" in checklist
     assert "README.zh-CN.md" in checklist
     assert "risk acceptance, not safety proof" in checklist
+    assert "Rule profiles are documented" in checklist
+    assert "Sanitized real-world corpus" in checklist
+
+
+def test_distribution_roadmap_covers_package_and_team_strategy():
+    roadmap = Path("docs/distribution-and-team-policy.md").read_text(encoding="utf-8")
+
+    assert "PyPI Trusted Publishers" in roadmap
+    assert "Homebrew" in roadmap
+    assert "init --profile team" in roadmap
+    assert "Team adoption" in roadmap

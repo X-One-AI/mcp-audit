@@ -1,0 +1,11 @@
+file_analyzer:
+  role: File Analysis Coordinator
+  max_iterations: 10
+  mcp:
+    mcpServers:
+      filesystem:
+        command: npx
+        args:
+          - "-y"
+          - "@modelcontextprotocol/server-filesystem"
+          - "."

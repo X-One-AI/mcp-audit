@@ -15,8 +15,15 @@ DEFAULT_CANDIDATES = (
     ".cursor/mcp.json",
     ".vscode/mcp.json",
     ".claude/mcp.json",
+    ".claude/claude_desktop_config.json",
     ".continue/config.json",
     ".continue/config.yaml",
+    ".windsurf/mcp_config.json",
+    ".gemini/settings.json",
+    ".qwen/settings.json",
+    ".factory/mcp.json",
+    ".factory/settings.json",
+    ".zed/settings.json",
 )
 
 

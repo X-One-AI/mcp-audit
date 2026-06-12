@@ -2,6 +2,22 @@
 
 All notable changes to `mcp-audit` are recorded here.
 
+## Unreleased
+
+### Added
+
+- Sanitized real-world corpus fixtures with source manifest.
+- Client-format fixtures for Claude-style config, Windsurf, Zed, Gemini/Qwen-style settings, and project-local MCP configs.
+- Rule profiles: `starter`, `balanced`, and `team`.
+- `mcp-audit init --profile ...` and `mcp-audit scan --profile ...`.
+- Distribution and team policy roadmap for PyPI, Homebrew, configuration guidance, profiles, and team adoption.
+
+### Changed
+
+- Unpinned remote package detection now scans nested `mcpServers` and Zed-style `context_servers`.
+- Floating package versions such as `@latest` are treated as unpinned.
+- Documentation placeholders such as `<your-api-key>` remain outside literal-secret findings.
+
 ## 0.1.0 - 2026-06-12
 
 ### Added

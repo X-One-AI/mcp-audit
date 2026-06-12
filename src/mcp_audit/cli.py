@@ -22,6 +22,7 @@ from mcp_audit.renderers.sarif_report import render_sarif_report
 from mcp_audit.rules.registry import get_rule_info, get_rule_infos
 
 _SEVERITY_RANK = {"low": 1, "medium": 2, "high": 3}
+_PROFILES = ("starter", "balanced", "team")
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -34,6 +35,7 @@ def build_parser() -> argparse.ArgumentParser:
     scan.add_argument("--format", choices=("markdown", "json", "sarif"), default="markdown")
     scan.add_argument("--output", help="write report to file instead of stdout")
     scan.add_argument("--fail-on", choices=("high", "medium", "low", "never"))
+    scan.add_argument("--profile", choices=_PROFILES, help="rule profile to use for this scan")
     scan.add_argument("--baseline", help="suppress findings accepted in a baseline file")
 
     baseline = subparsers.add_parser("baseline", help="write a baseline of currently accepted findings")
@@ -45,9 +47,11 @@ def build_parser() -> argparse.ArgumentParser:
     explain = subparsers.add_parser("explain", help="explain a rule")
     explain.add_argument("rule_id")
 
-    subparsers.add_parser("rules", help="list registered rules")
+    rules = subparsers.add_parser("rules", help="list registered rules")
+    rules.add_argument("--profile", choices=_PROFILES, default="balanced", help="show rules enabled by a profile")
     subparsers.add_parser("doctor", help="show runtime and config discovery diagnostics")
-    subparsers.add_parser("init", help="write a project mcp-audit configuration file")
+    init = subparsers.add_parser("init", help="write a project mcp-audit configuration file")
+    init.add_argument("--profile", choices=_PROFILES, default="balanced", help="configuration profile to write")
     return parser
 
 
@@ -82,6 +86,7 @@ def _run_doctor() -> int:
         f"Python: {platform.python_version()}",
         f"Platform: {platform.platform()}",
         f"Project config: {config_status}",
+        f"Effective profile: {project_config.profile}",
         f"Effective fail-on: {project_config.fail_on}",
         f"Effective baseline: {project_config.baseline or 'none'}",
         "",
@@ -102,9 +107,9 @@ def _run_doctor() -> int:
     return 0
 
 
-def _list_rules() -> int:
+def _list_rules(profile: str = "balanced") -> int:
     lines = ["Rule     Severity  Category      Title", "-------  --------  ------------  -----"]
-    for rule in get_rule_infos():
+    for rule in get_rule_infos(profile=profile):
         lines.append(f"{rule.id:<7}  {rule.severity:<8}  {rule.category:<12}  {rule.title}")
     lines.append("")
     sys.stdout.write("\n".join(lines))
@@ -131,18 +136,19 @@ def main(argv: list[str] | None = None) -> int:
             return _run_doctor()
 
         if args.command == "rules":
-            return _list_rules()
+            return _list_rules(profile=args.profile)
 
         if args.command == "init":
-            path = write_default_config()
+            path = write_default_config(profile=args.profile)
             print(f"Wrote {path}")
             return 0
 
         if args.command == "scan":
             project_config = load_scan_config()
+            profile = args.profile or project_config.profile
             baseline = args.baseline or project_config.baseline
             fail_on = args.fail_on or project_config.fail_on
-            report = scan_config(args.config) if args.config else scan_default_configs()
+            report = scan_config(args.config, profile=profile) if args.config else scan_default_configs(profile=profile)
             report = filter_accepted_findings(report, load_baseline_fingerprints(baseline))
             _write_output(_render(report, args.format), args.output)
             return 1 if _should_fail(report, fail_on) else 0

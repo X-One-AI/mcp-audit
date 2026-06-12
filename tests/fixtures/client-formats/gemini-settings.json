@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "local-tool": {
+      "command": "node",
+      "args": [
+        "./tools/mcp-server.js"
+      ]
+    }
+  }
+}

@@ -8,8 +8,23 @@ from mcp_audit.rules.filesystem import BroadFilesystemAccessRule
 from mcp_audit.rules.network import BroadNetworkAccessRule
 from mcp_audit.rules.secrets import LiteralSecretRule
 
+PROFILE_RULE_IDS = {
+    "starter": {"XONE001", "XONE002", "XONE003", "XONE004", "XONE006", "XONE007"},
+    "balanced": {"XONE001", "XONE002", "XONE003", "XONE004", "XONE005", "XONE006", "XONE007"},
+    "team": {"XONE001", "XONE002", "XONE003", "XONE004", "XONE005", "XONE006", "XONE007"},
+}
 
-def get_rules() -> list[Rule]:
+
+def get_rules(profile: str = "balanced") -> list[Rule]:
+    enabled = PROFILE_RULE_IDS.get(profile, PROFILE_RULE_IDS["balanced"])
+    return [
+        rule
+        for rule in _all_rules()
+        if rule.id in enabled
+    ]
+
+
+def _all_rules() -> list[Rule]:
     return [
         LiteralSecretRule(),
         UnsafeCommandRule(),
@@ -28,7 +43,7 @@ def get_rule_info(rule_id: str) -> RuleInfo | None:
     return None
 
 
-def get_rule_infos() -> list[RuleInfo]:
+def get_rule_infos(profile: str = "balanced") -> list[RuleInfo]:
     return [
         RuleInfo(
             id=rule.id,
@@ -38,5 +53,5 @@ def get_rule_infos() -> list[RuleInfo]:
             description=rule.description,
             remediation=rule.remediation,
         )
-        for rule in get_rules()
+        for rule in get_rules(profile=profile)
     ]

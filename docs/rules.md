@@ -24,6 +24,26 @@ Rule IDs use the `XONE` prefix until the project has a stable public naming conv
 | XONE006 | high | Secret exposure | Broad environment exposure | Tool receives the full process environment instead of explicit variables. |
 | XONE007 | high | Command execution | Dangerous container option | Container launch uses privileged, host namespace, or host-root mount options. |
 
+## Rule Profiles
+
+Profiles let teams tune noise without changing rule IDs.
+
+| Profile | Intent | Enabled rules |
+|---|---|---|
+| starter | First scan with the least noisy high-signal rules. | XONE001, XONE002, XONE003, XONE004, XONE006, XONE007 |
+| balanced | Default local review profile. | XONE001, XONE002, XONE003, XONE004, XONE005, XONE006, XONE007 |
+| team | Team/CI profile. Uses the balanced rule set with stricter generated config defaults. | XONE001, XONE002, XONE003, XONE004, XONE005, XONE006, XONE007 |
+
+Use `starter` when onboarding a noisy repository. Use `team` only after the team agrees that medium findings should block CI.
+
+## False Positive Boundary Notes
+
+- Documentation placeholders such as `<your-api-key>` are not treated as literal secrets.
+- `${TOKEN}` style environment references are not treated as literal secrets.
+- `@latest`, `@next`, and similar floating versions are treated as unpinned packages.
+- Nested `mcpServers` and Zed-style `context_servers` are scanned for remote package execution.
+- Local node entrypoints such as `./tools/server.js` are not treated as remote package execution.
+
 ## Reserved Future Rule Areas
 
 These are intentionally not implemented in the first CLI path:

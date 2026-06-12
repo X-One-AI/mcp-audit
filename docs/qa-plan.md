@@ -12,7 +12,11 @@
 - Reports show the count of findings suppressed by baseline.
 - `mcp-audit baseline --prune` removes accepted findings that no longer appear in the current scan.
 - `mcp-audit init` writes `.mcp-audit.toml` with safe default scan policy.
+- `mcp-audit init --profile ...` writes profile-specific defaults without requiring an interactive prompt.
+- `mcp-audit scan --profile ...` changes enabled rules without changing rule IDs.
 - `mcp-audit scan` uses `.mcp-audit.toml` defaults when explicit CLI flags are absent.
+- Sanitized real-world corpus fixtures scan successfully and cover known false-positive boundaries.
+- Client-format fixtures cover Claude, Cursor-style MCP, Windsurf, Gemini/Qwen-style settings, and Zed `context_servers`.
 - Human-readable reports redact literal secret values while preserving useful evidence.
 - Every v0.1 rule has at least one positive fixture and one negative fixture.
 - JSON report contract tests fail on required key removal or rename.
@@ -46,6 +50,9 @@
 | REQ-014 | Explain known rule. | integration | `mcp-audit explain XONE001` returns description and remediation. | `tests/test_cli.py` |
 | REQ-014A | Baseline accepted findings. | integration | Baseline writes fingerprints and scan suppresses matching accepted findings. | `tests/test_baseline.py` |
 | REQ-014B | Project configuration. | integration | Init writes config; scan reads baseline and fail-on defaults; explicit flags override config. | `tests/test_project_config.py` |
+| REQ-014C | Rule profiles. | integration | Starter profile removes the medium network heuristic; team init writes stricter defaults. | `tests/test_rule_profiles.py` |
+| REQ-014D | Real-world corpus. | integration | Sanitized public-sample-derived fixtures scan and preserve expected rule boundaries. | `tests/test_real_world_corpus.py` |
+| REQ-014E | Client format fixtures. | integration | Client-shaped configs for Claude, Windsurf, Zed, Gemini/Qwen-style settings scan successfully. | `tests/test_client_fixtures.py` |
 | REQ-015 | Redact secret in Markdown. | unit / contract | Raw literal token is absent from Markdown output. | `tests/test_redaction.py` |
 | REQ-016 | Preserve useful redacted evidence. | unit / contract | Redacted output includes config path and masked token family. | `tests/test_redaction.py` |
 | REQ-018 | Every rule has positive and negative fixtures. | meta-test | Test fails if any registered rule lacks fixture coverage. | `tests/test_rule_coverage.py` |
@@ -61,6 +68,8 @@
 
 - Data:
   - `mcp-audit/examples/high-risk-mcp.json`
+  - `mcp-audit/tests/fixtures/real-world-corpus`
+  - `mcp-audit/tests/fixtures/client-formats`
   - positive fixtures for secret, command, supply-chain, filesystem, and network rules
   - negative fixtures for safe env references, pinned commands, narrow paths, and benign configs
   - invalid JSON fixture for parse error handling
@@ -87,6 +96,8 @@
 - E2E-007A: Verify JSON, Markdown, and SARIF report the suppressed finding count when a baseline suppresses findings.
 - E2E-007B: Add a stale baseline fingerprint, run prune, and verify the stale entry is removed.
 - E2E-008: Run `init`, inspect `.mcp-audit.toml`, then scan using project config defaults.
+- E2E-009: Run `init --profile team`, inspect stricter generated defaults, and run `scan --profile starter` against a high-risk fixture.
+- E2E-010: Run scans across sanitized real-world corpus fixtures and client-format fixtures.
 
 ## Contract Checks
 
@@ -140,6 +151,7 @@
 ## Regression Scope
 
 - Stable rule IDs must not be renamed without migration notes.
+- Profile membership must not change without changelog notes and fixture evidence.
 - JSON report required keys must not be removed without schema version change.
 - Markdown output must not expose raw secret-like values.
 - Default scan behavior must remain local-first and non-networked.
@@ -168,6 +180,7 @@ Manual gates:
 
 - Windows path behavior: not tested in v0.1 unless Windows fixture and environment are added.
 - YAML configs: not tested until YAML support is included.
+- Publishing to PyPI/Homebrew: planned but not executed in this phase.
 - Runtime MCP server behavior: out of scope for static audit v0.1.
 - Runtime sandboxing or enforcement: out of scope for v0.1.
 - Hosted service behavior: out of scope.

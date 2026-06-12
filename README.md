@@ -59,10 +59,12 @@ The first version should do four things well:
 ```bash
 mcp-audit doctor
 mcp-audit init
+mcp-audit init --profile team
 mcp-audit scan
 mcp-audit scan --config ./mcp.json
 mcp-audit scan --config ./agent.yaml
 mcp-audit scan --config ./agent.toml
+mcp-audit scan --profile starter
 mcp-audit scan --format markdown
 mcp-audit scan --format json
 mcp-audit scan --format sarif --output mcp-audit.sarif
@@ -98,8 +100,15 @@ agent.toml
 .cursor/mcp.json
 .vscode/mcp.json
 .claude/mcp.json
+.claude/claude_desktop_config.json
 .continue/config.json
 .continue/config.yaml
+.windsurf/mcp_config.json
+.gemini/settings.json
+.qwen/settings.json
+.factory/mcp.json
+.factory/settings.json
+.zed/settings.json
 ```
 
 It does not recursively scan the repository. Explicit `--config` supports JSON, YAML, and TOML object configs.
@@ -116,12 +125,22 @@ This writes `.mcp-audit.toml`:
 
 ```toml
 [scan]
+profile = "balanced"
 fail_on = "high"
 baseline = ".mcp-audit-baseline.json"
 ```
 
+Use `mcp-audit init --profile starter` for a quieter first run, or `mcp-audit init --profile team` when CI should fail on medium or higher findings.
 Explicit CLI flags override project configuration.
 Use `mcp-audit doctor` to inspect whether the config file is detected and which scan defaults are effective.
+
+## Rule Profiles
+
+```text
+starter  - high-signal rules only; excludes the medium network heuristic
+balanced - default profile for individual repositories
+team     - same rule set as balanced, with stricter generated config defaults
+```
 
 ## Local Development
 
@@ -190,4 +209,5 @@ Success means at least three real users are willing to scan their own MCP or age
 - [Rules Draft](./docs/rules.md)
 - [Release Checklist](./docs/release-checklist.md)
 - [Rule Tuning And False Positive Workflow](./docs/rule-tuning.md)
+- [Distribution And Team Policy Roadmap](./docs/distribution-and-team-policy.md)
 - [Example High-Risk Config](./examples/high-risk-mcp.json)

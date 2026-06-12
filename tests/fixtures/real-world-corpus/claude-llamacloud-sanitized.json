@@ -1,0 +1,28 @@
+{
+  "mcpServers": {
+    "llama_index_docs_server": {
+      "command": "uvx",
+      "args": [
+        "llamacloud-mcp@latest",
+        "--indexes",
+        "docs:Documentation",
+        "--project-id",
+        "<your-project-id>",
+        "--org-id",
+        "<your-org-id>",
+        "--api-key",
+        "<your-api-key>",
+        "--transport",
+        "stdio"
+      ]
+    },
+    "filesystem": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-filesystem",
+        "."
+      ]
+    }
+  }
+}

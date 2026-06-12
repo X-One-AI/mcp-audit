@@ -16,24 +16,24 @@ def _display_path(path: Path) -> Path:
         return Path(path.name)
 
 
-def _scan_one(path: str | Path):
+def _scan_one(path: str | Path, profile: str = "balanced"):
     file_path = resolve_config(path)
     display_path = _display_path(file_path)
     document = parse_config(file_path)
     document = ConfigDocument(path=display_path, parser=document.parser, data=document.data)
     findings = []
-    for rule in get_rules():
+    for rule in get_rules(profile=profile):
         findings.extend(rule.evaluate(document))
     findings.sort(key=lambda item: (item.rule_id, item.config_path, item.evidence))
     return ScannedFile(path=str(display_path), parser=document.parser, status="scanned"), findings
 
 
-def scan_config(path: str | Path) -> ScanReport:
-    scanned_file, findings = _scan_one(path)
+def scan_config(path: str | Path, profile: str = "balanced") -> ScanReport:
+    scanned_file, findings = _scan_one(path, profile=profile)
     return ScanReport(files=[scanned_file], findings=findings)
 
 
-def scan_default_configs(root: str | Path = ".") -> ScanReport:
+def scan_default_configs(root: str | Path = ".", profile: str = "balanced") -> ScanReport:
     configs = discover_configs(root)
     if not configs:
         raise NoConfigDiscoveredError()
@@ -41,7 +41,7 @@ def scan_default_configs(root: str | Path = ".") -> ScanReport:
     files: list[ScannedFile] = []
     findings = []
     for config in configs:
-        scanned_file, config_findings = _scan_one(config)
+        scanned_file, config_findings = _scan_one(config, profile=profile)
         files.append(scanned_file)
         findings.extend(config_findings)
     findings.sort(key=lambda item: (item.rule_id, item.config_path, item.evidence))

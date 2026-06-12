@@ -10,6 +10,8 @@ python -m build
 mcp-audit --version
 mcp-audit doctor
 mcp-audit rules
+mcp-audit rules --profile starter
+mcp-audit init --profile team
 mcp-audit scan --config examples/high-risk-mcp.json --format json --output /tmp/mcp-audit.json
 mcp-audit scan --config examples/high-risk-mcp.json --format sarif --output /tmp/mcp-audit.sarif
 mcp-audit scan --config tests/fixtures/high-risk-agent.yaml --format json --output /tmp/mcp-audit-yaml.json
@@ -38,8 +40,10 @@ python -m json.tool /tmp/mcp-audit-real-world.json >/dev/null
 - Reports show suppressed finding count when baseline is used.
 - Baseline prune removes stale accepted findings.
 - Doctor shows project configuration status and effective scan defaults.
+- Rule profiles are documented and smoke-tested.
 - JSON, YAML, and TOML config smoke checks pass.
 - Real-world shaped fixture smoke check passes.
+- Sanitized real-world corpus and client-format fixtures pass.
 - Package artifacts are built under `dist/`.
 - CI uploads package artifacts for the release commit.
 - False-positive workflow exists under `.github/ISSUE_TEMPLATE/`.
