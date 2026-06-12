@@ -7,6 +7,7 @@ All notable changes to `mcp-audit` are recorded here.
 ### Added
 
 - Sanitized real-world corpus fixtures with source manifest.
+- Twelve-sample real-world corpus v2 with source matrix and rule-tuning findings.
 - Client-format fixtures for Claude-style config, Windsurf, Zed, Gemini/Qwen-style settings, and project-local MCP configs.
 - Rule profiles: `starter`, `balanced`, and `team`.
 - `mcp-audit init --profile ...` and `mcp-audit scan --profile ...`.
@@ -15,7 +16,10 @@ All notable changes to `mcp-audit` are recorded here.
 ### Changed
 
 - Unpinned remote package detection now scans nested `mcpServers` and Zed-style `context_servers`.
+- Unpinned remote package detection now treats `bunx` like other remote package runners.
 - Floating package versions such as `@latest` are treated as unpinned.
+- Broad filesystem detection now treats `${HOME}` as broad access.
+- Secret detection ignores CLI option names such as `--api-key`.
 - Documentation placeholders such as `<your-api-key>` remain outside literal-secret findings.
 
 ## 0.1.0 - 2026-06-12

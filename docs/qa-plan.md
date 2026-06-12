@@ -16,6 +16,7 @@
 - `mcp-audit scan --profile ...` changes enabled rules without changing rule IDs.
 - `mcp-audit scan` uses `.mcp-audit.toml` defaults when explicit CLI flags are absent.
 - Sanitized real-world corpus fixtures scan successfully and cover known false-positive boundaries.
+- Sanitized real-world corpus v2 tracks twelve public samples with source traceability and rule-gap notes.
 - Client-format fixtures cover Claude, Cursor-style MCP, Windsurf, Gemini/Qwen-style settings, and Zed `context_servers`.
 - Human-readable reports redact literal secret values while preserving useful evidence.
 - Every v0.1 rule has at least one positive fixture and one negative fixture.
@@ -52,6 +53,7 @@
 | REQ-014B | Project configuration. | integration | Init writes config; scan reads baseline and fail-on defaults; explicit flags override config. | `tests/test_project_config.py` |
 | REQ-014C | Rule profiles. | integration | Starter profile removes the medium network heuristic; team init writes stricter defaults. | `tests/test_rule_profiles.py` |
 | REQ-014D | Real-world corpus. | integration | Sanitized public-sample-derived fixtures scan and preserve expected rule boundaries. | `tests/test_real_world_corpus.py` |
+| REQ-014D2 | Twelve-sample corpus v2. | integration / docs | Public sample matrix, corpus v2 fixtures, and rule-tuning findings remain in sync. | `tests/test_real_world_corpus_v2.py` |
 | REQ-014E | Client format fixtures. | integration | Client-shaped configs for Claude, Windsurf, Zed, Gemini/Qwen-style settings scan successfully. | `tests/test_client_fixtures.py` |
 | REQ-015 | Redact secret in Markdown. | unit / contract | Raw literal token is absent from Markdown output. | `tests/test_redaction.py` |
 | REQ-016 | Preserve useful redacted evidence. | unit / contract | Redacted output includes config path and masked token family. | `tests/test_redaction.py` |
@@ -69,6 +71,7 @@
 - Data:
   - `mcp-audit/examples/high-risk-mcp.json`
   - `mcp-audit/tests/fixtures/real-world-corpus`
+  - `mcp-audit/tests/fixtures/real-world-corpus-v2`
   - `mcp-audit/tests/fixtures/client-formats`
   - positive fixtures for secret, command, supply-chain, filesystem, and network rules
   - negative fixtures for safe env references, pinned commands, narrow paths, and benign configs
@@ -98,6 +101,7 @@
 - E2E-008: Run `init`, inspect `.mcp-audit.toml`, then scan using project config defaults.
 - E2E-009: Run `init --profile team`, inspect stricter generated defaults, and run `scan --profile starter` against a high-risk fixture.
 - E2E-010: Run scans across sanitized real-world corpus fixtures and client-format fixtures.
+- E2E-011: Run scans across the twelve-sample corpus v2 and review `docs/rule-tuning-findings.md` for expected gaps.
 
 ## Contract Checks
 

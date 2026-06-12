@@ -39,3 +39,7 @@ Every tuning change needs:
 - Does the report remain actionable?
 - Do JSON, Markdown, and SARIF contracts still pass?
 ```
+
+## Corpus-Driven Findings
+
+Use [Rule Tuning Findings](./rule-tuning-findings.md) to track patterns found through sanitized real-world samples before turning them into new rules.

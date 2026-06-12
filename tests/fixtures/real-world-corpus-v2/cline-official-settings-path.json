@@ -1,0 +1,13 @@
+{
+  "mcpServers": {
+    "cline-sidecar-example": {
+      "command": "node",
+      "args": [
+        "./sidecar/index.js"
+      ],
+      "env": {
+        "CLINE_MCP_SETTINGS_PATH": "${CLINE_MCP_SETTINGS_PATH}"
+      }
+    }
+  }
+}

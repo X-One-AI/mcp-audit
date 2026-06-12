@@ -44,6 +44,7 @@ python -m json.tool /tmp/mcp-audit-real-world.json >/dev/null
 - JSON, YAML, and TOML config smoke checks pass.
 - Real-world shaped fixture smoke check passes.
 - Sanitized real-world corpus and client-format fixtures pass.
+- Twelve-sample real-world corpus v2 passes and rule gaps are documented.
 - Package artifacts are built under `dist/`.
 - CI uploads package artifacts for the release commit.
 - False-positive workflow exists under `.github/ISSUE_TEMPLATE/`.

@@ -4,7 +4,7 @@ from mcp_audit.model import ConfigDocument, Finding
 from mcp_audit.rules.base import make_finding, walk_json
 
 _SHELL_COMMANDS = {"bash", "sh", "zsh", "fish", "powershell", "cmd", "exec", "eval"}
-_REMOTE_RUNNERS = {"npx", "uvx"}
+_REMOTE_RUNNERS = {"bunx", "npx", "uvx"}
 _FLOATING_VERSIONS = {"latest", "next", "canary", "beta", "alpha", "dev", "nightly"}
 
 

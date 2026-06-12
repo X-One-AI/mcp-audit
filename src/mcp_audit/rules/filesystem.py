@@ -6,7 +6,7 @@ from mcp_audit.rules.base import make_finding, walk_json
 
 def _is_broad_path(value: str) -> bool:
     normalized = value.rstrip("/")
-    return normalized in {"/", "~", "$HOME"} or normalized.startswith("/Users/") or normalized.startswith("/home/")
+    return normalized in {"/", "~", "$HOME", "${HOME}"} or normalized.startswith("/Users/") or normalized.startswith("/home/")
 
 
 class BroadFilesystemAccessRule:

@@ -20,6 +20,8 @@ def redact_text(value: object) -> str:
 def looks_like_literal_secret(value: object) -> bool:
     if not isinstance(value, str):
         return False
+    if value.startswith("-"):
+        return False
     if value.startswith("${") and value.endswith("}"):
         return False
     if _GITHUB_TOKEN.search(value):

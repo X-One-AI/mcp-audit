@@ -1,0 +1,27 @@
+global:
+  timeout: "30s"
+  health_check: true
+  log_level: "info"
+
+mcpServers:
+  filesystem:
+    command: "npx"
+    args:
+      - "@modelcontextprotocol/server-filesystem"
+      - "."
+  system_metrics:
+    command: "python3"
+    args:
+      - "-m"
+      - "mcp_system_monitor"
+      - "--interval"
+      - "5"
+    env:
+      MONITOR_CPU: "true"
+      MONITOR_MEMORY: "true"
+      MONITOR_DISK: "true"
+  git_tools:
+    command: "git-mcp-server"
+    args:
+      - "--repo-path"
+      - "."

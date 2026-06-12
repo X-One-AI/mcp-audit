@@ -207,7 +207,9 @@ Success means at least three real users are willing to scan their own MCP or age
 
 - [Operating Model](./ops/README.md)
 - [Rules Draft](./docs/rules.md)
+- [Real-World Sample Matrix](./docs/real-world-sample-matrix.md)
 - [Release Checklist](./docs/release-checklist.md)
 - [Rule Tuning And False Positive Workflow](./docs/rule-tuning.md)
+- [Rule Tuning Findings](./docs/rule-tuning-findings.md)
 - [Distribution And Team Policy Roadmap](./docs/distribution-and-team-policy.md)
 - [Example High-Risk Config](./examples/high-risk-mcp.json)
