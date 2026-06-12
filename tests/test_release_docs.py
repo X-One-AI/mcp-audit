@@ -70,5 +70,5 @@ def test_publishing_docs_state_current_package_index_blocker():
     assert "Trusted Publisher" in publishing
     assert "TestPyPI is published and install-verified" in publishing
     assert "PyPI is published and install-verified" in publishing
-    assert "https://github.com/X-One-AI/mcp-audit/actions/runs/27429045294" in publishing
-    assert "https://github.com/X-One-AI/mcp-audit/actions/runs/27429382062" in publishing
+    assert "https://github.com/X-One-AI/mcp-audit/actions/runs/27430177317" in publishing
+    assert "https://github.com/X-One-AI/mcp-audit/actions/runs/27430262751" in publishing

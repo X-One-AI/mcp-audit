@@ -76,16 +76,16 @@ If the local Python certificate store is broken, verify the environment before c
 
 PyPI is published and install-verified:
 
-- Package: `xone-mcp-audit==0.3.1`
-- CLI: `mcp-audit 0.3.1`
-- Workflow run: https://github.com/X-One-AI/mcp-audit/actions/runs/27429382062
+- Package: `xone-mcp-audit==0.4.0`
+- CLI: `mcp-audit 0.4.0`
+- Workflow run: https://github.com/X-One-AI/mcp-audit/actions/runs/27430262751
 - Index metadata: https://pypi.org/pypi/xone-mcp-audit/json
 
 TestPyPI is published and install-verified:
 
-- Package: `xone-mcp-audit==0.3.1`
-- CLI: `mcp-audit 0.3.1`
-- Workflow run: https://github.com/X-One-AI/mcp-audit/actions/runs/27429045294
+- Package: `xone-mcp-audit==0.4.0`
+- CLI: `mcp-audit 0.4.0`
+- Workflow run: https://github.com/X-One-AI/mcp-audit/actions/runs/27430177317
 - Index metadata: https://test.pypi.org/pypi/xone-mcp-audit/json
 
 ## GitHub Release Install Path
@@ -93,6 +93,6 @@ TestPyPI is published and install-verified:
 Install from GitHub release assets when package-index publication is not desired:
 
 ```bash
-python3 -m pip install https://github.com/X-One-AI/mcp-audit/releases/download/v0.3.1/xone_mcp_audit-0.3.1-py3-none-any.whl
+python3 -m pip install https://github.com/X-One-AI/mcp-audit/releases/download/v0.4.0/xone_mcp_audit-0.4.0-py3-none-any.whl
 mcp-audit --version
 ```
