@@ -8,8 +8,11 @@ def test_release_docs_cover_maturity_gates():
     stable_notes = Path("docs/releases/v0.3.0.md").read_text(encoding="utf-8")
     package_notes = Path("docs/releases/v0.3.1.md").read_text(encoding="utf-8")
     adoption_notes = Path("docs/releases/v0.4.0.md").read_text(encoding="utf-8")
+    distribution_notes = Path("docs/releases/v0.4.1.md").read_text(encoding="utf-8")
+    license_text = Path("LICENSE").read_text(encoding="utf-8")
 
     assert "0.4.0" in changelog
+    assert "0.4.1" in changelog
     assert "0.3.1" in changelog
     assert "0.3.0" in changelog
     assert "0.2.0" in changelog
@@ -29,11 +32,13 @@ def test_release_docs_cover_maturity_gates():
     assert "Team policy enforcement" in checklist
     assert "False-positive and false-negative" in checklist
     assert "mcp-audit v0.4.0" in adoption_notes
+    assert "mcp-audit v0.4.1" in distribution_notes
     assert "mcp-audit v0.2.0" in release_notes
     assert "mcp-audit v0.3.0" in stable_notes
     assert "mcp-audit v0.3.1" in package_notes
     assert "xone-mcp-audit" in package_notes
     assert "mcp-audit discover" in adoption_notes
+    assert "MIT License" in license_text
     assert "Release artifacts" in release_notes
     assert "Release artifacts" in stable_notes
 

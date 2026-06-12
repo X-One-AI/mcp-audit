@@ -8,6 +8,12 @@ All notable changes to `mcp-audit` are recorded here.
 
 - Nothing yet.
 
+## 0.4.1 - 2026-06-13
+
+### Fixed
+
+- Added MIT license metadata and README package metadata for cleaner PyPI/Homebrew distribution.
+
 ## 0.4.0 - 2026-06-13
 
 ### Added
