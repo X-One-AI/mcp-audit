@@ -35,7 +35,7 @@ def test_cli_version_outputs_package_version(capsys):
 
     captured = capsys.readouterr()
     assert exit_code == 0
-    assert captured.out.strip() == "mcp-audit 0.1.0"
+    assert captured.out.strip() == "mcp-audit 0.2.0"
 
 
 def test_cli_version_outputs_package_version_from_console_args(monkeypatch, capsys):
@@ -45,7 +45,7 @@ def test_cli_version_outputs_package_version_from_console_args(monkeypatch, caps
 
     captured = capsys.readouterr()
     assert exit_code == 0
-    assert captured.out.strip() == "mcp-audit 0.1.0"
+    assert captured.out.strip() == "mcp-audit 0.2.0"
 
 
 def test_package_module_entrypoint_outputs_version():
@@ -58,7 +58,7 @@ def test_package_module_entrypoint_outputs_version():
         stdout=subprocess.PIPE,
     )
 
-    assert result.stdout.strip() == "mcp-audit 0.1.0"
+    assert result.stdout.strip() == "mcp-audit 0.2.0"
 
 
 def test_cli_without_command_returns_usage(capsys):
@@ -86,7 +86,7 @@ def test_cli_doctor_reports_runtime_and_discovery(tmp_path, monkeypatch, capsys)
 
     captured = capsys.readouterr()
     assert exit_code == 0
-    assert "mcp-audit 0.1.0" in captured.out
+    assert "mcp-audit 0.2.0" in captured.out
     assert "Python:" in captured.out
     assert ".mcp.json: found" in captured.out
     assert "No network calls are required for scanning." in captured.out

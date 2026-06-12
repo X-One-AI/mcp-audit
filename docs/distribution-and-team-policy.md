@@ -4,7 +4,7 @@ This document records the next product phase after `v0.1.0`: make `mcp-audit` ea
 
 ## Product Decision
 
-Do not publish new package channels until real-user scanning data is available. The next release should improve input coverage, false-positive tuning, and team defaults first.
+Prepare package publishing now, but keep PyPI production publish behind Trusted Publishing setup, TestPyPI verification, and release approval. Real-user scanning data is still preferred, but `v0.2.0` uses public sample review as a substitute until 3-5 external users can scan private configs.
 
 ## Real Repository Sampling
 
@@ -19,6 +19,8 @@ Use a sanitized corpus instead of vendoring full public configs.
 ```
 
 The current corpus lives under `tests/fixtures/real-world-corpus`.
+
+Use `docs/public-sample-feedback-loop.md` when real-user feedback is unavailable.
 
 ## Configuration Guidance
 
@@ -63,7 +65,7 @@ Recommended team rollout:
 5. Move CI to `team` only after medium findings are accepted as blocking.
 ```
 
-Future team policy fields should remain in `.mcp-audit.toml` and avoid remote service dependencies in the CLI path.
+Team policy fields are drafted in `docs/team-policy-schema.md` and demonstrated by `examples/team-policy.toml`. They should remain file-based and avoid remote service dependencies in the CLI path.
 
 Global client settings, including Cline user-level settings, should be audited with explicit `--config` paths. They should not become default discovery targets because that would surprise users by reading home-directory configuration.
 
@@ -74,7 +76,7 @@ Use PyPI Trusted Publishers for release publishing instead of a long-lived API t
 Readiness gates:
 
 - Reserve and verify the `mcp-audit` project name.
-- Add a release workflow triggered only by protected tags.
+- Add a release workflow using manual dispatch, GitHub environments, and tag-gated production publishing.
 - Use PyPI Trusted Publishing with a GitHub Actions environment.
 - Publish first to TestPyPI.
 - Verify install from a clean virtual environment.

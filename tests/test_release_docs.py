@@ -4,15 +4,23 @@ from pathlib import Path
 def test_release_docs_cover_maturity_gates():
     changelog = Path("CHANGELOG.md").read_text(encoding="utf-8")
     checklist = Path("docs/release-checklist.md").read_text(encoding="utf-8")
+    release_notes = Path("docs/releases/v0.2.0.md").read_text(encoding="utf-8")
 
+    assert "0.2.0" in changelog
     assert "0.1.0" in changelog
     assert "Baseline creation and suppression" in changelog
+    assert "GitHub URL to sanitized fixture workflow" in changelog
     assert "GitHub CI is green" in checklist
+    assert "v0.2.0" in checklist
     assert "README.md" in checklist
     assert "README.zh-CN.md" in checklist
     assert "risk acceptance, not safety proof" in checklist
     assert "Rule profiles are documented" in checklist
     assert "Sanitized real-world corpus" in checklist
+    assert "PyPI/TestPyPI Trusted Publishing workflow" in checklist
+    assert "Team policy schema" in checklist
+    assert "mcp-audit v0.2.0" in release_notes
+    assert "Release artifacts" in release_notes
 
 
 def test_distribution_roadmap_covers_package_and_team_strategy():
@@ -22,3 +30,13 @@ def test_distribution_roadmap_covers_package_and_team_strategy():
     assert "Homebrew" in roadmap
     assert "init --profile team" in roadmap
     assert "Team adoption" in roadmap
+
+
+def test_publish_workflow_uses_trusted_publishing():
+    workflow = Path(".github/workflows/publish.yml").read_text(encoding="utf-8")
+
+    assert "id-token: write" in workflow
+    assert "pypa/gh-action-pypi-publish@release/v1" in workflow
+    assert "https://test.pypi.org/legacy/" in workflow
+    assert "environment: testpypi" in workflow
+    assert "environment: pypi" in workflow

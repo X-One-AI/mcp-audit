@@ -6,13 +6,23 @@ All notable changes to `mcp-audit` are recorded here.
 
 ### Added
 
+- Nothing yet.
+
+## 0.2.0 - 2026-06-12
+
+### Added
+
 - Sanitized real-world corpus fixtures with source manifest.
+- Internal GitHub URL to sanitized fixture workflow.
 - Twelve-sample real-world corpus v2 with source matrix and rule-tuning findings.
 - Client-format fixtures for Claude-style config, Windsurf, Zed, Gemini/Qwen-style settings, and project-local MCP configs.
 - Rules for broad tool enablement, unpinned container images, and sensitive container environment passthrough.
 - Rule profiles: `starter`, `balanced`, and `team`.
 - `mcp-audit init --profile ...` and `mcp-audit scan --profile ...`.
 - Distribution and team policy roadmap for PyPI, Homebrew, configuration guidance, profiles, and team adoption.
+- PyPI/TestPyPI Trusted Publishing workflow.
+- Team policy schema draft and parser.
+- Public sample review workflow as a substitute for unavailable real-user configuration reviews.
 
 ### Changed
 

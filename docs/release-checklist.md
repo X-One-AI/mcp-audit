@@ -22,6 +22,7 @@ mcp-audit scan --config tests/fixtures/real-world-corpus-v2/kubernetes-http-enab
 mcp-audit baseline --config examples/high-risk-mcp.json --output /tmp/mcp-audit-baseline.json
 mcp-audit scan --config examples/high-risk-mcp.json --baseline /tmp/mcp-audit-baseline.json --format json --output /tmp/mcp-audit-baselined.json
 mcp-audit baseline --config examples/high-risk-mcp.json --baseline /tmp/mcp-audit-baseline.json --prune --output /tmp/mcp-audit-baseline-pruned.json
+PYTHONPATH=src python scripts/sanitize_github_config.py https://github.com/X-One-AI/mcp-audit/blob/main/examples/high-risk-mcp.json --output /tmp/mcp-audit-sanitized-fixture.json --metadata-output /tmp/mcp-audit-sanitized-fixture.source.txt
 python -m json.tool /tmp/mcp-audit.json >/dev/null
 python -m json.tool /tmp/mcp-audit.sarif >/dev/null
 python -m json.tool /tmp/mcp-audit-baseline.json >/dev/null
@@ -32,6 +33,7 @@ python -m json.tool /tmp/mcp-audit-toml.json >/dev/null
 python -m json.tool /tmp/mcp-audit-real-world.json >/dev/null
 python -m json.tool /tmp/mcp-audit-docker.json >/dev/null
 python -m json.tool /tmp/mcp-audit-tools.json >/dev/null
+python -m json.tool /tmp/mcp-audit-sanitized-fixture.json >/dev/null
 ```
 
 ## Release Gates
@@ -50,8 +52,13 @@ python -m json.tool /tmp/mcp-audit-tools.json >/dev/null
 - Sanitized real-world corpus and client-format fixtures pass.
 - Twelve-sample real-world corpus v2 passes and rule gaps are documented.
 - v0.2 broad-tool, Docker image, and Docker env passthrough rules are covered by positive and negative fixtures.
+- GitHub URL to sanitized fixture workflow is smoke-tested.
+- Public sample review substitute exists for 3-5 unavailable real-user reviews.
+- Team policy schema is documented with a parseable example.
+- PyPI/TestPyPI Trusted Publishing workflow exists and uses OIDC.
 - Package artifacts are built under `dist/`.
 - CI uploads package artifacts for the release commit.
+- GitHub release notes exist for the release.
 - False-positive workflow exists under `.github/ISSUE_TEMPLATE/`.
 - No report or baseline exposes raw secret fixture values.
 
@@ -60,6 +67,6 @@ python -m json.tool /tmp/mcp-audit-tools.json >/dev/null
 Only tag after all required verification passes:
 
 ```bash
-git tag -a v0.1.0 -m "mcp-audit v0.1.0"
-git push origin v0.1.0
+git tag -a v0.2.0 -m "mcp-audit v0.2.0"
+git push origin v0.2.0
 ```
