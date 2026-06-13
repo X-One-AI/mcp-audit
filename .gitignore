@@ -11,3 +11,9 @@ build/
 htmlcov/
 .DS_Store
 *.log
+
+# Temporary internal working documents
+docs/superpowers/
+*.analysis.md
+*.plan.md
+*x-one-skipped-inputs.md
