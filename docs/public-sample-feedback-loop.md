@@ -1,6 +1,6 @@
 # Public Sample Feedback Loop
 
-The original goal was to have 3-5 real users scan their private MCP or AI coding configs and report false positive / false negative feedback. That is not available yet, so public sample review remains the substitute until real-user feedback is available.
+Public samples are a substitute, not a maturity claim. They keep rule tuning moving while real-user feedback is unavailable. The original goal was to have 3-5 real users scan their private MCP or AI coding configs and report false positive / false negative feedback.
 
 ## Substitute Method
 

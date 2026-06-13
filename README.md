@@ -214,6 +214,10 @@ mcp-audit scan --config ./mcp.json --format sarif --output mcp-audit.sarif --fai
 
 For team CI, copy [examples/github-actions-team-policy.yml](./examples/github-actions-team-policy.yml) and keep policy files under code review.
 
+## Feedback Intake
+
+Use public issue templates for false positives and false negatives. Public sample review remains a substitute until 3-5 real users can provide sanitized private scan summaries. Treat feedback as rule input only after it becomes a fixture, documented limitation, or rule-tuning finding.
+
 For existing repositories with accepted findings, create a reviewed baseline:
 
 ```bash
