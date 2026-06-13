@@ -3,6 +3,7 @@
 Team policy is separate from rule profiles. Profiles choose rule bundles for a scan; policy describes how an organization expects repositories to use those profiles and how exceptions should be controlled.
 
 The current schema is enforced by `mcp-audit policy check` and `mcp-audit scan --policy`. It is parsed by `mcp_audit.team_policy.load_team_policy`, documented here, and demonstrated in `examples/team-policy.toml`.
+For an end-to-end team gate, see `docs/team-governance-gate.md`.
 
 ## Example
 
@@ -74,6 +75,8 @@ Pass exceptions with:
 ```bash
 mcp-audit scan --config ./mcp.json --policy .mcp-audit-policy.toml --exceptions .mcp-audit-exceptions.toml
 ```
+
+Copy `examples/policy-exceptions.toml` when bootstrapping a reviewed exceptions file.
 
 ## Constraints
 

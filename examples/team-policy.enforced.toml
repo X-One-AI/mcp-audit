@@ -1,0 +1,11 @@
+[policy]
+schema_version = 1
+mode = "enforced"
+required_profile = "team"
+allowed_profiles = ["team"]
+required_rules = ["XONE001", "XONE002", "XONE003", "XONE004", "XONE005", "XONE006", "XONE007", "XONE008", "XONE009", "XONE010"]
+blocked_rules = []
+allow_global_config_scan = false
+require_baseline_review = true
+baseline_review_file = ".mcp-audit-baseline.review.toml"
+max_allowed_severity = "medium"

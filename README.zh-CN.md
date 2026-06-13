@@ -167,6 +167,7 @@ mcp-audit policy check --policy .mcp-audit-policy.toml --profile team
 ```
 
 wizard 会写入 `.mcp-audit.toml` 和 `.mcp-audit-policy.toml`，并启用 enforced 团队默认策略。
+完整的团队 review gate，包括 baseline review、例外和 GitHub Actions，见 [Team Governance Gate](./docs/team-governance-gate.md)。
 
 ## 规则 Profile
 
@@ -210,6 +211,8 @@ CI 可以先从这个命令开始：
 ```bash
 mcp-audit scan --config ./mcp.json --format sarif --output mcp-audit.sarif --fail-on high
 ```
+
+团队 CI 可以复制 [examples/github-actions-team-policy.yml](./examples/github-actions-team-policy.yml)，并把 policy 文件纳入代码审查。
 
 对于已有仓库中已经审查并接受的 findings，可以创建 baseline：
 

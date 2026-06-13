@@ -1,0 +1,9 @@
+# Time-bounded exceptions for exact finding fingerprints.
+# Prefer reviewed baselines for long-lived accepted findings.
+
+[[exceptions]]
+fingerprint = "replace-with-finding-fingerprint"
+rule_id = "XONE004"
+reason = "temporary migration while narrowing filesystem access"
+approved_by = "security-team"
+expires_on = "2026-12-31"
