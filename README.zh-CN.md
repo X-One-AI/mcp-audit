@@ -214,6 +214,10 @@ mcp-audit scan --config ./mcp.json --format sarif --output mcp-audit.sarif --fai
 
 团队 CI 可以复制 [examples/github-actions-team-policy.yml](./examples/github-actions-team-policy.yml)，并把 policy 文件纳入代码审查。
 
+## 反馈收集
+
+请使用公开 issue templates 收集 false positives 和 false negatives。Public sample review 在 3-5 名真实用户能提供已脱敏的私有 scan summary 前，仍只是替代方案。只有当反馈变成 fixture、已记录的 limitation 或 rule-tuning finding 后，才把它视为规则输入。
+
 对于已有仓库中已经审查并接受的 findings，可以创建 baseline：
 
 ```bash
