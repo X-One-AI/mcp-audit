@@ -167,6 +167,7 @@ mcp-audit policy check --policy .mcp-audit-policy.toml --profile team
 ```
 
 The wizard writes `.mcp-audit.toml` and `.mcp-audit-policy.toml` with enforced team defaults.
+For a full team review gate with baseline review, exceptions, and GitHub Actions, see [Team Governance Gate](./docs/team-governance-gate.md).
 
 ## Rule Profiles
 
@@ -210,6 +211,8 @@ For CI, start with:
 ```bash
 mcp-audit scan --config ./mcp.json --format sarif --output mcp-audit.sarif --fail-on high
 ```
+
+For team CI, copy [examples/github-actions-team-policy.yml](./examples/github-actions-team-policy.yml) and keep policy files under code review.
 
 For existing repositories with accepted findings, create a reviewed baseline:
 

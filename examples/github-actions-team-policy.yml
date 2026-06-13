@@ -1,0 +1,50 @@
+name: MCP Audit
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+  security-events: write
+
+jobs:
+  mcp-audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+
+      - name: Install mcp-audit
+        run: python -m pip install xone-mcp-audit
+
+      - name: Check team policy shape
+        run: |
+          mcp-audit policy check \
+            --policy .mcp-audit-policy.toml \
+            --profile team \
+            --baseline .mcp-audit-baseline.json \
+            --baseline-review .mcp-audit-baseline.review.toml \
+            --exceptions .mcp-audit-exceptions.toml
+
+      - name: Scan MCP configuration
+        run: |
+          mcp-audit scan \
+            --config ./mcp.json \
+            --profile team \
+            --policy .mcp-audit-policy.toml \
+            --baseline .mcp-audit-baseline.json \
+            --baseline-review .mcp-audit-baseline.review.toml \
+            --exceptions .mcp-audit-exceptions.toml \
+            --format sarif \
+            --output mcp-audit.sarif
+
+      - name: Upload SARIF
+        if: always()
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: mcp-audit.sarif
