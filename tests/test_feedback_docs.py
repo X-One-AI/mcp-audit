@@ -23,3 +23,13 @@ def test_false_positive_feedback_workflow_exists():
     assert "3-5" in substitute
     assert "actions/upload-artifact@v7.0.1" in ci
     assert "mcp-audit-dist-python" in ci
+
+
+def test_team_adoption_playbook_has_ten_minute_team_path():
+    playbook = Path("docs/team-adoption-playbook.md").read_text(encoding="utf-8")
+
+    assert "10-minute team adoption path" in playbook
+    assert "Owner" in playbook
+    assert "advisory scan" in playbook
+    assert "baseline review PR" in playbook
+    assert "Production gate" in playbook

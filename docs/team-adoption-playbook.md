@@ -2,6 +2,31 @@
 
 This playbook turns `mcp-audit` from a local scanner into a reviewable team workflow. It assumes real-user feedback is collected separately and focuses on the repeatable operating model a team can adopt today.
 
+## 10-minute team adoption path
+
+Use this path when a team wants to try `mcp-audit` without designing a full security program first.
+
+1. **Owner:** assign one reviewer who owns the first scan result and decides whether a finding becomes a fix, a baseline review PR, or a time-bounded exception.
+2. Run an advisory scan with explicit config input:
+
+   ```bash
+   mcp-audit init --profile starter
+   mcp-audit discover
+   mcp-audit scan --config ./mcp.json --profile starter --format markdown --output mcp-audit-report.md
+   ```
+
+3. Review the report in a pull request. Treat the first report as an advisory scan, not a merge blocker.
+4. Fix high-confidence findings before creating any baseline.
+5. If existing risk must be accepted, open a baseline review PR with the baseline file, review file, owner, reason, and expiry or revisit trigger.
+6. Move to the Production gate only after the team has one clean scan or one reviewed baseline PR.
+
+Production gate:
+
+- `mcp-audit policy check --policy .mcp-audit-policy.toml --profile team` passes.
+- `mcp-audit scan --policy --baseline-review` runs in CI.
+- Baseline or exception changes require code review.
+- False-positive or false-negative feedback has a fixture, documented limitation, or rule-tuning finding before it changes rule behavior.
+
 ## Rollout Stages
 
 1. Start in advisory mode with `mcp-audit init --profile starter`.
